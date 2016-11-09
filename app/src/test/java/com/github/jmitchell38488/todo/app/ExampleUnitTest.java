@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.androidtodoapp;
+package com.github.jmitchell38488.app;
 
 import org.junit.Test;
 

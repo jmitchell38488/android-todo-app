@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.androidtodoapp;
+package com.github.jmitchell38488.app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
