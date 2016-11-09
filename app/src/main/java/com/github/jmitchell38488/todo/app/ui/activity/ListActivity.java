@@ -2,6 +2,7 @@ package com.github.jmitchell38488.todo.app.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
@@ -10,7 +11,7 @@ import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 
 import javax.inject.Inject;
 
-public class ListActivity extends Activity {
+public class ListActivity extends AppCompatActivity {
 
     @Inject TodoStorage todoStorage;
 

@@ -1,6 +1,7 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.github.jmitchell38488.todo.app.ui.activity.MainActivity">
+    tools:context=".ui.activity.MainActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -3,8 +3,15 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="efefef_grey_100">#FFEFEFEF</color>
     <color name="cccccc_grey_100">#FFCCCCCC</color>
     <color name="aaaaaa_grey_100">#FFAAAAAA</color>
+
+    <color name="gradient_bar_start">#FF4585f5</color>
+    <color name="gradient_bar_end">#FF4683ea</color>
+
+    <color name="actionbar_dark">#FF01579B</color>
+    <color name="actionbar_light">#FF0277BD</color>
 </resources>
