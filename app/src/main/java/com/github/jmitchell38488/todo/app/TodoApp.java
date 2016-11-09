@@ -3,7 +3,7 @@ package com.github.jmitchell38488.todo.app;
 import android.app.Application;
 import android.content.Context;
 
-import com.github.jmitchell38488.todo.app.ui.data.DataModule;
+import com.github.jmitchell38488.todo.app.data.DataModule;
 
 /**
  * Created by justinmitchell on 9/11/2016.

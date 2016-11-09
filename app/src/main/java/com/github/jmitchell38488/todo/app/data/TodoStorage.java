@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.ui.data;
+package com.github.jmitchell38488.todo.app.data;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -51,7 +51,8 @@ public class TodoStorage {
                 .apply();
     }
 
-    @Nullable public String popList() {
+    @Nullable
+    public String popList() {
         String[] todos = getTodos();
         if (todos.length > 1) {
             todos = Arrays.copyOfRange(todos, 1, todos.length);

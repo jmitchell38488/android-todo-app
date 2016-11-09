@@ -5,9 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="efefef_grey_100">#FFEFEFEF</color>
-    <color name="cccccc_grey_100">#FFCCCCCC</color>
-    <color name="aaaaaa_grey_100">#FFAAAAAA</color>
+    <color name="grey_efefef_100">#FFEFEFEF</color>
+    <color name="grey_cccccc_100">#FFCCCCCC</color>
+    <color name="grey_aaaaaa_100">#FFAAAAAA</color>
+    <color name="grey_333333_100">#FF333333</color>
 
     <color name="gradient_bar_start">#FF4585f5</color>
     <color name="gradient_bar_end">#FF4683ea</color>

@@ -13,6 +13,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AppTheme.ListTextView" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/grey_333333_100</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/actionbar_light</item>
