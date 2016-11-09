@@ -15,6 +15,7 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.view.holder.ListItemViewHolder;
 
 import javax.inject.Inject;
 

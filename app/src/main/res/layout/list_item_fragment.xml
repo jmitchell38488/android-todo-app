@@ -8,22 +8,16 @@
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight">
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoMediumTextView
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
         android:id="@+id/list_fragment_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/AppTheme.ListTextView"/>
+        style="@style/AppTheme.ListTextView.Large"/>
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoMediumTextView
+        android:id="@+id/list_fragment_duedate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Something to go here!"
-        style="@style/AppTheme.ListTextView"/>
-
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/something_something"
         style="@style/AppTheme.ListTextView"/>
 
 </LinearLayout>

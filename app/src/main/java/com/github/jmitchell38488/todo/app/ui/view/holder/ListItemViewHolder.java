@@ -15,8 +15,10 @@ import butterknife.ButterKnife;
 public class ListItemViewHolder {
 
     @BindView(R.id.list_fragment_title) TextView titleView;
+    @BindView(R.id.list_fragment_duedate) TextView dateView;
 
     public ListItemViewHolder(View view) {
         ButterKnife.bind(this, view);
     }
+
 }

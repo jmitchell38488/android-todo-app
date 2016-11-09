@@ -10,13 +10,23 @@ import android.widget.TextView;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 @PerApp
 public class TodoAdapter extends ArrayAdapter<TodoItem> {
 
+    private final String dateFormat;
+
     public TodoAdapter(Context context, ArrayList<TodoItem> items) {
         super(context, R.layout.list_item_fragment, R.id.list_fragment_title, items);
+        dateFormat = context.getString(R.string.date_format);
     }
 
     @Override
@@ -27,8 +37,24 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         TextView titleView = (TextView) mView.findViewById(R.id.list_fragment_title);
         titleView.setText(item.getTitle());
 
-        TextView foo = (TextView) mView.findViewById(R.id.something_something);
-        foo.setText("position: " + position + ", count: " + getCount());
+        TextView dateView = (TextView) mView.findViewById(R.id.list_fragment_duedate);
+        Date now = new Date();
+
+        try {
+            DateFormat df = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+            Date due = df.parse(item.getDateDue());
+
+            String dueString = "";
+
+            if (due.getTime() < now.getTime()) {
+                dueString = "Overdue ";
+            }
+
+            dueString += item.getDateDue();
+            dateView.setText(dueString);
+        } catch (ParseException e) {
+            dateView.setText(e.getMessage());
+        }
 
         return mView;
     }

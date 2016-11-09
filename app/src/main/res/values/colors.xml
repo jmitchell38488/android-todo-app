@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="list_item_overdue">#FFC00000</color>
+
     <color name="grey_efefef_100">#FFEFEFEF</color>
     <color name="grey_cccccc_100">#FFCCCCCC</color>
     <color name="grey_aaaaaa_100">#FFAAAAAA</color>
