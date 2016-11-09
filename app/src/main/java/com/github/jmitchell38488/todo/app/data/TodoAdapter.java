@@ -12,9 +12,6 @@ import com.github.jmitchell38488.todo.app.annotation.PerApp;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 @PerApp
 public class TodoAdapter extends ArrayAdapter<TodoItem> {
 
@@ -28,7 +25,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
 
         TodoItem item = getItem(position);
         TextView titleView = (TextView) mView.findViewById(R.id.list_fragment_title);
-        titleView.setText(item.title);
+        titleView.setText(item.getTitle());
 
         TextView foo = (TextView) mView.findViewById(R.id.something_something);
         foo.setText("position: " + position + ", count: " + getCount());
