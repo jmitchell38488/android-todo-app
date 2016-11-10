@@ -1,6 +1,7 @@
 <resources>
 
     <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:layout_gravity">left</item>
         <item name="displayOptions">useLogo|showHome</item>
         <item name="logo">@drawable/art_clear</item>
         <item name="android:background">@color/actionbar_light</item>
