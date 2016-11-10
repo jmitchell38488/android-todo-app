@@ -11,10 +11,14 @@
     <color name="grey_cccccc_100">#FFCCCCCC</color>
     <color name="grey_aaaaaa_100">#FFAAAAAA</color>
     <color name="grey_333333_100">#FF333333</color>
+    <color name="grey_333333_50">#80333333</color>
+    <color name="grey_333333_30">#33333333</color>
 
     <color name="gradient_bar_start">#FF4585f5</color>
     <color name="gradient_bar_end">#FF4683ea</color>
 
     <color name="actionbar_dark">#FF01579B</color>
     <color name="actionbar_light">#FF0277BD</color>
+
+    <color name="listitem_highlight">#800277BD</color>
 </resources>

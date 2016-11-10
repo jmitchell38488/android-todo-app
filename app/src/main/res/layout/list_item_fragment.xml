@@ -7,9 +7,7 @@
     android:id="@+id/list_item_fragment"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:background="@drawable/list_selector">
+    style="@style/ListItemTheme">
 
     <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
         android:id="@+id/list_fragment_title"
@@ -18,7 +16,7 @@
         style="@style/AppTheme.ListTextView.Large"
         />
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoMediumTextView
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
         android:id="@+id/list_fragment_duedate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

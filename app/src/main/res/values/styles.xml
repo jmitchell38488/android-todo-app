@@ -40,6 +40,21 @@
     <!-- Main activity theme. -->
     <style name="ListTheme" parent="AppTheme">
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@color/grey_efefef_100</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="ListThemeList" parent="AppTheme">
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">15.0sp</item>
+    </style>
+
+    <style name="ListItemTheme" parent="AppTheme">
+        <item name="android:paddingLeft">25dp</item>
+        <item name="android:paddingRight">25dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:background">@drawable/list_selector</item>
     </style>
 
     <!-- Settings activity theme. -->
