@@ -9,12 +9,11 @@ import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListItemViewHolder extends ViewHolder {
+public class SectionViewHolder extends ViewHolder {
 
-    @BindView(R.id.list_fragment_title) public TextView titleView;
-    @BindView(R.id.list_fragment_duedate) public TextView dateView;
+    @BindView(R.id.list_fragment_section_title) public TextView titleView;
 
-    public ListItemViewHolder(View view) {
+    public SectionViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
     }
