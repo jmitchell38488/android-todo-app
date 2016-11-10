@@ -15,7 +15,7 @@
     </style>
 
     <style name="AppTheme.ListTextView" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/grey_333333_100</item>
+        <item name="android:textColor">@drawable/list_selector_text</item>
         <item name="android:textSize">16dp</item>
     </style>
 
@@ -25,6 +25,7 @@
 
     <style name="AppTheme.ListTextView.Large" parent="AppTheme.ListTextView">
         <item name="android:textSize">22dp</item>
+        <item name="android:textColor">@drawable/list_selector_text</item>
     </style>
 
     <!-- Base application theme. -->
