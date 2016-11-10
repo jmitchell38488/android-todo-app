@@ -1,7 +1,6 @@
 package com.github.jmitchell38488.todo.app.data;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,7 +9,6 @@ import com.github.jmitchell38488.todo.app.ui.view.holder.ListItemViewHolder;
 import com.github.jmitchell38488.todo.app.ui.view.holder.SectionViewHolder;
 import com.github.jmitchell38488.todo.app.util.DateUtility;
 import com.twotoasters.sectioncursoradapter.adapter.SectionArrayAdapter;
-import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder;
 
 import java.util.List;
 
@@ -19,8 +17,9 @@ public class TodoSectionAdapter extends SectionArrayAdapter<String, TodoItem, Se
     private final Context mContext;
 
     public TodoSectionAdapter(Context context, List<TodoItem> arrayData) {
-        super(context, R.id.list_item_section, R.id.list_item_fragment, arrayData);
+        super(context, R.layout.list_item_title, R.layout.list_item_fragment);
         mContext = context;
+        setDataAndBuildSections(arrayData);
     }
 
     @Override

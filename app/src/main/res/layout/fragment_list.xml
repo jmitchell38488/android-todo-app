@@ -7,7 +7,7 @@
     android:id="@+id/list_fragment"
     android:padding="8dp">
 
-    <ExpandableListView
+    <ListView
         android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
