@@ -50,6 +50,9 @@ dependencies {
     // Json/Gson
     compile 'com.google.code.gson:gson:2.3.1'
 
+    // Other stuff
+    compile 'com.twotoasters.SectionCursorAdapter:library:2.0.+'
+
     // Compilers
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     apt 'com.google.dagger:dagger-compiler:2.7'
