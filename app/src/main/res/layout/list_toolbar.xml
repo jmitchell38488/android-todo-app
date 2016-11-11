@@ -2,21 +2,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_toolbar"
-    android:layout_height="200dp"
+    android:layout_height="?attr/actionBarSize"
     android:layout_width="match_parent"
     android:minHeight="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
-    android:gravity="top|start"
+    android:gravity="top|end"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <android.support.v7.widget.ActionMenuView
-        android:id="@+id/amvMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoMediumTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Blah"/>
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoMediumTextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="10"
+            android:gravity="center_vertical"
+            android:text="Todo"
+            android:textSize="22dp"/>
+
+        <android.support.v7.widget.ActionMenuView
+            android:id="@+id/amvMenu"
+            android:layout_width="wrap_content"
+            android:gravity="top|right"
+            android:layout_weight="1"
+            android:layout_height="?attr/actionBarSize" />
+    </LinearLayout>
+
 </android.support.v7.widget.Toolbar>

@@ -51,7 +51,7 @@ public class ListActivity extends ActionBarActivity {
 
         setSupportActionBar(t);
         getSupportActionBar().setTitle(null);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
