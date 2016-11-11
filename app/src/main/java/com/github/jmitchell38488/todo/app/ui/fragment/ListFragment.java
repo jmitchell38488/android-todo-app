@@ -28,21 +28,13 @@ import butterknife.ButterKnife;
 public class ListFragment extends Fragment {
 
     @Inject TodoStorage todoStorage;
-    //@Inject TodoAdapter mAdapter;
-    //@Inject TodoExpandableAdapter mAdapter;
     @Inject TodoSectionAdapter mAdapter;
-    //@BindView(R.id.list_container) ExpandableListView mListView;
     @BindView(R.id.list_container) ListView mListView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.list, menu);
+        setHasOptionsMenu(false);
     }
 
     @Override
@@ -51,14 +43,6 @@ public class ListFragment extends Fragment {
         TodoApp.getComponent(getActivity()).inject(this);
 
         mListView.setAdapter(mAdapter);
-        /*mListView.setGroupIndicator(null);
-        mListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                // Doing nothing
-                return true;
-            }
-        });*/
     }
 
     @Override

@@ -17,8 +17,8 @@
     <color name="gradient_bar_start">#FF4585f5</color>
     <color name="gradient_bar_end">#FF4683ea</color>
 
-    <color name="actionbar_dark">#FF01579B</color>
-    <color name="actionbar_light">#FF0277BD</color>
+    <color name="actionbar_dark">#FF3469D7</color>
+    <color name="actionbar_light">#FF3F86F6</color>
 
-    <color name="listitem_highlight">#800277BD</color>
+    <color name="listitem_highlight">#FF3F86F6</color>
 </resources>

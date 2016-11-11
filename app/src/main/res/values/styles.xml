@@ -36,11 +36,20 @@
         <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         <item name="android:color">@color/white</item>
         <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <!-- Main activity theme. -->
     <style name="ListTheme" parent="AppTheme">
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ListThemeListContainer" parent="AppTheme">
         <item name="android:background">@color/grey_efefef_100</item>
         <item name="android:padding">16dp</item>
     </style>
