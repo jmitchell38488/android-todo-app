@@ -5,10 +5,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.support.v4.app.DialogFragment;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
@@ -21,22 +21,16 @@ import butterknife.ButterKnife;
  * Created by justinmitchell on 11/11/2016.
  */
 
-public class EditTodoItemDialog extends DialogFragment {
-
-    @BindView(R.id.edit_dialog_logo_main) SignPainterRegularTextView logoView;
-    @BindView(R.id.edit_dialog_title) public RobotoLightEditText titleView;
-    @BindView(R.id.edit_dialog_description) public RobotoLightEditText descriptionView;
+public class DeleteTodoItemDialog extends DialogFragment {
 
     TodoItemDialogListener mListener;
     public String title;
-    public String description;
-    public boolean edit;
+    public boolean delete;
     public int position;
 
-    public EditTodoItemDialog() {
+    public DeleteTodoItemDialog() {
         title = "";
-        description = "";
-        edit = false;
+        delete = false;
         position = -1;
     }
 
@@ -49,35 +43,37 @@ public class EditTodoItemDialog extends DialogFragment {
         ButterKnife.bind(this, rootView);
 
         Bundle arguments = getArguments();
+        StringBuilder strbuilder = new StringBuilder();
         if (arguments != null) {
             title = (String) arguments.getCharSequence("title", "");
-            description = (String) arguments.getCharSequence("description", "");
-            edit = arguments.getBoolean("edit", false);
+            delete = arguments.getBoolean("delete", false);
             position = arguments.getInt("position", -1);
 
+            if (!delete) {
+                return null;
+            }
+
+            strbuilder.append("Are you sure you want to delete");
+
             if (!TextUtils.isEmpty(title)) {
-                titleView.setText(title);
+                strbuilder.append(" " + title);
+            } else {
+                strbuilder.append(" this item");
             }
 
-            if (!TextUtils.isEmpty(description)) {
-                descriptionView.setText(description);
-            }
-
-            if (!edit) {
-                logoView.setText(getActivity().getString(R.string.action_create));
-            }
+            strbuilder.append("?");
         }
 
-        builder.setView(rootView)
-                .setPositiveButton(R.string.dialog_edit_button_positive, new DialogInterface.OnClickListener() {
+        builder.setMessage(strbuilder.toString())
+                .setPositiveButton(R.string.dialog_delete_button_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogPositiveClick(EditTodoItemDialog.this);
+                        mListener.onDialogPositiveClick(DeleteTodoItemDialog.this);
                     }
                 })
-                .setNegativeButton(R.string.dialog_edit_button_negative, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.dialog_delete_button_negative, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogNegativeClick(EditTodoItemDialog.this);
+                        mListener.onDialogNegativeClick(DeleteTodoItemDialog.this);
                     }
                 });
 

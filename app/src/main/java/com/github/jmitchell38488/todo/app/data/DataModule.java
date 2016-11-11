@@ -36,13 +36,14 @@ public class DataModule {
         return new Gson();
     }
 
-    @Provides @PerApp
+    /*@Provides @PerApp
     TodoAdapter provideTodoAdapter(Application app, TodoStorage todoStorage) {
         List<TodoItem> items = todoStorage.getTodos();
         if (items == null) {
             items = new ArrayList<>();
         }
-        return new TodoAdapter(app.getApplicationContext(), items);
-    }
+
+        return new TodoAdapter(app.getApplicationContext(), todoStorage, items);
+    }*/
 
 }

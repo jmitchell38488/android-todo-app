@@ -21,7 +21,11 @@ import com.github.jmitchell38488.todo.app.data.TodoAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
-import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog.EditTodoItemDialogListener;
+import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
+import com.github.jmitchell38488.todo.app.util.ItemUtility;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,7 +35,8 @@ import butterknife.ButterKnife;
 public class ListFragment extends Fragment {
 
     @Inject TodoStorage todoStorage;
-    @Inject TodoAdapter mAdapter;
+    private TodoAdapter mAdapter;
+    //@Inject TodoAdapter mAdapter;
     @BindView(R.id.list_container) ListView mListView;
     @BindView(R.id.empty_list) TextView mEmptyView;
 
@@ -46,13 +51,19 @@ public class ListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         TodoApp.getComponent(getActivity()).inject(this);
 
+        List<TodoItem> items = todoStorage.getTodos();
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+
+        mAdapter = new TodoAdapter(getActivity(), getActivity().getApplicationContext(), todoStorage, items);
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(mEmptyView);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle arguments = new Bundle();
                 TodoItem item = (TodoItem) mListView.getAdapter().getItem(position);
+                Bundle arguments = new Bundle();
                 arguments.putCharSequence("title", item.getTitle());
                 arguments.putCharSequence("description", item.getDescription());
                 arguments.putBoolean("edit", true);

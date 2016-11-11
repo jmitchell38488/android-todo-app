@@ -34,5 +34,8 @@
     <string name="dialog_edit_button_positive">Save</string>
     <string name="dialog_edit_button_negative">Cancel</string>
 
+    <string name="dialog_delete_button_positive">Yes</string>
+    <string name="dialog_delete_button_negative">No</string>
+
     <string name="empty_list">You don\'t have any Todo\'s.\nAdd a Todo using the button below.</string>
 </resources>

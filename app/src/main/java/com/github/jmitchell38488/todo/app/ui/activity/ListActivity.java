@@ -14,16 +14,17 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
-import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog.EditTodoItemDialogListener;
+import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
+import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
-public class ListActivity extends AppCompatActivity implements EditTodoItemDialogListener {
+public class ListActivity extends AppCompatActivity implements TodoItemDialogListener {
 
     @Inject TodoStorage todoStorage;
     @Inject SharedPreferences prefs;
@@ -62,38 +63,63 @@ public class ListActivity extends AppCompatActivity implements EditTodoItemDialo
         dialogFragment.show(fragmentManager, "edit_dialog");
     }
 
+    public void showDeleteDialog(Bundle arguments) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        DeleteTodoItemDialog dialogFragment = new DeleteTodoItemDialog();
+        dialogFragment.setArguments(arguments);
+        dialogFragment.show(fragmentManager, "delete_dialog");
+    }
+
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        String title = ((EditTodoItemDialog) dialog).titleView.getText().toString();
-        String description = ((EditTodoItemDialog) dialog).descriptionView.getText().toString();
-        boolean edit = ((EditTodoItemDialog) dialog).edit;
-        int position = ((EditTodoItemDialog) dialog).position;
-
         ArrayList<TodoItem> list = (ArrayList<TodoItem>) todoStorage.getTodos();
-        int counter = prefs.getInt(COUNTER, 0);
-        counter++;
-        prefs.edit().putInt(COUNTER, counter).commit();
 
-        if (position < 0 || !edit) {
-            // Store the new TodoItem
-            TodoItem item = new TodoItem(counter, title, description, 0, false);
+        if (dialog instanceof DeleteTodoItemDialog) {
+            int position = ((DeleteTodoItemDialog) dialog).position;
 
-            if (list.isEmpty()) {
-                list.add(item);
-            } else {
-                list.add(0, item);
-            }
-        } else if (edit) {
             int id = mFragment.getTodoAdapter().getItem(position).getId();
+            ArrayList<TodoItem> newlist = new ArrayList<>();
 
             for (TodoItem ditem : list) {
-                if (ditem.getId() == id) {
-                    ditem.setTitle(title);
-                    ditem.setDescription(description);
+                if (ditem.getId() != id) {
+                    newlist.add(ditem);
+                }
+            }
+
+            list = newlist;
+        } else if (dialog instanceof EditTodoItemDialog) {
+            String title = ((EditTodoItemDialog) dialog).titleView.getText().toString();
+            String description = ((EditTodoItemDialog) dialog).descriptionView.getText().toString();
+            boolean edit = ((EditTodoItemDialog) dialog).edit;
+            int position = ((EditTodoItemDialog) dialog).position;
+
+            int counter = prefs.getInt(COUNTER, 0);
+            counter++;
+            prefs.edit().putInt(COUNTER, counter).commit();
+
+            if (position < 0 || !edit) {
+                // Store the new TodoItem
+                TodoItem item = new TodoItem(counter, title, description, 0, false);
+
+                if (list.isEmpty()) {
+                    list.add(item);
+                } else {
+                    list.add(0, item);
+                }
+            } else if (edit) {
+                int id = mFragment.getTodoAdapter().getItem(position).getId();
+
+                for (TodoItem ditem : list) {
+                    if (ditem.getId() == id) {
+                        ditem.setTitle(title);
+                        ditem.setDescription(description);
+                    }
                 }
             }
         }
 
+        // Make sure that we reorder, put completed last
+        ItemUtility.reorderTodoItemList(list);
         todoStorage.saveTodos(list);
 
         // Refresh the adaptor
