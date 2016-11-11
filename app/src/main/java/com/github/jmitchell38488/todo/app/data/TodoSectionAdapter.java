@@ -29,13 +29,8 @@ public class TodoSectionAdapter extends SectionArrayAdapter<String, TodoItem, Se
         }
 
         long itemDate = DateUtility.convertDateStringToLong(mContext, item.getDateDue());
-        long dateNow = System.currentTimeMillis();
 
-        if (itemDate < dateNow) {
-            return mContext.getString(R.string.status_overdue);
-        }
-
-        return mContext.getString(R.string.status_todo);
+        return DateUtility.getFormattedDayStringForList(mContext, itemDate);
     }
 
     @Override

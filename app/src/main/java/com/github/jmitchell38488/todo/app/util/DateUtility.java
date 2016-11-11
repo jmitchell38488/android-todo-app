@@ -62,6 +62,27 @@ public class DateUtility {
         return 0l;
     }
 
+    public static String getFormattedDayStringForList(Context context, long dateInMillis) {
+        long currentTime = System.currentTimeMillis();
+
+        if (dateInMillis < currentTime) {
+            return context.getString(R.string.today);
+        }
+
+        Time time = new Time();
+        time.setToNow();
+        int julianDay = Time.getJulianDay(dateInMillis, time.gmtoff);
+        int currentJulianDay = Time.getJulianDay(currentTime, time.gmtoff);
+
+        if (julianDay == currentJulianDay) {
+            return context.getString(R.string.today);
+        } else if ( julianDay < currentJulianDay + 7 ) {
+            return getDayName(context, dateInMillis);
+        }
+
+        return "Later";
+    }
+
     /**
      * Helper method to convert the database representation of the dateTime into something to display
      * to users.  As classy and polished a user experience as "20140102" is, we can do better.

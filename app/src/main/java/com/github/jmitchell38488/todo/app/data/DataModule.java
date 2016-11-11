@@ -79,6 +79,15 @@ public class DataModule {
         items.add(new TodoItem("Do Android Work! :D", "Gotta learn to get that job!",
                 "2016-11-10 09:00:00+1100", "2016-11-11 09:30:00+1100", 1, false));
 
+        items.add(new TodoItem("Interview with NAB", "Being awesome, is awesome.",
+                "2016-11-10 09:00:00+1100", "2016-11-14 16:00:00+1100", 1, false));
+
+        items.add(new TodoItem("Be awesome at something", "Being awesome, is awesome.",
+                "2016-11-10 09:00:00+1100", "2016-11-17 09:00:00+1100", 1, false));
+
+        items.add(new TodoItem("Get wet and wild on the job!", "Have fun!",
+                "2016-11-10 09:00:00+1100", "2016-11-21 09:00:00+1100", 1, false));
+
         return new TodoSectionAdapter(app.getApplicationContext(), items);
     }
 
