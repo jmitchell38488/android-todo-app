@@ -1,8 +1,8 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 
 import javax.inject.Inject;
@@ -26,7 +27,7 @@ public class ListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        setMenuBar();
+        //setMenuBar();
 
         TodoApp.getComponent(this).inject(this);
 
@@ -67,4 +68,12 @@ public class ListActivity extends ActionBarActivity {
         // Do your actions here
         return true;
     }
+
+    public void showEditDialog(Bundle arguments) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        EditTodoItemDialog dialogFragment = new EditTodoItemDialog();
+        dialogFragment.setArguments(arguments);
+        dialogFragment.show(fragmentManager, "edit_dialog");
+    }
+
 }

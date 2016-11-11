@@ -9,11 +9,13 @@
     style="@style/ListTheme">
 
     <!-- toolbar -->
+    <!--
     <include
         android:id="@+id/list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/list_toolbar"/>
+    -->
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,6 +23,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/activity_list_container"
-        style="@style/ListThemeListContainer"
-        android:layout_below="@+id/list_toolbar" />
+        style="@style/ListThemeListContainer" />
 </RelativeLayout>

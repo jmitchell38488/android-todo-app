@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 public class ListItemViewHolder extends ViewHolder {
 
     @BindView(R.id.list_fragment_title) public TextView titleView;
-    @BindView(R.id.list_fragment_duedate) public TextView dateView;
+    @BindView(R.id.list_fragment_description) public TextView dateView;
 
     public ListItemViewHolder(View view) {
         super(view);

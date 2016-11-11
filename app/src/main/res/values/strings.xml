@@ -6,6 +6,8 @@
 
     <!-- Action titles -->
     <string name="action_settings">Settings</string>
+    <string name="action_create">Add New Todo Item</string>
+    <string name="action_edit">Edit Todo Item</string>
 
     <!-- string formats (non translatable) -->
     <string name="date_format" translatable="false">yyyy-MM-dd kk:mm:ssZ</string>
@@ -22,4 +24,13 @@
     <string name="status_overdue">Overdue</string>
     <string name="status_todo">Todo</string>
     <string name="status_complete">Completed</string>
+
+    <!-- Dialog stuff -->
+    <string name="dialog_edit_title_label">Title</string>
+    <string name="dialog_edit_description_label">Description</string>
+    <string name="dialog_edit_title_hint">The todo item</string>
+    <string name="dialog_edit_description_hint">Additional details</string>
+
+    <string name="dialog_edit_button_positive">Save</string>
+    <string name="dialog_edit_button_negative">Cancel</string>
 </resources>

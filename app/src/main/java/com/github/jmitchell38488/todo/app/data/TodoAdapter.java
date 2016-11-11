@@ -37,24 +37,8 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         TextView titleView = (TextView) mView.findViewById(R.id.list_fragment_title);
         titleView.setText(item.getTitle());
 
-        TextView dateView = (TextView) mView.findViewById(R.id.list_fragment_duedate);
-        Date now = new Date();
-
-        try {
-            DateFormat df = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
-            Date due = df.parse(item.getDateDue());
-
-            String dueString = "";
-
-            if (due.getTime() < now.getTime()) {
-                dueString = "Overdue ";
-            }
-
-            dueString += item.getDateDue();
-            dateView.setText(dueString);
-        } catch (ParseException e) {
-            dateView.setText(e.getMessage());
-        }
+        TextView descriptionView = (TextView) mView.findViewById(R.id.list_fragment_description);
+        descriptionView.setText(item.getDescription());
 
         return mView;
     }

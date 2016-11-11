@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/list_item_fragment"
-    android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     style="@style/ListThemeListItemContainer">
 
     <LinearLayout
@@ -35,7 +33,7 @@
                 />
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
-                android:id="@+id/list_fragment_duedate"
+                android:id="@+id/list_fragment_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/AppTheme.ListTextView"

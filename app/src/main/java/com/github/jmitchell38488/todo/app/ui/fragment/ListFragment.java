@@ -1,24 +1,22 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoAdapter;
-import com.github.jmitchell38488.todo.app.data.TodoExpandableAdapter;
-import com.github.jmitchell38488.todo.app.data.TodoSectionAdapter;
+import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
-import com.github.jmitchell38488.todo.app.ui.view.holder.ListItemViewHolder;
+import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 
 import javax.inject.Inject;
 
@@ -28,7 +26,7 @@ import butterknife.ButterKnife;
 public class ListFragment extends Fragment {
 
     @Inject TodoStorage todoStorage;
-    @Inject TodoSectionAdapter mAdapter;
+    @Inject TodoAdapter mAdapter;
     @BindView(R.id.list_container) ListView mListView;
 
     @Override
@@ -43,6 +41,18 @@ public class ListFragment extends Fragment {
         TodoApp.getComponent(getActivity()).inject(this);
 
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle arguments = new Bundle();
+                TodoItem item = (TodoItem) mListView.getAdapter().getItem(position);
+                arguments.putCharSequence("title", item.getTitle());
+                arguments.putCharSequence("description", item.getDescription());
+                arguments.putBoolean("edit", true);
+
+                ((ListActivity) getActivity()).showEditDialog(arguments);
+            }
+        });
     }
 
     @Override

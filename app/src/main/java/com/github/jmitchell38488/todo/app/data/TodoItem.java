@@ -1,18 +1,10 @@
 package com.github.jmitchell38488.todo.app.data;
 
-/**
- * Created by justinmitchell on 10/11/2016.
- */
-
 public class TodoItem {
 
     private String title;
 
     private String description;
-
-    private String dateCreated;
-
-    private String dateDue;
 
     private int order;
 
@@ -21,11 +13,9 @@ public class TodoItem {
     public TodoItem() {
     }
 
-    public TodoItem(String title, String description, String dateCreated, String dateDue, int order, boolean completed) {
+    public TodoItem(String title, String description, int order, boolean completed) {
         this.title = title;
         this.description = description;
-        this.dateCreated = dateCreated;
-        this.dateDue = dateDue;
         this.order = order;
         this.completed = completed;
     }
@@ -44,22 +34,6 @@ public class TodoItem {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getDateDue() {
-        return dateDue;
-    }
-
-    public void setDateDue(String dateDue) {
-        this.dateDue = dateDue;
     }
 
     public int getOrder() {

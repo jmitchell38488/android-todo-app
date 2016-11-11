@@ -5,10 +5,6 @@ import android.content.Context;
 
 import com.github.jmitchell38488.todo.app.data.DataModule;
 
-/**
- * Created by justinmitchell on 9/11/2016.
- */
-
 public class TodoApp extends Application {
 
     private TodoAppComponent component;

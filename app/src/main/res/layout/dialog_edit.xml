@@ -1,0 +1,79 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_edit"
+        android:id="@+id/edit_dialog_logo_main"
+        android:background="@color/grey_f5f5f5_100"
+        android:textSize="36dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        style="@style/ListThemeLogo"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="2dp"
+        android:text="@string/dialog_edit_title_label"
+        android:textSize="21dp"
+        android:textColor="@color/grey_333333_100"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText
+        android:id="@+id/edit_dialog_title"
+        android:inputType="textMultiLine"
+        android:minLines="1"
+        android:maxLines="2"
+        android:lines="1"
+        android:gravity="top|left"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textSize="19dp"
+        android:textColor="@color/grey_555555_100"
+        android:hint="@string/dialog_edit_title_hint" />
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="2dp"
+        android:text="@string/dialog_edit_description_label"
+        android:textSize="21dp"
+        android:textColor="@color/grey_333333_100"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText
+        android:id="@+id/edit_dialog_description"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:maxLines="10"
+        android:lines="5"
+        android:gravity="top|left"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textSize="19dp"
+        android:textColor="@color/grey_555555_100"
+        android:hint="@string/dialog_edit_description_hint"/>
+
+</LinearLayout>
