@@ -7,35 +7,40 @@
     android:id="@+id/list_item_fragment"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    style="@style/ListItemTheme">
-
-    <ImageView
-        android:layout_weight="1"
-        android:id="@+id/list_item_category"
-        style="@style/ListItemCategory"/>
+    style="@style/ListThemeListItemContainer">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="10"
-        android:paddingLeft="15dp">
+        style="@style/ListItemTheme">
 
-        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
-            android:id="@+id/list_fragment_title"
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/list_item_category"
+            style="@style/ListItemCategory"/>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/AppTheme.ListTextView.Large"
-            />
+            android:layout_weight="10"
+            android:paddingLeft="15dp">
 
-        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
-            android:id="@+id/list_fragment_duedate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/AppTheme.ListTextView"
-            android:paddingTop="5dp"
-            />
+            <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+                android:id="@+id/list_fragment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.ListTextView.Large"
+                />
+
+            <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+                android:id="@+id/list_fragment_duedate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.ListTextView"
+                android:paddingTop="5dp"
+                />
         </LinearLayout>
-
+    </LinearLayout>
 </LinearLayout>
