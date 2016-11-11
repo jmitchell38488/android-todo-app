@@ -41,3 +41,5 @@ captures/
 
 *.idea
 *.DS_STORE
+
+/progress-images

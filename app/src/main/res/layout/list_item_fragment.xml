@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/list_item_fragment"
@@ -9,19 +9,33 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     style="@style/ListItemTheme">
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
-        android:id="@+id/list_fragment_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.ListTextView.Large"
-        />
+    <ImageView
+        android:layout_weight="1"
+        android:id="@+id/list_item_category"
+        style="@style/ListItemCategory"/>
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
-        android:id="@+id/list_fragment_duedate"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/AppTheme.ListTextView"
-        android:paddingTop="5dp"
-        />
+        android:layout_weight="10"
+        android:paddingLeft="15dp">
+
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+            android:id="@+id/list_fragment_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.ListTextView.Large"
+            />
+
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+            android:id="@+id/list_fragment_duedate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.ListTextView"
+            android:paddingTop="5dp"
+            />
+        </LinearLayout>
 
 </LinearLayout>
