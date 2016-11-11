@@ -2,6 +2,7 @@
     <!-- App strings for titles/activities -->
     <string name="app_name">Todo</string>
     <string name="title_activity_main">View All</string>
+    <string name="title_list_main">Tasks</string>
 
     <!-- Action titles -->
     <string name="action_settings">Settings</string>
