@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,12 +18,19 @@
             android:id="@+id/list_item_category"
             style="@style/ListItemCategory"/>
 
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/list_item_category_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            app:srcCompat="@android:drawable/ic_delete"/>
+
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
+            android:layout_weight="3"
             android:paddingLeft="15dp">
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
@@ -40,5 +48,7 @@
                 android:paddingTop="5dp"
                 />
         </LinearLayout>
+
+
     </LinearLayout>
 </LinearLayout>

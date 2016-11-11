@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.github.jmitchell38488.todo.app.ui.activity.ListActivity"
-    android:id="@+id/activity_list_layout"
-    style="@style/ListTheme">
+    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    tools:context="com.github.jmitchell38488.todo.app.ui.activity.ListActivity">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/activity_list_container"
-        style="@style/ListThemeListContainer" />
-</RelativeLayout>
+    <include layout="@layout/content_list" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        app:elevation="6dp"/>
+
+</android.support.design.widget.CoordinatorLayout>

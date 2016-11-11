@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
@@ -31,6 +33,7 @@ public class ListFragment extends Fragment {
     @Inject TodoStorage todoStorage;
     @Inject TodoAdapter mAdapter;
     @BindView(R.id.list_container) ListView mListView;
+    @BindView(R.id.empty_list) TextView mEmptyView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class ListFragment extends Fragment {
         TodoApp.getComponent(getActivity()).inject(this);
 
         mListView.setAdapter(mAdapter);
+        mListView.setEmptyView(mEmptyView);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

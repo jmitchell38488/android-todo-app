@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,39 +28,35 @@ public class TodoStorage {
         this.prefs = prefs;
     }
 
-    public @NonNull String[] getTodos() {
+    public @NonNull List<TodoItem> getTodos() {
+        List<TodoItem> list = new ArrayList<>();
+        String json = prefs.getString(KEY_TODOS, "[]");
+
         try {
-            return gson.fromJson(prefs.getString(KEY_TODOS, "[]"), String[].class);
+            TodoItem[] items = gson.fromJson(json, TodoItem[].class);
+            for (TodoItem item : items) {
+                list.add(item);
+            }
+            return list;
         } catch (Exception e) {
-            // silent fail
-            return new String[]{};
+            return list;
         }
     }
-
-    public void saveTodos(@NonNull String string) {
-        String[] dirty = string.split("\n");
-        ArrayList<String> clean = new ArrayList<>(dirty.length);
-        for (String s : dirty) {
-            s = s.trim();
-            if (!TextUtils.isEmpty(s)) {
-                clean.add(s);
-            }
-        }
-
+    public void saveTodos(@NonNull List<TodoItem> items) {
         prefs.edit()
-                .putString(KEY_TODOS, gson.toJson(clean))
+                .putString(KEY_TODOS, gson.toJson(items.toArray()))
                 .apply();
     }
 
     @Nullable
-    public String popList() {
-        String[] todos = getTodos();
-        if (todos.length > 1) {
-            todos = Arrays.copyOfRange(todos, 1, todos.length);
-            saveTodos(TextUtils.join("\n", todos));
-            return todos[0];
+    public TodoItem popList() {
+        List<TodoItem> items = getTodos();
+        if (items.size() > 1) {
+            TodoItem pop = items.remove(0);
+            saveTodos(items);
+            return pop;
         } else {
-            saveTodos("");
+            saveTodos(new ArrayList<TodoItem>());
             return null;
         }
     }

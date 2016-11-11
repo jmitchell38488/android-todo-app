@@ -1,23 +1,35 @@
 package com.github.jmitchell38488.todo.app.data;
 
+import com.google.gson.annotations.Expose;
+
 public class TodoItem {
 
-    private String title;
+    @Expose int id;
 
-    private String description;
+    @Expose String title;
 
-    private int order;
+    @Expose String description;
 
-    private boolean completed;
+    @Expose int order;
 
-    public TodoItem() {
-    }
+    @Expose boolean completed;
 
-    public TodoItem(String title, String description, int order, boolean completed) {
+    public TodoItem() {}
+
+    public TodoItem(int id, String title, String description, int order, boolean completed) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.order = order;
         this.completed = completed;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

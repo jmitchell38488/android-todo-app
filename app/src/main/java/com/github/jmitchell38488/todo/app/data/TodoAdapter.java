@@ -17,16 +17,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 @PerApp
 public class TodoAdapter extends ArrayAdapter<TodoItem> {
 
     private final String dateFormat;
+    private List<TodoItem> mItems;
 
-    public TodoAdapter(Context context, ArrayList<TodoItem> items) {
+    public TodoAdapter(Context context, List<TodoItem> items) {
         super(context, R.layout.list_item_fragment, R.id.list_fragment_title, items);
         dateFormat = context.getString(R.string.date_format);
+        mItems = items;
     }
 
     @Override
@@ -42,4 +45,5 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
 
         return mView;
     }
+
 }
