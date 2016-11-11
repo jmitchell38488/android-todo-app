@@ -8,15 +8,6 @@
     android:id="@+id/activity_list_layout"
     style="@style/ListTheme">
 
-    <!-- toolbar -->
-    <!--
-    <include
-        android:id="@+id/list_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/list_toolbar"/>
-    -->
-
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"

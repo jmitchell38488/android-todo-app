@@ -58,7 +58,10 @@
 
     <style name="ListThemeListContainer" parent="AppTheme">
         <item name="android:background">@color/grey_efefef_100</item>
-        <item name="android:padding">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
     </style>
 
     <style name="ListThemeList" parent="AppTheme">
