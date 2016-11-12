@@ -26,10 +26,14 @@ import java.util.Comparator;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ListActivity extends AppCompatActivity implements TodoItemDialogListener {
 
     @Inject TodoStorage todoStorage;
     @Inject SharedPreferences prefs;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     private ListFragment mFragment;
 
@@ -47,9 +51,12 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
             getFragmentManager().beginTransaction()
                     .add(R.id.activity_list_container, mFragment)
                     .commit();
+        } else {
+            mFragment = (ListFragment) getFragmentManager().getFragment(savedInstanceState, "mFragment");
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ButterKnife.bind(this);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,6 +162,13 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // Do nothing
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        getFragmentManager().putFragment(outState, "mFragment", mFragment);
     }
 
 }
