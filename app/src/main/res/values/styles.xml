@@ -66,6 +66,7 @@
     <style name="ListThemeList" parent="AppTheme">
         <item name="android:listSelector">@android:color/transparent</item>
         <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">4.0sp</item>
     </style>
 
     <style name="ListThemeLogo" parent="@android:style/TextAppearance">
