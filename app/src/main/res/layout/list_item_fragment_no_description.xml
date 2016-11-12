@@ -14,11 +14,15 @@
         style="@style/ListItemTheme"
         android:minHeight="?android:attr/listPreferredItemHeight">
 
-        <ImageView
-            android:layout_weight="2"
-            android:id="@+id/list_item_category"
+        <FrameLayout
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical|center_horizontal"
-            style="@style/ListItemCategory"/>
+            android:layout_weight="2">
+            <ImageView
+                android:id="@+id/list_item_category"
+                style="@style/ListItemCategory"/>
+        </FrameLayout>
 
         <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
             android:id="@+id/list_fragment_title"

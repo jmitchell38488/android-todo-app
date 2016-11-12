@@ -128,9 +128,9 @@
 
     <style name="ListItemCategory" parent="AppTheme">
         <item name="android:background">@drawable/list_item_category_selector</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">20dp</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
         <item name="android:layout_gravity">center_vertical|center_horizontal</item>
     </style>
 
