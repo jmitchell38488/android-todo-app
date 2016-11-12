@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="10"
             android:paddingLeft="15dp"
-            android:minHeight="45dp">
+            android:minHeight="50dp">
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:id="@+id/list_fragment_title"
@@ -47,7 +47,7 @@
             android:id="@+id/list_item_category_delete"
             android:layout_width="36dp"
             android:layout_height="32dp"
-            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|right"
             app:srcCompat="@android:drawable/ic_menu_delete"
             android:background="@android:drawable/ic_menu_delete"/>
 

@@ -16,7 +16,7 @@
 
     <style name="AppTheme.ListTextView" parent="@android:style/TextAppearance">
         <item name="android:textColor">@drawable/list_selector_text</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">13dp</item>
     </style>
 
     <style name="AppTheme.ListTextView.Overdue" parent="AppTheme.ListTextView">
@@ -24,7 +24,7 @@
     </style>
 
     <style name="AppTheme.ListTextView.Large" parent="AppTheme.ListTextView">
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">16.5dp</item>
         <item name="android:textColor">@drawable/list_selector_text</item>
     </style>
 
@@ -82,7 +82,7 @@
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
+        <!--<item name="android:minHeight">?android:attr/listPreferredItemHeight</item>-->
         <item name="android:gravity">center_vertical</item>
     </style>
 
@@ -97,17 +97,17 @@
 
     <style name="ListItemCategory" parent="AppTheme">
         <item name="android:background">@drawable/list_item_category_selector</item>
-
+        <item name="android:padding">10dp</item>
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">20dp</item>
         <item name="android:layout_gravity">center_vertical|center_horizontal</item>
     </style>
 
     <style name="ListItemTheme" parent="AppTheme">
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">25dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingTop">7.5dp</item>
+        <item name="android:paddingBottom">7.5dp</item>
         <item name="android:background">@drawable/list_selector</item>
     </style>
 
