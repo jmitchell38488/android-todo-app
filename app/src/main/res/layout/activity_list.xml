@@ -11,7 +11,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        app:srcCompat="@android:drawable/ic_menu_edit"
+        app:srcCompat="@android:drawable/ic_input_add"
         app:elevation="6dp"
         app:backgroundTint="@color/actionbar_dark"
         style="@style/FloatingActionButton"/>
