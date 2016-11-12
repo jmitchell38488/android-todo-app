@@ -5,7 +5,7 @@
     android:enterFadeDuration="@integer/config_list_item_anim_time">
 
     <item android:drawable="@drawable/item_selector_unselected" android:state_focused="true" android:state_pressed="false"/>
-    <item android:drawable="@color/listitem_highlight" android:state_pressed="true"/>
+    <item android:drawable="@color/actionbar_dark" android:state_pressed="true"/>
     <item android:drawable="@drawable/item_selector_unselected"/>
 
 </selector>
