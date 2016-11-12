@@ -74,7 +74,7 @@
         <item name="android:paddingBottom">0dp</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">@color/logo</item>
-        <item name="android:textSize">56dp</item>
+        <item name="android:textSize">38dp</item>
     </style>
 
     <style name="ListThemeDialog" parent="AppTheme"></style>
