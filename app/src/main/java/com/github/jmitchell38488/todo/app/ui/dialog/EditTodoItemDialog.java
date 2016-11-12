@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v4.app.DialogFragment;
+import android.widget.Button;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
@@ -69,12 +70,7 @@ public class EditTodoItemDialog extends DialogFragment {
         }
 
         builder.setView(rootView)
-                .setPositiveButton(R.string.dialog_edit_button_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogPositiveClick(EditTodoItemDialog.this);
-                    }
-                })
+                .setPositiveButton(R.string.dialog_edit_button_positive, null)
                 .setNegativeButton(R.string.dialog_edit_button_negative, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDialogNegativeClick(EditTodoItemDialog.this);
@@ -82,6 +78,23 @@ public class EditTodoItemDialog extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        final AlertDialog dialog = (AlertDialog) getDialog();
+        if (dialog != null) {
+            Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    mListener.onDialogPositiveClick(EditTodoItemDialog.this);
+                }
+            });
+        }
     }
 
     @Override

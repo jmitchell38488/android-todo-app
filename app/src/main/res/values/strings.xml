@@ -38,4 +38,5 @@
     <string name="dialog_delete_button_negative">No</string>
 
     <string name="empty_list">You don\'t have any Todo\'s.\nAdd a Todo using the button below.</string>
+    <string name="empty_title">A title for the Todo is required</string>
 </resources>

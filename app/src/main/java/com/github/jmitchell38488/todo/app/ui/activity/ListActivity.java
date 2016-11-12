@@ -8,8 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
@@ -20,6 +22,8 @@ import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.util.ItemUtility;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -103,6 +107,13 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
             boolean edit = ((EditTodoItemDialog) dialog).edit;
             int position = ((EditTodoItemDialog) dialog).position;
 
+            // Do nothing if the user didn't enter a title
+            if (TextUtils.isEmpty(title)) {
+                Toast toast = Toast.makeText(this, getString(R.string.empty_title), Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
+
             int counter = prefs.getInt(COUNTER, 0);
             counter++;
             prefs.edit().putInt(COUNTER, counter).commit();
@@ -157,6 +168,8 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         });
 
         mFragment.getTodoAdapter().notifyDataSetChanged();
+
+        dialog.dismiss();
     }
 
     @Override
