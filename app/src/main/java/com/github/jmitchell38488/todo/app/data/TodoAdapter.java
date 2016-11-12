@@ -65,6 +65,10 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         final TextView descriptionView = !hasDesc ? null : (TextView) mView.findViewById(R.id.list_fragment_description);
         titleView.setText(item.getTitle());
 
+        if (hasDesc && descriptionView != null) {
+            descriptionView.setText(desc);
+        }
+
         if (iscomplete) {
             titleView.setPaintFlags(titleView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             titleView.setTextColor(Color.LTGRAY);
