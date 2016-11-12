@@ -22,6 +22,7 @@ import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.inject.Inject;
 
@@ -71,30 +72,36 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         ArrayList<TodoItem> list = (ArrayList<TodoItem>) todoStorage.getTodos();
-        int position = ListView.INVALID_POSITION;
 
+        // Delete a TodoItem
         if (dialog instanceof DeleteTodoItemDialog) {
-            position = ((DeleteTodoItemDialog) dialog).position;
+            int position = ((DeleteTodoItemDialog) dialog).position;
 
-            int id = mFragment.getTodoAdapter().getItem(position).getId();
+            TodoItem item = mFragment.getTodoAdapter().getItem(position);
             ArrayList<TodoItem> newlist = new ArrayList<>();
 
             for (TodoItem ditem : list) {
-                if (ditem.getId() != id) {
+                if (ditem.getId() != item.getId()) {
                     newlist.add(ditem);
                 }
             }
 
             list = newlist;
+            mFragment.getTodoAdapter().remove(item);
+
+        // Create a new TodoItem or edit an existing TodoItem
         } else if (dialog instanceof EditTodoItemDialog) {
             String title = ((EditTodoItemDialog) dialog).titleView.getText().toString();
             String description = ((EditTodoItemDialog) dialog).descriptionView.getText().toString();
             boolean edit = ((EditTodoItemDialog) dialog).edit;
-            position = ((EditTodoItemDialog) dialog).position;
+            int position = ((EditTodoItemDialog) dialog).position;
 
             int counter = prefs.getInt(COUNTER, 0);
             counter++;
             prefs.edit().putInt(COUNTER, counter).commit();
+
+            final boolean newItem = false;
+            final int newItemId = (position < 0 || !edit) ? counter : -1;
 
             if (position < 0 || !edit) {
                 // Store the new TodoItem
@@ -105,11 +112,24 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
                 } else {
                     list.add(0, item);
                 }
+
+                mFragment.getTodoAdapter().add(item);
+
+                mFragment.getTodoAdapter().sort(new Comparator<TodoItem>() {
+                    @Override
+                    public int compare(TodoItem lhs, TodoItem rhs) {
+                        return (lhs.getId() == newItemId ? -1 : newItemId > lhs.getId() ? 1 : 0);
+                    }
+                });
+
             } else if (edit) {
-                int id = mFragment.getTodoAdapter().getItem(position).getId();
+                TodoItem item = mFragment.getTodoAdapter().getItem(position);
+                item.setTitle(title);
+                item.setDescription(description);
+
 
                 for (TodoItem ditem : list) {
-                    if (ditem.getId() == id) {
+                    if (ditem.getId() == item.getId()) {
                         ditem.setTitle(title);
                         ditem.setDescription(description);
                     }
@@ -121,14 +141,15 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         ItemUtility.reorderTodoItemList(list);
         todoStorage.saveTodos(list);
 
-        // Refresh the adaptor
-        mFragment.getTodoAdapter().clear();
-        mFragment.getTodoAdapter().addAll(list);
         mFragment.getTodoAdapter().notifyDataSetChanged();
+        mFragment.getTodoAdapter().sort(new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem lhs, TodoItem rhs) {
+                return (lhs.isCompleted() == rhs.isCompleted() ? 0 : rhs.isCompleted() ? -1 : 1 );
+            }
+        });
 
-        if (position != ListView.INVALID_POSITION && position <= mFragment.getTodoAdapter().getCount()) {
-            mFragment.getListView().smoothScrollToPosition(position);
-        }
+        mFragment.getTodoAdapter().notifyDataSetChanged();
     }
 
     @Override

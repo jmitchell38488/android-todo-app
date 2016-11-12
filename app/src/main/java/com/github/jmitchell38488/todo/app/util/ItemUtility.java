@@ -3,6 +3,8 @@ package com.github.jmitchell38488.todo.app.util;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -11,25 +13,16 @@ import java.util.List;
 
 public class ItemUtility {
 
-    public static List<TodoItem> reorderTodoItemList(List<TodoItem> list) {
-        List<TodoItem> incomplete = new ArrayList<>();
-        List<TodoItem> complete = new ArrayList<>();
-
-        for (TodoItem item : list) {
-            if (item.isCompleted()) {
-                complete.add(item);
-            } else {
-                incomplete.add(item);
-            }
+    public static void reorderTodoItemList(List<TodoItem> list) {
+        Object mLock = false;
+        synchronized (mLock) {
+            Collections.sort(list, new Comparator<TodoItem>() {
+                @Override
+                public int compare(TodoItem lhs, TodoItem rhs) {
+                    return (lhs.isCompleted() == rhs.isCompleted() ? 0 : rhs.isCompleted() ? -1 : 1);
+                }
+            });
         }
-
-        if (complete.size() > 0) {
-            for (TodoItem item : complete) {
-                incomplete.add(item);
-            }
-        }
-
-        return incomplete;
     }
 
 }

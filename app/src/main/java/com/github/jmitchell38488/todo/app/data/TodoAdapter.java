@@ -129,7 +129,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         }
 
         // Make sure that we reorder, put completed last
-        list = (ArrayList<TodoItem>) ItemUtility.reorderTodoItemList(list);
+        ItemUtility.reorderTodoItemList(list);
         mTodoStorage.saveTodos(list);
 
         sort(new Comparator<TodoItem>() {
