@@ -1,7 +1,9 @@
 package com.github.jmitchell38488.todo.app.data;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -12,15 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
+import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @PerApp
@@ -45,8 +50,8 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         final int fposition = position;
         TodoItem item = getItem(position);
         String desc = item.getDescription();
-        boolean hasDesc = !TextUtils.isEmpty(desc);
-        boolean iscomplete = item.isCompleted();
+        final boolean hasDesc = !TextUtils.isEmpty(desc);
+        final boolean iscomplete = item.isCompleted();
 
         View mView;
 
@@ -56,19 +61,15 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
             mView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_fragment_no_description, parent, false);
         }
 
-        TextView titleView = (TextView) mView.findViewById(R.id.list_fragment_title);
+        final TextView titleView = (TextView) mView.findViewById(R.id.list_fragment_title);
+        final TextView descriptionView = !hasDesc ? null : (TextView) mView.findViewById(R.id.list_fragment_description);
         titleView.setText(item.getTitle());
 
         if (iscomplete) {
             titleView.setPaintFlags(titleView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             titleView.setTextColor(Color.LTGRAY);
-        }
 
-        if (hasDesc) {
-            TextView descriptionView = (TextView) mView.findViewById(R.id.list_fragment_description);
-            descriptionView.setText(item.getDescription());
-
-            if (iscomplete) {
+            if (hasDesc) {
                 descriptionView.setPaintFlags(descriptionView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 descriptionView.setTextColor(Color.LTGRAY);
             }
@@ -86,7 +87,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
             @Override
             public void onClick(View view) {
                 TodoItem item = getItem(fposition);
-                updateComplete(item);
+                updateComplete(item, titleView, descriptionView);
             }
 
         });
@@ -112,12 +113,14 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         return mView;
     }
 
-    private void updateComplete(TodoItem item) {
+    private void updateComplete(TodoItem item, View titleView, View descView) {
         ArrayList<TodoItem> list = (ArrayList<TodoItem>) mTodoStorage.getTodos();
 
         for (TodoItem ditem : list) {
             if (ditem.getId() == item.getId()) {
                 ditem.setCompleted(!item.isCompleted());
+                item.setCompleted(!item.isCompleted());
+                setItemCompleted(item, titleView, descView);
             }
         }
 
@@ -125,10 +128,40 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         list = (ArrayList<TodoItem>) ItemUtility.reorderTodoItemList(list);
         mTodoStorage.saveTodos(list);
 
-        // Refresh the adaptor
-        clear();
-        addAll(list);
+        sort(new Comparator<TodoItem>() {
+            @Override
+            public int compare(TodoItem lhs, TodoItem rhs) {
+                return (lhs.isCompleted() == rhs.isCompleted() ? 0 : rhs.isCompleted() ? -1 : 1 );
+            }
+        });
+
         notifyDataSetChanged();
+    }
+
+    private void setItemCompleted(TodoItem item, View titleView, View descView) {
+        if (!item.isCompleted()) {
+            ((TextView) titleView).setTextColor(mActivity.getResources().getColorStateList(R.color.list_selector_text));
+            ((TextView) titleView).setPaintFlags(
+                    ((TextView) titleView).getPaintFlags()
+                            & (~Paint.STRIKE_THRU_TEXT_FLAG)
+            );
+
+            if (descView != null) {
+                ((TextView) descView).setTextColor(mActivity.getResources().getColorStateList(R.color.list_selector_text));
+                ((TextView) descView).setPaintFlags(
+                        ((TextView) descView).getPaintFlags()
+                                & (~Paint.STRIKE_THRU_TEXT_FLAG)
+                );
+            }
+        } else {
+            ((TextView) titleView).setPaintFlags(((TextView) titleView).getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            ((TextView) titleView).setTextColor(Color.LTGRAY);
+
+            if (descView != null) {
+                ((TextView) descView).setPaintFlags(((TextView) descView).getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                ((TextView) descView).setTextColor(Color.LTGRAY);
+            }
+        }
     }
 
 }

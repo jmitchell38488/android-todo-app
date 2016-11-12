@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
@@ -70,9 +71,10 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         ArrayList<TodoItem> list = (ArrayList<TodoItem>) todoStorage.getTodos();
+        int position = ListView.INVALID_POSITION;
 
         if (dialog instanceof DeleteTodoItemDialog) {
-            int position = ((DeleteTodoItemDialog) dialog).position;
+            position = ((DeleteTodoItemDialog) dialog).position;
 
             int id = mFragment.getTodoAdapter().getItem(position).getId();
             ArrayList<TodoItem> newlist = new ArrayList<>();
@@ -88,7 +90,7 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
             String title = ((EditTodoItemDialog) dialog).titleView.getText().toString();
             String description = ((EditTodoItemDialog) dialog).descriptionView.getText().toString();
             boolean edit = ((EditTodoItemDialog) dialog).edit;
-            int position = ((EditTodoItemDialog) dialog).position;
+            position = ((EditTodoItemDialog) dialog).position;
 
             int counter = prefs.getInt(COUNTER, 0);
             counter++;
@@ -123,6 +125,10 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         mFragment.getTodoAdapter().clear();
         mFragment.getTodoAdapter().addAll(list);
         mFragment.getTodoAdapter().notifyDataSetChanged();
+
+        if (position != ListView.INVALID_POSITION && position <= mFragment.getTodoAdapter().getCount()) {
+            mFragment.getListView().smoothScrollToPosition(position);
+        }
     }
 
     @Override

@@ -1,17 +1,13 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,8 +17,6 @@ import com.github.jmitchell38488.todo.app.data.TodoAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
-import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
-import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +32,9 @@ public class ListFragment extends Fragment {
     private TodoAdapter mAdapter;
     @BindView(R.id.list_container) ListView mListView;
     @BindView(R.id.empty_list) TextView mEmptyView;
+
+    private static String POSITION_KEY = "position";
+    private int mPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,9 +65,19 @@ public class ListFragment extends Fragment {
                 arguments.putBoolean("edit", true);
                 arguments.putInt("position", position);
 
+                mPosition = position;
+
                 ((ListActivity) getActivity()).showEditDialog(arguments);
             }
         });
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY)) {
+            mPosition = savedInstanceState.getInt(POSITION_KEY);
+        }
+
+        if (mPosition != ListView.INVALID_POSITION) {
+            mListView.smoothScrollToPosition(mPosition);
+        }
     }
 
     @Override
@@ -89,6 +96,37 @@ public class ListFragment extends Fragment {
 
     public TodoAdapter getTodoAdapter() {
         return mAdapter;
+    }
+
+    public ListView getListView() {
+        return mListView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mPosition != ListView.INVALID_POSITION) {
+            mPosition = getItemPositionFromYOffset();
+        }
+
+        outState.putInt(POSITION_KEY, mPosition);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    private int getItemPositionFromYOffset() {
+        int[] heights = new int[mListView.getCount()];
+
+        View v = mListView.getChildAt(0);
+        if (v == null) {
+            return 0;
+        }
+
+        int firstVisible = mListView.getFirstVisiblePosition();
+        if (firstVisible < mListView.getCount() && heights[firstVisible + 1] == 0) {
+            heights[firstVisible + 1] += heights[firstVisible] + v.getHeight();
+        }
+
+        return v.getTop() + heights[firstVisible];
     }
 
 }
