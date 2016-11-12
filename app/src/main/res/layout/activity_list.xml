@@ -13,6 +13,7 @@
         android:id="@+id/fab"
         app:srcCompat="@android:drawable/ic_menu_edit"
         app:elevation="6dp"
+        app:backgroundTint="@color/actionbar_dark"
         style="@style/FloatingActionButton"/>
 
 </android.support.design.widget.CoordinatorLayout>
