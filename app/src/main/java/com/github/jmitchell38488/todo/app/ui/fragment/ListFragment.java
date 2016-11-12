@@ -36,7 +36,6 @@ public class ListFragment extends Fragment {
 
     @Inject TodoStorage todoStorage;
     private TodoAdapter mAdapter;
-    //@Inject TodoAdapter mAdapter;
     @BindView(R.id.list_container) ListView mListView;
     @BindView(R.id.empty_list) TextView mEmptyView;
 

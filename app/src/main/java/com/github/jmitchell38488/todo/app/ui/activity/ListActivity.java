@@ -51,7 +51,11 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showEditDialog(null);
+                Bundle arguments = new Bundle();
+                arguments.putBoolean("edit", false);
+                arguments.putInt("position", -1);
+
+                showEditDialog(arguments);
             }
         });
     }
@@ -61,13 +65,6 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         EditTodoItemDialog dialogFragment = new EditTodoItemDialog();
         dialogFragment.setArguments(arguments);
         dialogFragment.show(fragmentManager, "edit_dialog");
-    }
-
-    public void showDeleteDialog(Bundle arguments) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        DeleteTodoItemDialog dialogFragment = new DeleteTodoItemDialog();
-        dialogFragment.setArguments(arguments);
-        dialogFragment.show(fragmentManager, "delete_dialog");
     }
 
     @Override
