@@ -39,6 +39,7 @@ public class EditTodoItemDialog extends DialogFragment {
     public int position;
     public boolean edit;
     public boolean pinned;
+    public boolean completed;
 
     public EditTodoItemDialog() {
         title = "";
@@ -46,6 +47,7 @@ public class EditTodoItemDialog extends DialogFragment {
         position = -1;
         edit = false;
         pinned = false;
+        completed = false;
     }
 
     @Override
@@ -66,6 +68,7 @@ public class EditTodoItemDialog extends DialogFragment {
             position = arguments.getInt("position", -1);
             edit = arguments.getBoolean("edit", false);
             pinned = arguments.getBoolean("pinned", false);
+            completed = arguments.getBoolean("completed", false);
 
             if (pinned) {
                 pinnedLabel.setText(getContext().getString(R.string.dialog_edit_pin_true));
@@ -97,9 +100,18 @@ public class EditTodoItemDialog extends DialogFragment {
             }
         });
 
+        int stringId = 0;
+        if (completed) {
+            rootView.findViewById(R.id.edit_dialog_container).setVisibility(View.GONE);
+            stringId = R.string.dialog_edit_button_ok;
+        } else {
+            rootView.findViewById(R.id.edit_dialog_disabled).setVisibility(View.GONE);
+            builder.setPositiveButton(R.string.dialog_edit_button_positive, null);
+            stringId = R.string.dialog_edit_button_negative;
+        }
+
         builder.setView(rootView)
-                .setPositiveButton(R.string.dialog_edit_button_positive, null)
-                .setNegativeButton(R.string.dialog_edit_button_negative, new DialogInterface.OnClickListener() {
+                .setNegativeButton(stringId, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDialogNegativeClick(EditTodoItemDialog.this);
                     }

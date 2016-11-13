@@ -72,6 +72,7 @@ public class ListFragment extends Fragment {
                 arguments.putInt("position", position);
                 arguments.putBoolean("edit", true);
                 arguments.putBoolean("pinned", item.isPinned());
+                arguments.putBoolean("completed", item.isCompleted());
 
                 mPosition = position;
 

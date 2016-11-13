@@ -30,9 +30,11 @@
     <string name="dialog_edit_description_label">Description</string>
     <string name="dialog_edit_title_hint">The todo item</string>
     <string name="dialog_edit_description_hint">Additional details</string>
+    <string name="dialog_edit_disabled">This item is already marked as complete. \nTo edit, you must re-enable it by unchecking it.</string>
 
     <string name="dialog_edit_button_positive">Save</string>
     <string name="dialog_edit_button_negative">Cancel</string>
+    <string name="dialog_edit_button_ok">Got it!</string>
 
     <string name="dialog_delete_button_positive">Yes</string>
     <string name="dialog_delete_button_negative">No</string>
