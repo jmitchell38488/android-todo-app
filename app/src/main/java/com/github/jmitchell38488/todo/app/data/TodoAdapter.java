@@ -18,10 +18,8 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
-import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @PerApp
@@ -41,6 +39,18 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         mActivity = activity;
     }
 
+    private int getLayoutId(boolean hasDesc, boolean hasNotifications) {
+        if (hasDesc) {
+            return hasNotifications
+                    ? R.layout.list_item_fragment_notifications
+                    : R.layout.list_item_fragment;
+        } else {
+            return hasNotifications
+                    ? R.layout.list_item_fragment_no_description_notifications
+                    : R.layout.list_item_fragment_no_description;
+        }
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final int fposition = position;
@@ -49,23 +59,9 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         final boolean hasDesc = !TextUtils.isEmpty(desc);
         final boolean isCompleted = item.isCompleted();
         final boolean isPinned = item.isPinned();
+        final boolean hasNotifications = isPinned ? true : false;
 
-        View mView;
-
-        boolean hasNotifications = isPinned ? true : false;
-
-        int layoutId;
-        if (hasDesc) {
-            layoutId = hasNotifications
-                    ? R.layout.list_item_fragment_notifications
-                    : R.layout.list_item_fragment;
-        } else {
-            layoutId = (hasNotifications)
-                    ? R.layout.list_item_fragment_no_description_notifications
-                    : R.layout.list_item_fragment_no_description;
-        }
-
-        mView = LayoutInflater.from(getContext()).inflate(layoutId, parent, false);
+        final View mView = LayoutInflater.from(getContext()).inflate(getLayoutId(hasDesc, hasNotifications), parent, false);
 
         if (hasNotifications) {
             if (!isPinned) {
@@ -107,7 +103,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
             @Override
             public void onClick(View view) {
                 TodoItem item = getItem(fposition);
-                updateComplete(item, titleView, descriptionView);
+                updateComplete(item, titleView, descriptionView, mView);
             }
 
         });
@@ -133,32 +129,35 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         return mView;
     }
 
-    private void updateComplete(TodoItem item, View titleView, View descView) {
+    private void updateComplete(TodoItem item, View titleView, View descView, View rootView) {
         ArrayList<TodoItem> list = (ArrayList<TodoItem>) mTodoStorage.getTodos();
 
         for (TodoItem ditem : list) {
             if (ditem.getId() == item.getId()) {
+                // Set completed
                 ditem.setCompleted(!item.isCompleted());
                 item.setCompleted(!item.isCompleted());
-                setItemCompleted(item, titleView, descView);
+
+                // Set pinned
+                if (item.isCompleted()) {
+                    ditem.setPinned(false);
+                }
+
+                // Update UI
+                setItemCompleted(item, titleView, descView, rootView);
             }
         }
 
         // Make sure that we reorder, put completed last
-        ItemUtility.reorderTodoItemList(list);
+        TodoItemSorter.sort(list);
         mTodoStorage.saveTodos(list);
 
-        sort(new Comparator<TodoItem>() {
-            @Override
-            public int compare(TodoItem lhs, TodoItem rhs) {
-                return (lhs.isCompleted() == rhs.isCompleted() ? 0 : rhs.isCompleted() ? -1 : 1 );
-            }
-        });
-
+        // Sort the item list and then notify changed
+        TodoItemSorter.sortAdapter(this);
         notifyDataSetChanged();
     }
 
-    private void setItemCompleted(TodoItem item, View titleView, View descView) {
+    private void setItemCompleted(TodoItem item, View titleView, View descView, View rootView) {
         if (!item.isCompleted()) {
             ((TextView) titleView).setTextColor(mActivity.getResources().getColorStateList(R.color.list_selector_text));
             ((TextView) titleView).setPaintFlags(
@@ -180,6 +179,15 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
             if (descView != null) {
                 ((TextView) descView).setPaintFlags(((TextView) descView).getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 ((TextView) descView).setTextColor(Color.LTGRAY);
+            }
+        }
+
+        if (item.isPinned() && item.isCompleted()) {
+            item.setPinned(false);
+
+            View wrapper = rootView.findViewById(R.id.list_item_notification_wrapper);
+            if (wrapper != null) {
+                wrapper.findViewById(R.id.list_item_notification_pinned).setVisibility(View.GONE);
             }
         }
     }

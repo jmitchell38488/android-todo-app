@@ -65,6 +65,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/list_item_notification_wrapper"
             style="@style/AppTheme.ListTextView.Icon.List">
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView

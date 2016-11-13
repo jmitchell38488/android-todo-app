@@ -56,7 +56,7 @@ public class ListFragment extends Fragment {
 
         // Sort the list so that pinned are showed at the top and completed at the bottom
         if (items.size() > 0) {
-            Collections.sort(items, new TodoItemSorter());
+            TodoItemSorter.sort(items);
         }
 
         mAdapter = new TodoAdapter(getActivity(), getActivity().getApplicationContext(), todoStorage, items);
