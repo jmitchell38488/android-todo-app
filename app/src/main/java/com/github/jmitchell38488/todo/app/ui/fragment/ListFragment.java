@@ -15,10 +15,12 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -50,6 +52,11 @@ public class ListFragment extends Fragment {
         List<TodoItem> items = todoStorage.getTodos();
         if (items == null) {
             items = new ArrayList<>();
+        }
+
+        // Sort the list so that pinned are showed at the top and completed at the bottom
+        if (items.size() > 0) {
+            Collections.sort(items, new TodoItemSorter());
         }
 
         mAdapter = new TodoAdapter(getActivity(), getActivity().getApplicationContext(), todoStorage, items);
