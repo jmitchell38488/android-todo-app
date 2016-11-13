@@ -50,11 +50,8 @@
         <com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText
             android:id="@+id/edit_dialog_description"
             android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
-            android:minLines="5"
-            android:maxLines="10"
-            android:lines="5"
             android:hint="@string/dialog_edit_description_hint"
-            style="@style/ListThemeDialog.Input"/>
+            style="@style/ListThemeDialog.Input.TextArea"/>
 
         <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
             android:layout_width="match_parent"
