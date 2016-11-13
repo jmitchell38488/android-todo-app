@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="config_list_item_anim_time">50</integer>
+    <integer name="list_item_delete_anim_time">400</integer>
 </resources>

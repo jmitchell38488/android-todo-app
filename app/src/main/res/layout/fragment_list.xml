@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dslv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,12 +14,22 @@
         android:id="@+id/logo_main"
         style="@style/ListThemeLogo"/>
 
-    <ListView
+    <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/logo_main"
-        style="@style/ListThemeList"/>
+        style="@style/ListThemeList"
+        dslv:slide_shuffle_speed="0.33"
+        dslv:float_alpha="0.8"
+        dslv:drag_start_mode="onLongPress"
+        dslv:drag_scroll_start="0.33"
+        dslv:max_drag_scroll_speed="1.35"
+        dslv:drop_animation_duration="250"
+        dslv:drag_enabled="true"
+        dslv:remove_enabled="false"
+        dslv:drag_handle_id="@id/list_item_fragment"
+        dslv:float_background_color="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/empty_list"

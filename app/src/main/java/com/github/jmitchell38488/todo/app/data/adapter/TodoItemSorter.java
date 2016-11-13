@@ -1,6 +1,7 @@
-package com.github.jmitchell38488.todo.app.data;
+package com.github.jmitchell38488.todo.app.data.adapter;
 
-import android.widget.ArrayAdapter;
+import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.adapter.TodoAdapter;
 
 import java.util.Collections;
 import java.util.Comparator;

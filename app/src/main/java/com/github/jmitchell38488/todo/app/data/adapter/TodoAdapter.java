@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.data;
+package com.github.jmitchell38488.todo.app.data.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
+import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
 
@@ -127,6 +129,16 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         });
 
         return mView;
+    }
+
+    public List<TodoItem> getItems() {
+        ArrayList<TodoItem> list = new ArrayList<>(getCount());
+
+        for (int i = 0; i < getCount(); i++) {
+            list.add(getItem(i));
+        }
+
+        return list;
     }
 
     private void updateComplete(TodoItem item, View titleView, View descView, View rootView) {

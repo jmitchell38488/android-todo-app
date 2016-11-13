@@ -13,14 +13,15 @@ import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
-import com.github.jmitchell38488.todo.app.data.TodoAdapter;
+import com.github.jmitchell38488.todo.app.data.adapter.TodoAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
-import com.github.jmitchell38488.todo.app.data.TodoItemSorter;
+import com.github.jmitchell38488.todo.app.data.adapter.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,11 +33,49 @@ public class ListFragment extends Fragment {
 
     @Inject TodoStorage todoStorage;
     private TodoAdapter mAdapter;
-    @BindView(R.id.list_container) ListView mListView;
+    @BindView(R.id.list_container) DragSortListView mListView;
     @BindView(R.id.empty_list) TextView mEmptyView;
 
     private static String POSITION_KEY = "position";
     private int mPosition;
+
+    private DragSortListView.DropListener onDrop =
+            new DragSortListView.DropListener() {
+                @Override
+                public void drop(int from, int to) {
+                    if (from != to) {
+                        // Drop them in place
+                        TodoItem item = mAdapter.getItem(from);
+                        mAdapter.remove(item);
+                        mAdapter.insert(item, to);
+
+                        // Sort so that pinned & completed are in their correct positions
+                        TodoItemSorter.sortAdapter(mAdapter);
+                        List<TodoItem> list = mAdapter.getItems();
+
+                        todoStorage.saveTodos(list);
+                    }
+                }
+            };
+
+    private AdapterView.OnItemClickListener onClick =
+            new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TodoItem item = (TodoItem) mListView.getAdapter().getItem(position);
+                    Bundle arguments = new Bundle();
+                    arguments.putCharSequence("title", item.getTitle());
+                    arguments.putCharSequence("description", item.getDescription());
+                    arguments.putInt("position", position);
+                    arguments.putBoolean("edit", true);
+                    arguments.putBoolean("pinned", item.isPinned());
+                    arguments.putBoolean("completed", item.isCompleted());
+
+                    mPosition = position;
+
+                    ((ListActivity) getActivity()).showEditDialog(arguments);
+                }
+            };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,23 +101,10 @@ public class ListFragment extends Fragment {
         mAdapter = new TodoAdapter(getActivity(), getActivity().getApplicationContext(), todoStorage, items);
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(mEmptyView);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TodoItem item = (TodoItem) mListView.getAdapter().getItem(position);
-                Bundle arguments = new Bundle();
-                arguments.putCharSequence("title", item.getTitle());
-                arguments.putCharSequence("description", item.getDescription());
-                arguments.putInt("position", position);
-                arguments.putBoolean("edit", true);
-                arguments.putBoolean("pinned", item.isPinned());
-                arguments.putBoolean("completed", item.isCompleted());
 
-                mPosition = position;
-
-                ((ListActivity) getActivity()).showEditDialog(arguments);
-            }
-        });
+        // Set listeners
+        mListView.setOnItemClickListener(onClick);
+        mListView.setDropListener(onDrop);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY)) {
             mPosition = savedInstanceState.getInt(POSITION_KEY);

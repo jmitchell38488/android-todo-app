@@ -4,30 +4,24 @@ package com.github.jmitchell38488.todo.app.ui.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
-import com.github.jmitchell38488.todo.app.data.TodoItemSorter;
+import com.github.jmitchell38488.todo.app.data.adapter.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
-import com.github.jmitchell38488.todo.app.util.ItemUtility;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import javax.inject.Inject;
 
