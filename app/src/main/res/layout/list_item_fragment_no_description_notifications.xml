@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/list_item_fragment_no_description"
+    style="@style/ListThemeListItemContainer">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/ListItemTheme"
+        android:minHeight="?android:attr/listPreferredItemHeight">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_weight="2">
+                <ImageView
+                    android:id="@+id/list_item_category"
+                    style="@style/ListItemCategory"/>
+            </FrameLayout>
+
+            <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+                android:id="@+id/list_fragment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_weight="10"
+                android:paddingLeft="15dp"
+                style="@style/AppTheme.ListTextView.Large" />
+
+            <ImageView
+                android:layout_weight="1"
+                android:id="@+id/list_item_category_delete"
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                app:srcCompat="@android:drawable/ic_menu_delete"
+                android:background="@android:drawable/ic_menu_delete"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.ListTextView.Icon.List">
+
+            <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_flag"
+                android:id="@+id/list_item_notification_pinned"
+                style="@style/AppTheme.ListTextView.Icon" />
+
+            <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_reminder"
+                android:id="@+id/list_item_notification_reminder"
+                style="@style/AppTheme.ListTextView.Icon" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

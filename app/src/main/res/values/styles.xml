@@ -18,6 +18,19 @@
         <item name="android:textSize">13dp</item>
     </style>
 
+    <style name="AppTheme.ListTextView.Icon" parent="@android:style/TextAppearance">
+        <item name="android:textSize">13dp</item>
+        <item name="android:layout_gravity">center_vertical|left</item>
+        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:textColor">@color/actionbar_dark_50</item>
+    </style>
+
+    <style name="AppTheme.ListTextView.Icon.List" parent="@android:style/TextAppearance">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">50dp</item>
+    </style>
+
     <style name="AppTheme.ListTextView.Overdue" parent="AppTheme.ListTextView">
         <item name="android:textColor">@color/list_item_overdue</item>
     </style>

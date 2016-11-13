@@ -23,6 +23,7 @@
     <color name="gradient_bar_end">#FF4683ea</color>
 
     <color name="actionbar_dark">#D2AAAA</color>
+    <color name="actionbar_dark_50">#80D2AAAA</color>
     <color name="actionbar_light">#59AF2F2F</color>
 
     <color name="listitem_highlight">#FF3F86F6</color>

@@ -1,9 +1,7 @@
 package com.github.jmitchell38488.todo.app.data;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -14,14 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
-import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.ArrayList;
@@ -51,14 +47,34 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         TodoItem item = getItem(position);
         String desc = item.getDescription();
         final boolean hasDesc = !TextUtils.isEmpty(desc);
-        final boolean iscomplete = item.isCompleted();
+        final boolean isCompleted = item.isCompleted();
+        final boolean isPinned = item.isPinned();
 
         View mView;
 
+        boolean hasNotifications = isPinned ? true : false;
+
+        int layoutId;
         if (hasDesc) {
-            mView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_fragment, parent, false);
+            layoutId = hasNotifications
+                    ? R.layout.list_item_fragment_notifications
+                    : R.layout.list_item_fragment;
         } else {
-            mView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_fragment_no_description, parent, false);
+            layoutId = (hasNotifications)
+                    ? R.layout.list_item_fragment_no_description_notifications
+                    : R.layout.list_item_fragment_no_description;
+        }
+
+        mView = LayoutInflater.from(getContext()).inflate(layoutId, parent, false);
+
+        if (hasNotifications) {
+            if (!isPinned) {
+                mView.findViewById(R.id.list_item_notification_pinned)
+                        .setVisibility(View.GONE);
+            }
+
+            mView.findViewById(R.id.list_item_notification_reminder)
+                    .setVisibility(View.GONE);
         }
 
         final TextView titleView = (TextView) mView.findViewById(R.id.list_fragment_title);
@@ -69,7 +85,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
             descriptionView.setText(desc);
         }
 
-        if (iscomplete) {
+        if (isCompleted) {
             titleView.setPaintFlags(titleView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             titleView.setTextColor(Color.LTGRAY);
 
@@ -82,7 +98,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
         ImageView complete = (ImageView) mView.findViewById(R.id.list_item_category);
         ImageView delete = (ImageView) mView.findViewById(R.id.list_item_category_delete);
 
-        if (iscomplete) {
+        if (isCompleted) {
             complete.setBackgroundResource(R.drawable.list_item_category_selected);
         }
 
