@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v4.app.DialogFragment;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
+import com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView;
 import com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView;
 
 import butterknife.BindView;
@@ -27,18 +30,22 @@ public class EditTodoItemDialog extends DialogFragment {
     @BindView(R.id.edit_dialog_logo_main) SignPainterRegularTextView logoView;
     @BindView(R.id.edit_dialog_title) public RobotoLightEditText titleView;
     @BindView(R.id.edit_dialog_description) public RobotoLightEditText descriptionView;
+    @BindView(R.id.edit_dialog_pinned) public Switch pinnedSwitch;
+    @BindView(R.id.edit_dialog_pinned_label) public RobotoLightTextView pinnedLabel;
 
     TodoItemDialogListener mListener;
     public String title;
     public String description;
-    public boolean edit;
     public int position;
+    public boolean edit;
+    public boolean pinned;
 
     public EditTodoItemDialog() {
         title = "";
         description = "";
-        edit = false;
         position = -1;
+        edit = false;
+        pinned = false;
     }
 
     @Override
@@ -50,11 +57,21 @@ public class EditTodoItemDialog extends DialogFragment {
         ButterKnife.bind(this, rootView);
 
         Bundle arguments = getArguments();
+
+        pinnedLabel.setText(getContext().getString(R.string.dialog_edit_pin_false));
+
         if (arguments != null) {
             title = (String) arguments.getCharSequence("title", "");
             description = (String) arguments.getCharSequence("description", "");
-            edit = arguments.getBoolean("edit", false);
             position = arguments.getInt("position", -1);
+            edit = arguments.getBoolean("edit", false);
+            pinned = arguments.getBoolean("pinned", false);
+
+            if (pinned) {
+                pinnedLabel.setText(getContext().getString(R.string.dialog_edit_pin_true));
+            }
+
+            pinnedSwitch.setChecked(pinned);
 
             if (!TextUtils.isEmpty(title)) {
                 titleView.setText(title);
@@ -68,6 +85,17 @@ public class EditTodoItemDialog extends DialogFragment {
                 logoView.setText(getActivity().getString(R.string.action_create));
             }
         }
+
+        pinnedSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                pinned = isChecked;
+                if (pinned) {
+                    pinnedLabel.setText(getContext().getString(R.string.dialog_edit_pin_true));
+                } else {
+                    pinnedLabel.setText(getContext().getString(R.string.dialog_edit_pin_false));
+                }
+            }
+        });
 
         builder.setView(rootView)
                 .setPositiveButton(R.string.dialog_edit_button_positive, null)

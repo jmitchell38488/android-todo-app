@@ -65,8 +65,9 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
             @Override
             public void onClick(View view) {
                 Bundle arguments = new Bundle();
-                arguments.putBoolean("edit", false);
                 arguments.putInt("position", -1);
+                arguments.putBoolean("edit", false);
+                arguments.putBoolean("pinned", false);
 
                 showEditDialog(arguments);
             }
@@ -104,8 +105,9 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         } else if (dialog instanceof EditTodoItemDialog) {
             String title = ((EditTodoItemDialog) dialog).titleView.getText().toString();
             String description = ((EditTodoItemDialog) dialog).descriptionView.getText().toString();
-            boolean edit = ((EditTodoItemDialog) dialog).edit;
             int position = ((EditTodoItemDialog) dialog).position;
+            boolean edit = ((EditTodoItemDialog) dialog).edit;
+            boolean pinned = ((EditTodoItemDialog) dialog).pinned;
 
             // Do nothing if the user didn't enter a title
             if (TextUtils.isEmpty(title)) {
@@ -123,7 +125,7 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
 
             if (position < 0 || !edit) {
                 // Store the new TodoItem
-                TodoItem item = new TodoItem(counter, title, description, 0, false);
+                TodoItem item = new TodoItem(counter, title, description, 0, false, pinned);
 
                 if (list.isEmpty()) {
                     list.add(item);
@@ -144,12 +146,13 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
                 TodoItem item = mFragment.getTodoAdapter().getItem(position);
                 item.setTitle(title);
                 item.setDescription(description);
-
+                item.setPinned(pinned);
 
                 for (TodoItem ditem : list) {
                     if (ditem.getId() == item.getId()) {
                         ditem.setTitle(title);
                         ditem.setDescription(description);
+                        ditem.setPinned(pinned);
                     }
                 }
             }

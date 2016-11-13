@@ -62,8 +62,9 @@ public class ListFragment extends Fragment {
                 Bundle arguments = new Bundle();
                 arguments.putCharSequence("title", item.getTitle());
                 arguments.putCharSequence("description", item.getDescription());
-                arguments.putBoolean("edit", true);
                 arguments.putInt("position", position);
+                arguments.putBoolean("edit", true);
+                arguments.putBoolean("pinned", item.isPinned());
 
                 mPosition = position;
 

@@ -44,6 +44,8 @@
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorControlActivated">@color/actionbar_dark</item>
+        <item name="colorControlHighlight">@color/actionbar_dark</item>
     </style>
 
     <!-- Main activity theme. -->
@@ -94,6 +96,24 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="android:paddingLeft">15dp</item>
+    </style>
+
+    <style name="ListThemeDialog.Label.Small" parent="@android:style/TextAppearance">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/grey_333333_100</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">15dp</item>
+    </style>
+
+    <style name="ListThemeDialog.Switch" parent="@android:style/TextAppearance">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/grey_333333_100</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:thumbTextPadding">10dp</item>
+        <item name="android:switchMinWidth">100dp</item>
     </style>
 
     <style name="ListThemeDialog.Input" parent="@android:style/TextAppearance">

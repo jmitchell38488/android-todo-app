@@ -14,14 +14,20 @@ public class TodoItem {
 
     @Expose boolean completed;
 
-    public TodoItem() {}
+    @Expose boolean pinned;
 
-    public TodoItem(int id, String title, String description, int order, boolean completed) {
+    public TodoItem() {
+        completed = false;
+        pinned = false;
+    }
+
+    public TodoItem(int id, String title, String description, int order, boolean completed, boolean pinned) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.order = order;
         this.completed = completed;
+        this.pinned = pinned;
     }
 
     public int getId() {
@@ -62,5 +68,13 @@ public class TodoItem {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 }

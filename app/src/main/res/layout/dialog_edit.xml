@@ -40,4 +40,24 @@
         android:hint="@string/dialog_edit_description_hint"
         style="@style/ListThemeDialog.Input"/>
 
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_edit_pin_label"
+        style="@style/ListThemeDialog.Label"/>
+
+    <Switch
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_dialog_pinned"
+        android:textOff="@string/dialog_edit_pin_false"
+        android:textOn="@string/dialog_edit_pin_true"
+        style="@style/ListThemeDialog.Switch"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_dialog_pinned_label"
+        style="@style/ListThemeDialog.Label.Small"/>
+
 </LinearLayout>
