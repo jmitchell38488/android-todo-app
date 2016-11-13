@@ -4,11 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    style="@style/ListTheme"
     tools:context="com.github.jmitchell38488.todo.app.ui.activity.ListActivity">
 
+    <!-- toolbar -->
+    <include layout="@layout/list_toolbar" />
+
+    <!-- main content -->
     <include layout="@layout/content_list" />
 
+    <!-- floating action button -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         app:srcCompat="@android:drawable/ic_input_add"

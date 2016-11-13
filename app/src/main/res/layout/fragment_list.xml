@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     android:id="@+id/list_fragment">
 
+    <!--
     <com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:id="@+id/logo_main"
         style="@style/ListThemeLogo"/>
+        -->
 
     <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/list_container"

@@ -1,6 +1,7 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
 
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,8 +40,6 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     @Inject TodoStorage todoStorage;
     @Inject SharedPreferences prefs;
     @BindView(R.id.fab) FloatingActionButton fab;
-
-    private ActionMenuView amvMenu;
 
     private ListFragment mFragment;
 
@@ -79,32 +79,9 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
 
     private void setMenuBar() {
         Toolbar t = (Toolbar) findViewById(R.id.list_toolbar);
-        amvMenu = (ActionMenuView) t.findViewById(R.id.amvMenu);
-
-        amvMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                return onOptionsItemSelected(menuItem);
-            }
-        });
-
         setSupportActionBar(t);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        // use amvMenu here
-        inflater.inflate(R.menu.list, amvMenu.getMenu());
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Do your actions here
-        return true;
     }
 
     public void showEditDialog(Bundle arguments) {
