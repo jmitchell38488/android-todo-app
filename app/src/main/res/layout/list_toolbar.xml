@@ -22,14 +22,6 @@
             android:gravity="center_vertical|center_horizontal"
             style="@style/ListThemeLogo"/>
 
-        <!--
-        <android.support.v7.widget.ActionMenuView
-            android:id="@+id/amvMenu"
-            android:layout_width="wrap_content"
-            android:gravity="top|right"
-            android:layout_weight="1"
-            android:layout_height="?attr/actionBarSize" />
-            -->
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>
