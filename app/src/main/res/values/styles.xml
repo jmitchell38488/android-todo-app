@@ -127,6 +127,7 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:thumbTextPadding">10dp</item>
         <item name="android:switchMinWidth">100dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
     </style>
 
     <style name="ListThemeDialog.Input" parent="@android:style/TextAppearance">
