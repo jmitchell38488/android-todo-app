@@ -54,4 +54,6 @@
 
     <string name="icon_flag">\uf024</string>
     <string name="icon_reminder">\uf0f3</string>
+
+    <string name="invalid_list_position">Sorry, I could not update the item for you.\nIf this keeps happening, please reload me</string>
 </resources>

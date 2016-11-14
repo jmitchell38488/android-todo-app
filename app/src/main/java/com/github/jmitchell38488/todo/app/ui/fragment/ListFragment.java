@@ -9,9 +9,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
@@ -62,16 +63,27 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
                 @Override
                 public void onClick(View view) {
-                    int iposition = mRecyclerView.getChildLayoutPosition(view);
-                    TodoItem item = mAdapter.getItem(iposition);
+                    View rootView = (View) view.getParent() // Frame Layout
+                            .getParent() // Linear Layout
+                            .getParent() // Linear Layout
+                            .getParent(); // Linear Layout
 
-                    item.setCompleted(!item.isCompleted());
+                    int iposition = mRecyclerView.getChildLayoutPosition(rootView);
 
-                    if (item.isCompleted()) {
-                        item.setPinned(false);
+                    if (iposition != RecyclerView.NO_POSITION) {
+                        TodoItem item = mAdapter.getItem(iposition);
+
+                        item.setCompleted(!item.isCompleted());
+
+                        if (item.isCompleted()) {
+                            item.setPinned(false);
+                        }
+
+                        replaceAdapterItem(iposition, item);
+                    } else {
+                        Toast toast = Toast.makeText(ListFragment.this.getActivity(), getString(R.string.invalid_list_position), Toast.LENGTH_LONG);
+                        toast.show();
                     }
-
-                    replaceAdapterItem(iposition, item);
                 }
             };
 
@@ -93,6 +105,8 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        /*View drawer = inflater.inflate(R.layout.fragment_list, container, false);
+        mRecyclerView = (RecyclerView) drawer.findViewById(R.id.list_container);*/
         return new RecyclerView(container.getContext());
     }
 
