@@ -199,9 +199,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
                 (!mItem.isCompleted() && !mItem.isPinned() &&
                         !sItem.isCompleted() && !sItem.isPinned())) {
             return true;
-        }/* else if ((mItem.isPinned() && !sItem.isPinned()) || (!mItem.isPinned() && sItem.isPinned()) {
-            return false;
-        }*/
+        }
 
         return false;
     }

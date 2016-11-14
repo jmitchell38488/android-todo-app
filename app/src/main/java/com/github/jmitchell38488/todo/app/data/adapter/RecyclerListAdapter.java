@@ -13,7 +13,9 @@ import com.github.jmitchell38488.todo.app.ui.helper.ItemTouchHelperAdapter;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
@@ -24,12 +26,23 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private Context mContext;
     private OnStartDragListener mDragStartListener;
 
+    private ListChangeListener mListChangeListener;
+
+    public interface ListChangeListener {
+        public void onOrderChange(List<TodoItem> itemList);
+    }
+
     public RecyclerListAdapter(Context context, TodoStorage todoStorage, OnStartDragListener dragStartListener) {
         mContext = context;
         mTodoStorage = todoStorage;
         mDragStartListener = dragStartListener;
 
         mItems = mTodoStorage.getTodos();
+        TodoItemSorter.sort(mItems);
+    }
+
+    public void setListChangeListener(ListChangeListener listChangeListener) {
+        mListChangeListener = listChangeListener;
     }
 
     @Override
@@ -76,8 +89,42 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
 
     @Override
     public void onCompleteClick() {
-        //TodoItemSorter.sort(mItems);
-        //notifyDataSetChanged();
+        // Clone the items, Map is <id, i>
+        HashMap<Integer, Integer> preSortMap = new HashMap<>();
+        for (int i = 0; i < mItems.size(); i++) {
+            preSortMap.put(mItems.get(i).getId(), i);
+        }
+
+        List<TodoItem> mItemsCopy = copyItems();
+        TodoItemSorter.sort(mItemsCopy);
+
+        /*if (mListChangeListener != null) {
+            mListChangeListener.onOrderChange(mItems);
+        }*/
+
+        postSort(preSortMap, mItemsCopy);
+
         //mTodoStorage.saveTodos(mItems);
+    }
+
+    private List<TodoItem> copyItems() {
+        List<TodoItem> list = new ArrayList<>();
+        for (TodoItem item : mItems) {
+            list.add(item);
+        }
+
+        return list;
+    }
+
+    private void postSort(HashMap<Integer, Integer> preSortMap, List<TodoItem> itemList) {
+        for (int i = 0; i < itemList.size(); i++) {
+            int id = itemList.get(i).getId();
+            int nPos = preSortMap.get(id);
+
+            if (i != nPos) {
+                Collections.swap(mItems, i, nPos);
+                notifyItemMoved(i, nPos);
+            }
+        }
     }
 }

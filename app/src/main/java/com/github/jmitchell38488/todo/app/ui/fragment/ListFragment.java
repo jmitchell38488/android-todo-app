@@ -11,22 +11,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jmitchell38488.todo.app.TodoApp;
+import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.helper.SimpleItemTouchHelperCallback;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-public class ListFragment extends Fragment implements OnStartDragListener {
+public class ListFragment extends Fragment implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
 
     private ItemTouchHelper mItemTouchHelper;
     private RecyclerListAdapter mAdapter;
+    private RecyclerView mRecyclerView;
 
     @Inject TodoStorage todoStorage;
 
     private static String POSITION_KEY = "position";
     private int mPosition;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,18 +54,29 @@ public class ListFragment extends Fragment implements OnStartDragListener {
         super.onViewCreated(view, savedInstanceState);
         TodoApp.getComponent(getActivity()).inject(this);
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), todoStorage, this);
+        // Set adapter
+        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this);
+        mAdapter.setListChangeListener(this);
 
-        RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // Set view
+        mRecyclerView = (RecyclerView) view;
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        // Set touch helper
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
+    @Override
+    public void onOrderChange(List<TodoItem> itemList) {
+        //mRecyclerView.setAdapter(new RecyclerListAdapter(getActivity(), todoStorage, this));
+        //mRecyclerView.getAdapter().
+        //mRecyclerView.invalidate();
+        //mRecyclerView.swapAdapter(new RecyclerListAdapter(getActivity(), todoStorage, this), true);
+    }
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
