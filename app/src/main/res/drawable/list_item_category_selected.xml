@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-<item>
-    <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-        <solid android:color="@color/white"/>
-        <stroke android:width="0.75dp" android:color="@color/grey_aaaaaa_100" />
-        <size android:width="15dp" android:height="15dp"/>
-    </shape>
-</item>
-<item>
-    <shape android:shape="oval">
-        <stroke android:color="@android:color/transparent" android:width="12dp"/>
-        <solid android:color="@color/grey_aaaaaa_100" />
-        <size android:width="3dp" android:height="3dp"/>
-    </shape>
-</item>
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+            <solid android:color="@color/white"/>
+            <stroke android:width="0.75dp" android:color="@color/grey_aaaaaa_100" />
+            <size android:width="15dp" android:height="15dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent" android:width="12dp"/>
+            <solid android:color="@color/grey_aaaaaa_100" />
+            <size android:width="3dp" android:height="3dp"/>
+        </shape>
+    </item>
 </layer-list>

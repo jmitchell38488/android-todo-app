@@ -28,28 +28,34 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    // Android libraries
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
+    compile 'com.android.support:support-annotations:23.2.0'
+
     testCompile 'junit:junit:4.12'
+
     // Utility classes
     provided 'javax.annotation:jsr250-api:1.0'
     compile 'com.jakewharton.byteunits:byteunits:0.9.1'
+
     // SQLite ORM Wrapper
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.j256.ormlite:ormlite-core:5.0'
+
     // View Injection
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.jakewharton.byteunits:byteunits:0.9.1'
+
     // Dependency Injection
     compile 'com.google.dagger:dagger:2.7'
     compile 'javax.annotation:javax.annotation-api:1.2'
+
     // Json/Gson
     compile 'com.google.code.gson:gson:2.3.1'
-    // Other stuff
-    compile 'com.twotoasters.SectionCursorAdapter:library:2.0.+'
+
     // Compilers
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     apt 'com.google.dagger:dagger-compiler:2.7'
-    compile 'com.android.support:support-annotations:25.0.0'
-    compile 'asia.ivity.android:drag-sort-listview:1.0'
 }

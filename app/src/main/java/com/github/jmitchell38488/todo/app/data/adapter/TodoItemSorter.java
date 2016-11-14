@@ -1,15 +1,10 @@
 package com.github.jmitchell38488.todo.app.data.adapter;
 
 import com.github.jmitchell38488.todo.app.data.TodoItem;
-import com.github.jmitchell38488.todo.app.data.adapter.TodoAdapter;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-/**
- * Created by justinmitchell on 13/11/2016.
- */
 
 public class TodoItemSorter {
 
@@ -30,30 +25,6 @@ public class TodoItemSorter {
 
             // Sort by completed so that Completed are at the bottom
             Collections.sort(list, completedComparator);
-        }
-    }
-
-    public static void sortAdapter(TodoAdapter adapter) {
-        // Don't sort if the adapter has no items
-        if (adapter.getCount() == 0) {
-            return;
-        }
-
-        synchronized (mLock) {
-            // Don't notify on change yet
-            adapter.setNotifyOnChange(false);
-
-            // Sort by pinned, so that Pinned are at the top
-            adapter.sort(pinnedComparator);
-
-            // Sort by completed so that Completed are at the bottom
-            adapter.sort(completedComparator);
-
-            // Reinstate previous setting
-            adapter.setNotifyOnChange(true);
-
-            // Notify the listeners
-            adapter.notifyDataSetChanged();
         }
     }
 
