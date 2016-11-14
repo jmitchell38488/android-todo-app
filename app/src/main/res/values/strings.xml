@@ -31,6 +31,10 @@
     <string name="dialog_edit_title_hint">The todo item</string>
     <string name="dialog_edit_description_hint">Additional details</string>
     <string name="dialog_edit_disabled">This item is already marked as complete. \nTo edit, you must re-enable it by unchecking it.</string>
+    <string name="dialog_edit_reminder_label">Set a reminder</string>
+    <string name="dialog_edit_reminder_text">Set a future reminder?</string>
+    <string name="dialog_edit_reminder_due">Due date</string>
+    <string name="dialog_edit_reminder_date_hint">Select a date</string>
 
     <string name="dialog_edit_button_positive">Save</string>
     <string name="dialog_edit_button_negative">Cancel</string>
