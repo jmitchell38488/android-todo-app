@@ -21,7 +21,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ListFragment extends Fragment implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
+public class ListFragment extends Fragment implements OnStartDragListener,
+        RecyclerListAdapter.ListChangeListener {
 
     private ItemTouchHelper mItemTouchHelper;
     private RecyclerListAdapter mAdapter;
@@ -55,8 +56,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         TodoApp.getComponent(getActivity()).inject(this);
 
         // Set adapter
-        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this);
-        mAdapter.setListChangeListener(this);
+        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this);
 
         // Set view
         mRecyclerView = (RecyclerView) view;
@@ -71,11 +71,14 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
     }
 
     @Override
-    public void onOrderChange(List<TodoItem> itemList) {
-        //mRecyclerView.setAdapter(new RecyclerListAdapter(getActivity(), todoStorage, this));
-        //mRecyclerView.getAdapter().
-        //mRecyclerView.invalidate();
-        //mRecyclerView.swapAdapter(new RecyclerListAdapter(getActivity(), todoStorage, this), true);
+    public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
+        // Set the new sorted list
+        ((RecyclerListAdapter) mRecyclerView.getAdapter()).setListData(newList);
+
+        // Notify data changed, invalidate and reset the layout manager
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        mRecyclerView.invalidate();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override

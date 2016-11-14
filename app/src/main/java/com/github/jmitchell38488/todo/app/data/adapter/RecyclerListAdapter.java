@@ -25,24 +25,25 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private List<TodoItem> mItems;
     private Context mContext;
     private OnStartDragListener mDragStartListener;
-
     private ListChangeListener mListChangeListener;
 
     public interface ListChangeListener {
-        public void onOrderChange(List<TodoItem> itemList);
+        public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
     }
 
-    public RecyclerListAdapter(Context context, TodoStorage todoStorage, OnStartDragListener dragStartListener) {
+    public RecyclerListAdapter(Context context, TodoStorage todoStorage,
+                               OnStartDragListener dragStartListener, ListChangeListener listChangeListener) {
         mContext = context;
         mTodoStorage = todoStorage;
         mDragStartListener = dragStartListener;
+        mListChangeListener = listChangeListener;
 
         mItems = mTodoStorage.getTodos();
         TodoItemSorter.sort(mItems);
     }
 
-    public void setListChangeListener(ListChangeListener listChangeListener) {
-        mListChangeListener = listChangeListener;
+    public void setListData(List<TodoItem> listData) {
+        mItems = listData;
     }
 
     @Override
@@ -98,11 +99,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         List<TodoItem> mItemsCopy = copyItems();
         TodoItemSorter.sort(mItemsCopy);
 
-        /*if (mListChangeListener != null) {
-            mListChangeListener.onOrderChange(mItems);
-        }*/
+        if (mListChangeListener != null) {
+            mListChangeListener.onOrderChange(mItems, mItemsCopy);
+        }
 
-        postSort(preSortMap, mItemsCopy);
+        //postSort(preSortMap, mItemsCopy);
 
         //mTodoStorage.saveTodos(mItems);
     }
@@ -116,7 +117,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         return list;
     }
 
-    private void postSort(HashMap<Integer, Integer> preSortMap, List<TodoItem> itemList) {
+    /*private void postSort(HashMap<Integer, Integer> preSortMap, List<TodoItem> itemList) {
         for (int i = 0; i < itemList.size(); i++) {
             int id = itemList.get(i).getId();
             int nPos = preSortMap.get(id);
@@ -126,5 +127,5 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                 notifyItemMoved(i, nPos);
             }
         }
-    }
+    }*/
 }
