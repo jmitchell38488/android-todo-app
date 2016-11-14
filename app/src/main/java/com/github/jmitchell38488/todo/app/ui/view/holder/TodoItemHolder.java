@@ -21,15 +21,8 @@ import butterknife.ButterKnife;
 
 public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
-    public interface OnCompleteClickListener {
-        void onCompleteClick();
-    }
-
     public View mView;
-
-    private OnCompleteClickListener mCompleteClickListener;
     private Context mContext;
-    private TodoItem mItem;
 
     TextView titleView;
     TextView descView;
@@ -53,23 +46,12 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         moveHandle = (ImageView) itemView.findViewById(R.id.list_item_move_handle);
     }
 
-    public void attachClickListener(OnCompleteClickListener listener) {
-        mCompleteClickListener = listener;
-    }
-
     public void updateView(TodoItem item) {
-        if (mItem == null) {
-            mItem = item;
-        }
-
         String desc = item.getDescription();
         final boolean hasDesc = !TextUtils.isEmpty(desc);
-        final boolean isCompleted = item.isCompleted();
         final boolean isPinned = item.isPinned();
         final boolean hasNotifications = isPinned ? true : false;
         final boolean hasReminder = false;
-
-        ButterKnife.bind(this, mView);
         
         // Set visibility for various elements
         if (hasNotifications) {
@@ -103,6 +85,9 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
             descView.setText(desc);
         }
 
+        setItemViewCompleted(item);
+
+        /*
         // Set or remove the strike through for completed
         if (isCompleted) {
             completeHandle.setBackgroundResource(R.drawable.list_item_category_selected);
@@ -118,7 +103,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
 
         if (isCompleted) {
             completeHandle.setBackgroundResource(R.drawable.list_item_category_selected);
-        }
+        }*/
     }
 
     @Override
@@ -143,22 +128,8 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         });
     }
 
-    public void onClick() {
-        mItem.setCompleted(!mItem.isCompleted());
-
-        if (mItem.isCompleted()) {
-            mItem.setPinned(false);
-        }
-
-        setItemViewCompleted();
-
-        if (mCompleteClickListener != null) {
-            mCompleteClickListener.onCompleteClick();
-        }
-    }
-
-    public void setItemViewCompleted() {
-        if (!mItem.isCompleted()) {
+    public void setItemViewCompleted(TodoItem item) {
+        if (!item.isCompleted()) {
             titleView.setTextColor(mContext.getResources().getColorStateList(R.color.list_selector_text));
             titleView.setPaintFlags(titleView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
@@ -181,8 +152,8 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
             completeHandle.setBackgroundResource(R.drawable.list_item_category_selected);
         }
 
-        if (mItem.isPinned() && mItem.isCompleted()) {
-            mItem.setPinned(false);
+        if (item.isPinned() && item.isCompleted()) {
+            item.setPinned(false);
 
             if (notificationLayout != null) {
                 notificationLayout.setVisibility(View.GONE);
@@ -190,14 +161,12 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
     }
 
-    public boolean canMove(TodoItemHolder sourceHolder) {
-        TodoItem sItem = sourceHolder.mItem;
-
+    public boolean canMove(TodoItem source, TodoItem target) {
         // Can move items in only the same set
-        if ((mItem.isPinned() && sItem.isPinned()) ||
-                (mItem.isCompleted() && sItem.isCompleted()) ||
-                (!mItem.isCompleted() && !mItem.isPinned() &&
-                        !sItem.isCompleted() && !sItem.isPinned())) {
+        if ((source.isPinned() && target.isPinned()) ||
+                (source.isCompleted() && target.isCompleted()) ||
+                (!source.isCompleted() && !source.isPinned() &&
+                        !target.isCompleted() && !target.isPinned())) {
             return true;
         }
 

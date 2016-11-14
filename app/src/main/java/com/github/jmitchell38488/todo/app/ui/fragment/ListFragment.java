@@ -57,6 +57,24 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
             };
 
+    private View.OnClickListener onCompleteClick =
+            new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    int iposition = mRecyclerView.getChildLayoutPosition(view);
+                    TodoItem item = mAdapter.getItem(iposition);
+
+                    item.setCompleted(!item.isCompleted());
+
+                    if (item.isCompleted()) {
+                        item.setPinned(false);
+                    }
+
+                    replaceAdapterItem(iposition, item);
+                }
+            };
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +102,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         TodoApp.getComponent(getActivity()).inject(this);
 
         // Set adapter
-        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick);
+        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick, onCompleteClick);
 
         // Set view
         mRecyclerView = (RecyclerView) view;

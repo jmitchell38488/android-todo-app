@@ -5,6 +5,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 /**
@@ -59,7 +61,11 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
         // Order of Precedence: Pinned > Not Pinned > Completed
         // Do not allow shuffle if out of order
-        if (!((TodoItemHolder) source).canMove((TodoItemHolder) target)) {
+        RecyclerListAdapter adapter = (RecyclerListAdapter) recyclerView.getAdapter();
+        TodoItem sItem = adapter.getItem(source.getAdapterPosition());
+        TodoItem tItem = adapter.getItem(target.getAdapterPosition());
+
+        if (!((TodoItemHolder) source).canMove(sItem, tItem)) {
             return false;
         }
 

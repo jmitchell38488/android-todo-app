@@ -18,8 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
-        implements ItemTouchHelperAdapter, TodoItemHolder.OnCompleteClickListener {
+public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> implements ItemTouchHelperAdapter {
 
     private TodoStorage mTodoStorage;
     private List<TodoItem> mItems;
@@ -27,6 +26,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private OnStartDragListener mDragStartListener;
     private ListChangeListener mListChangeListener;
     private ListClickListener mListClickListener;
+    private View.OnClickListener mCompleteClickListener;
 
     public interface ListChangeListener {
         public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
@@ -40,12 +40,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     public RecyclerListAdapter(Context context, TodoStorage todoStorage,
                                OnStartDragListener dragStartListener,
                                ListChangeListener listChangeListener,
-                               ListClickListener listClickListener) {
+                               ListClickListener listClickListener,
+                               View.OnClickListener completeClickListener) {
         mContext = context;
         mTodoStorage = todoStorage;
         mDragStartListener = dragStartListener;
         mListChangeListener = listChangeListener;
         mListClickListener = listClickListener;
+        mCompleteClickListener = completeClickListener;
 
         mItems = mTodoStorage.getTodos();
         TodoItemSorter.sort(mItems);
@@ -59,7 +61,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     public TodoItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_fragment_notifications, parent, false);
         TodoItemHolder holder = new TodoItemHolder(view, mContext);
-        holder.attachClickListener(this);
         return holder;
     }
 
@@ -70,14 +71,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         // Start a drag whenever the handle view it touched
         holder.bindDragEvent(mDragStartListener);
 
-        holder.completeHandle.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                holder.onClick();
-            }
-
-        });
+        holder.completeHandle.setOnClickListener(mCompleteClickListener);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
 
@@ -105,11 +99,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    @Override
-    public void onCompleteClick() {
-        reorderList();
     }
 
     public void reorderList() {
