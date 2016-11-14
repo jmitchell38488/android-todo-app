@@ -190,4 +190,20 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
     }
 
+    public boolean canMove(TodoItemHolder sourceHolder) {
+        TodoItem sItem = sourceHolder.mItem;
+
+        // Can move items in only the same set
+        if ((mItem.isPinned() && sItem.isPinned()) ||
+                (mItem.isCompleted() && sItem.isCompleted()) ||
+                (!mItem.isCompleted() && !mItem.isPinned() &&
+                        !sItem.isCompleted() && !sItem.isPinned())) {
+            return true;
+        }/* else if ((mItem.isPinned() && !sItem.isPinned()) || (!mItem.isPinned() && sItem.isPinned()) {
+            return false;
+        }*/
+
+        return false;
+    }
+
 }

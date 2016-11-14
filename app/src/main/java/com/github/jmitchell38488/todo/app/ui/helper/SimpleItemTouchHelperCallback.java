@@ -5,6 +5,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
+
 /**
  * An implementation of {@link ItemTouchHelper.Callback} that enables basic drag & drop and
  * swipe-to-dismiss. Drag events are automatically started by an item long-press.<br/>
@@ -52,6 +54,12 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target) {
         if (source.getItemViewType() != target.getItemViewType()) {
+            return false;
+        }
+
+        // Order of Precedence: Pinned > Not Pinned > Completed
+        // Do not allow shuffle if out of order
+        if (!((TodoItemHolder) source).canMove((TodoItemHolder) target)) {
             return false;
         }
 
