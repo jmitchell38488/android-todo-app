@@ -9,11 +9,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.helper.SimpleItemTouchHelperCallback;
 
@@ -21,8 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ListFragment extends Fragment implements OnStartDragListener,
-        RecyclerListAdapter.ListChangeListener {
+public class ListFragment extends Fragment implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
 
     private ItemTouchHelper mItemTouchHelper;
     private RecyclerListAdapter mAdapter;
@@ -32,6 +34,28 @@ public class ListFragment extends Fragment implements OnStartDragListener,
 
     private static String POSITION_KEY = "position";
     private int mPosition;
+
+    private RecyclerListAdapter.ListClickListener onClick =
+            new RecyclerListAdapter.ListClickListener() {
+
+                @Override
+                public void onItemClick(View view, int position) {
+                    int iposition = mRecyclerView.getChildLayoutPosition(view);
+                    TodoItem item = mAdapter.getItem(iposition);
+                    Bundle arguments = new Bundle();
+                    arguments.putCharSequence("title", item.getTitle());
+                    arguments.putCharSequence("description", item.getDescription());
+                    arguments.putInt("position", position);
+                    arguments.putBoolean("edit", true);
+                    arguments.putBoolean("pinned", item.isPinned());
+                    arguments.putBoolean("completed", item.isCompleted());
+
+                    mPosition = position;
+
+                    ((ListActivity) getActivity()).showEditDialog(arguments);
+                }
+
+            };
 
 
     @Override
@@ -43,6 +67,10 @@ public class ListFragment extends Fragment implements OnStartDragListener,
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY)) {
+            mPosition = savedInstanceState.getInt(POSITION_KEY);
+        }
     }
 
     @Override
@@ -56,7 +84,7 @@ public class ListFragment extends Fragment implements OnStartDragListener,
         TodoApp.getComponent(getActivity()).inject(this);
 
         // Set adapter
-        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this);
+        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick);
 
         // Set view
         mRecyclerView = (RecyclerView) view;
@@ -68,6 +96,11 @@ public class ListFragment extends Fragment implements OnStartDragListener,
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        // Scroll to previous position
+        if (mPosition != ListView.INVALID_POSITION) {
+            mRecyclerView.smoothScrollToPosition(mPosition);
+        }
     }
 
     @Override
@@ -82,8 +115,55 @@ public class ListFragment extends Fragment implements OnStartDragListener,
     }
 
     @Override
+    public void onItemChange(int position) {
+        mRecyclerView.getAdapter().notifyItemChanged(position);
+    }
+
+    @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mPosition != ListView.INVALID_POSITION) {
+            mPosition = getItemPositionFromYOffset();
+        }
+
+        outState.putInt(POSITION_KEY, mPosition);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    private int getItemPositionFromYOffset() {
+        int[] heights = new int[mRecyclerView.getChildCount()];
+
+        View v = mRecyclerView.getChildAt(0);
+        if (v == null) {
+            return 0;
+        }
+
+        LinearLayoutManager lMan = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+
+        int firstVisible = lMan.findFirstCompletelyVisibleItemPosition();
+        if (firstVisible < mAdapter.getItemCount() && heights[firstVisible + 1] == 0) {
+            heights[firstVisible + 1] += heights[firstVisible] + v.getHeight();
+        }
+
+        return v.getTop() + heights[firstVisible];
+    }
+
+    public TodoItem getItemFromAdapter(int position) {
+        return mAdapter.getItem(position);
+    }
+
+    public void replaceAdapterItem(int position, TodoItem item) {
+        mAdapter.replace(position, item);
+        mAdapter.reorderList();
+    }
+
+    public void addItem(TodoItem item) {
+        mAdapter.addItem(0, item);
     }
 
 }

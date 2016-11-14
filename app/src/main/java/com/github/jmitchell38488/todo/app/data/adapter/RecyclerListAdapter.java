@@ -26,17 +26,26 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private Context mContext;
     private OnStartDragListener mDragStartListener;
     private ListChangeListener mListChangeListener;
+    private ListClickListener mListClickListener;
 
     public interface ListChangeListener {
         public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
+        public void onItemChange(int position);
+    }
+
+    public interface ListClickListener {
+        public void onItemClick(View view, int position);
     }
 
     public RecyclerListAdapter(Context context, TodoStorage todoStorage,
-                               OnStartDragListener dragStartListener, ListChangeListener listChangeListener) {
+                               OnStartDragListener dragStartListener,
+                               ListChangeListener listChangeListener,
+                               ListClickListener listClickListener) {
         mContext = context;
         mTodoStorage = todoStorage;
         mDragStartListener = dragStartListener;
         mListChangeListener = listChangeListener;
+        mListClickListener = listClickListener;
 
         mItems = mTodoStorage.getTodos();
         TodoItemSorter.sort(mItems);
@@ -67,6 +76,16 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
             public void onClick(View view) {
                 holder.onClick();
             }
+
+        });
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mListClickListener.onItemClick(v, position);
+            }
+
         });
     }
 
@@ -90,6 +109,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
 
     @Override
     public void onCompleteClick() {
+        reorderList();
+    }
+
+    public void reorderList() {
         // Clone the items, Map is <id, i>
         HashMap<Integer, Integer> preSortMap = new HashMap<>();
         for (int i = 0; i < mItems.size(); i++) {
@@ -102,10 +125,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         if (mListChangeListener != null) {
             mListChangeListener.onOrderChange(mItems, mItemsCopy);
         }
-
-        //postSort(preSortMap, mItemsCopy);
-
-        //mTodoStorage.saveTodos(mItems);
     }
 
     private List<TodoItem> copyItems() {
@@ -117,15 +136,27 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         return list;
     }
 
-    /*private void postSort(HashMap<Integer, Integer> preSortMap, List<TodoItem> itemList) {
-        for (int i = 0; i < itemList.size(); i++) {
-            int id = itemList.get(i).getId();
-            int nPos = preSortMap.get(id);
-
-            if (i != nPos) {
-                Collections.swap(mItems, i, nPos);
-                notifyItemMoved(i, nPos);
-            }
+    public TodoItem getItem(int position) {
+        if (mItems.size() > position) {
+            return mItems.get(position);
         }
-    }*/
+
+        return null;
+    }
+
+    public void replace(int position, TodoItem item) {
+        if (mItems.size() > position) {
+            mItems.remove(position);
+            mItems.add(position, item);
+
+            mListChangeListener.onItemChange(position);
+        }
+    }
+
+    public void addItem(int position, TodoItem item) {
+        mItems.add(position, item);
+
+        // reorder the list
+        reorderList();
+    }
 }
