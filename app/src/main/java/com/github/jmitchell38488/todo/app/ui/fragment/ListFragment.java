@@ -19,6 +19,7 @@ import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.helper.SimpleItemTouchHelperCallback;
+import com.github.jmitchell38488.todo.app.ui.helper.VerticalSpaceItemDecoration;
 
 import java.util.List;
 
@@ -59,6 +60,10 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
             };
 
+    public ListFragment() {
+        super();
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +91,8 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         super.onViewCreated(view, savedInstanceState);
         TodoApp.getComponent(getActivity()).inject(this);
 
+        int listDividerHeight = (int) getResources().getDimension(R.dimen.list_divider);
+
         // Set adapter
         mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick);
         mAdapter.setUndoOn(true);
@@ -97,6 +104,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(listDividerHeight));
 
         // Set touch helper
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter, getActivity());
