@@ -72,15 +72,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         String desc = item.getDescription();
         final boolean hasDesc = !TextUtils.isEmpty(desc);
         final boolean isPinned = item.isPinned();
-        //final boolean hasNotifications = isPinned ? true : false;
         final boolean hasReminder = false;
-        
-        // Set visibility for various elements
-        /*if (hasNotifications) {
-            notificationLayout.setVisibility(View.VISIBLE);
-        } else {
-            notificationLayout.setVisibility(View.GONE);
-        }*/
         
         if (!hasDesc) {
             descView.setVisibility(View.GONE);
@@ -89,15 +81,13 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
 
         // Set which notifications are visible
-        //if (hasNotifications) {
-            if (!isPinned) {
-                iconPinned.setVisibility(View.GONE);
-            }
+        if (!isPinned) {
+            iconPinned.setVisibility(View.GONE);
+        }
 
-            if (!hasReminder) {
-                iconReminder.setVisibility(View.GONE);
-            }
-        //}
+        if (!hasReminder) {
+            iconReminder.setVisibility(View.GONE);
+        }
         
         // Set title
         titleView.setText(item.getTitle());
@@ -177,10 +167,6 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
 
         if (item.isPinned() && item.isCompleted()) {
             item.setPinned(false);
-
-            /*if (notificationLayout != null) {
-                notificationLayout.setVisibility(View.GONE);
-            }*/
         }
     }
 

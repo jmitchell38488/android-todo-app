@@ -1,29 +1,20 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
-
-import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
-import com.github.jmitchell38488.todo.app.data.adapter.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
-import com.github.jmitchell38488.todo.app.ui.dialog.DeleteTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;

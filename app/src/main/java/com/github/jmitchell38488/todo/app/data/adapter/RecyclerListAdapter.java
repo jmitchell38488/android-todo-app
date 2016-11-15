@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.github.jmitchell38488.todo.app.R;
@@ -88,8 +89,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                     holder.getRemovePendingView() :
                     holder.getCompletePendingView();
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, 0, 0, 3);
 
             view.setMinimumHeight(item.height);
