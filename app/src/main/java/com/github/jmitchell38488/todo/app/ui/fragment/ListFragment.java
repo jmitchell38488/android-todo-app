@@ -133,7 +133,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     @Override
     public void onDataChange() {
-        //todoStorage.saveTodos(mAdapter.getItems());
+        todoStorage.saveTodos(mAdapter.getItems());
 
         // Show alternative view
         if (mAdapter.getItemCount() == 0) {
@@ -179,10 +179,11 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         if (mItem.isCompleted() == item.isCompleted() &&
                 mItem.isPinned() == item.isPinned()) {
             replaceAdapterItem(position, item);
+            return;
         }
 
         // Not so lucky, remove and add it!
-        removeItem(position);
+        removeItem(position, false);
         addItem(item);
     }
 
@@ -207,8 +208,12 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         mRecyclerView.smoothScrollToPosition(newPosition);
     }
 
-    public void removeItem(int position) {
-        mAdapter.onItemDismiss(position);
+    public void removeItem(int position, boolean undo) {
+        if (undo) {
+            mAdapter.onItemDismiss(position);
+        } else {
+            mAdapter.remove(position);
+        }
     }
 
 }
