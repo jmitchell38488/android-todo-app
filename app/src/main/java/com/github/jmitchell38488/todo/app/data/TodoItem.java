@@ -2,7 +2,7 @@ package com.github.jmitchell38488.todo.app.data;
 
 import com.google.gson.annotations.Expose;
 
-public class TodoItem {
+public class TodoItem implements Cloneable {
 
     @Expose int id;
 
@@ -81,5 +81,16 @@ public class TodoItem {
 
     public void setPinned(boolean pinned) {
         this.pinned = pinned;
+    }
+
+    @Override
+    public Object clone() {
+        TodoItem t = new TodoItem(id, title, description, order, completed, pinned);
+        t.height = height;
+        t.width = width;
+        t.sX = sX;
+        t.sY = sY;
+
+        return t;
     }
 }

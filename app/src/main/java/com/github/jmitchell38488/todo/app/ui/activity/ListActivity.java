@@ -105,7 +105,8 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         int position = ((EditTodoItemDialog) dialog).position;
         boolean pinned = ((EditTodoItemDialog) dialog).pinned;
 
-        TodoItem item = mFragment.getItemFromAdapter(position);
+        TodoItem orig = mFragment.getItemFromAdapter(position);
+        TodoItem item = (TodoItem) orig.clone();
         item.setTitle(title);
         item.setDescription(description);
         item.setPinned(pinned);
