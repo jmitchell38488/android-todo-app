@@ -1,12 +1,13 @@
 package com.github.jmitchell38488.todo.app.ui.helper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -34,8 +35,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private final ItemTouchHelperAdapter mAdapter;
 
     // we want to cache these and not allocate anything repeatedly in the onChildDraw method
-    private Drawable backgroundRemove;
-    private Drawable backgroundComplete;
+    private Drawable mBackgroundRemove;
+    private Drawable mBackgroundComplete;
+    private Paint mPaint;
     private boolean initiated;
     private Context mContext;
 
@@ -47,8 +49,17 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         mAdapter = adapter;
         mContext = context;
 
-        backgroundRemove = new ColorDrawable(mContext.getResources().getColor(R.color.list_item_background_delete));
-        backgroundComplete = new ColorDrawable(mContext.getResources().getColor(R.color.list_item_background_complete));
+        mBackgroundRemove = new ColorDrawable(mContext.getResources().getColor(R.color.list_item_background_delete));
+        mBackgroundComplete = new ColorDrawable(mContext.getResources().getColor(R.color.list_item_background_complete));
+
+        mPaint = new Paint();
+        mPaint.setColor(Color.WHITE);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setTextAlign(Paint.Align.CENTER);
+        mPaint.setTextSize(72f);
+        mPaint.setAlpha(100);
+        mPaint.setAntiAlias(true);
+        mPaint.setTypeface(Typeface.SANS_SERIF);
 
         initiated = true;
     }
@@ -126,7 +137,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+    public void onChildDraw(Canvas canvas, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         final TodoItemHolder holder = (TodoItemHolder) viewHolder;
 
         // not sure why, but this method get's called for viewholder that are already swiped away
@@ -145,15 +156,26 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         int pTop = mView.getTop() - mView.getPaddingTop();
         int pRight = mView.getRight() - mView.getPaddingRight();
         int pBottom = mView.getBottom() + mView.getPaddingBottom() - 2;
+        int width = pRight - pLeft;
+        int height = pBottom - pTop - 2;
 
         // Only render on X axis movement
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
             if (dX > 0) {
-                backgroundRemove.setBounds(pLeft, pTop, pRight, pBottom);
-                backgroundRemove.draw(c);
+                mBackgroundRemove.setBounds(pLeft, pTop, pRight, pBottom);
+                mBackgroundRemove.draw(canvas);
+
+                String str = mContext.getString(R.string.action_item_remove);
+                canvas.drawText(str, pLeft + 150, pTop + height/2 + 15, mPaint);
+
             } else if (dX < 0) {
-                backgroundComplete.setBounds(pLeft, pTop, pRight, pBottom);
-                backgroundComplete.draw(c);
+                mBackgroundComplete.setBounds(pLeft, pTop, pRight, pBottom);
+                mBackgroundComplete.draw(canvas);
+
+                String str = mContext.getString(R.string.action_item_complete);
+                canvas.drawText(str, pRight - 235, pTop + height/2 + 15, mPaint);
+
             } else {
                 // Don't draw anything, we don't need a background if we aren't sliiiiiding
             }
@@ -162,8 +184,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         // Force the update in the draw
         int position = recyclerView.getChildLayoutPosition(mView);
         TodoItem item = ((RecyclerListAdapter) recyclerView.getAdapter()).getItem(position);
-        item.height = item.height == 0 ? pBottom - pTop - 2 : item.height;
-        item.width = item.width == 0 ?pRight - pLeft : item.width;
+        item.height = item.height == 0 ? height : item.height;
+        item.width = item.width == 0 ? width : item.width;
         item.sX = item.sX == 0 ? mView.getLeft() : item.sX;
         item.sY = item.sY == 0 ? mView.getTop() : item.sY;
 
@@ -173,7 +195,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             viewHolder.itemView.setAlpha(alpha);*/
             viewHolder.itemView.setTranslationX(dX);
         } else {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 

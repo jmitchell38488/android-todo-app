@@ -4,6 +4,8 @@
 
     <item android:color="@color/actionbar_dark" android:state_focused="true" android:state_pressed="false"/>
     <item android:color="@color/white" android:state_pressed="true"/>
+    <item android:color="@color/white" android:state_drag_hovered="true" android:state_pressed="true"/>
+    <item android:color="@color/white" android:state_selected="true" android:state_pressed="true"/>
     <item android:color="@color/grey_333333_100"/>
 
 </selector>
