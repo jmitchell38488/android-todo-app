@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="item_height">67dp</dimen>
     <dimen name="section_div_height">20dp</dimen>
+    <dimen name="ic_clear_margin">16dp</dimen>
 </resources>

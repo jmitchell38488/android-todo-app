@@ -118,7 +118,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Set touch helper
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter, getActivity());
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
 
@@ -146,7 +146,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     @Override
     public void onDataChange() {
-        todoStorage.saveTodos(mAdapter.getItems());
+        //todoStorage.saveTodos(mAdapter.getItems());
     }
 
     @Override

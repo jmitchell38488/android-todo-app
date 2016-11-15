@@ -1,10 +1,17 @@
 package com.github.jmitchell38488.todo.app.ui.helper;
 
+import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
@@ -25,8 +32,24 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter mAdapter;
 
-    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
+    // we want to cache these and not allocate anything repeatedly in the onChildDraw method
+    private Drawable background;
+    private Drawable xMark;
+    private int xMarkMargin;
+    private boolean initiated;
+    private Context mContext;
+
+    private void init() {
+        background = new ColorDrawable(Color.RED);
+        xMark = ContextCompat.getDrawable(mContext, R.drawable.ic_clear_24dp);
+        xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        xMarkMargin = (int) mContext.getResources().getDimension(R.dimen.ic_clear_margin);
+        initiated = true;
+    }
+
+    public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter, Context context) {
         mAdapter = adapter;
+        mContext = context;
     }
 
     @Override

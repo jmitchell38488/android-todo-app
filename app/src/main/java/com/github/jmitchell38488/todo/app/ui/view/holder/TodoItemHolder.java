@@ -32,6 +32,11 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
     public ImageView completeHandle;
     ImageView moveHandle;
 
+    View removePendingView;
+    View itemVisibleView;
+
+    private boolean isPendingRemoval;
+
     public TodoItemHolder(View itemView, Context context) {
         super(itemView);
         mView = itemView;
@@ -44,9 +49,19 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         iconReminder = (TextView) itemView.findViewById(R.id.list_item_notification_reminder);
         completeHandle = (ImageView) itemView.findViewById(R.id.list_item_complete_handle);
         moveHandle = (ImageView) itemView.findViewById(R.id.list_item_move_handle);
+
+        removePendingView = itemView.findViewById(R.id.list_item_pending_remove);
+        itemVisibleView = itemView.findViewById(R.id.list_item_container);
+
+        isPendingRemoval = false;
     }
 
     public void updateView(TodoItem item) {
+        // Make sure that remove pending isn't displaying
+        removePendingView.setVisibility(View.GONE);
+        itemVisibleView.setVisibility(View.VISIBLE);
+        isPendingRemoval = false;
+
         String desc = item.getDescription();
         final boolean hasDesc = !TextUtils.isEmpty(desc);
         final boolean isPinned = item.isPinned();
@@ -86,24 +101,13 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
 
         setItemViewCompleted(item);
+    }
 
-        /*
-        // Set or remove the strike through for completed
-        if (isCompleted) {
-            completeHandle.setBackgroundResource(R.drawable.list_item_category_selected);
-
-            titleView.setPaintFlags(titleView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            titleView.setTextColor(Color.LTGRAY);
-
-            if (hasDesc) {
-                descView.setPaintFlags(descView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                descView.setTextColor(Color.LTGRAY);
-            }
-        }
-
-        if (isCompleted) {
-            completeHandle.setBackgroundResource(R.drawable.list_item_category_selected);
-        }*/
+    public void updateViewPendingRemoval(TodoItem item) {
+        // Make sure that the item content isn't visible
+        removePendingView.setVisibility(View.VISIBLE);
+        itemVisibleView.setVisibility(View.GONE);
+        isPendingRemoval = true;
     }
 
     @Override
@@ -120,9 +124,14 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         moveHandle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if (isPendingRemoval) {
+                    return false;
+                }
+
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                     onStartDragListener.onStartDrag(TodoItemHolder.this);
                 }
+
                 return false;
             }
         });
@@ -162,6 +171,10 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
     }
 
     public boolean canMove(TodoItem source, TodoItem target) {
+        if (isPendingRemoval) {
+            return false;
+        }
+
         // Can move items in only the same set
         if ((source.isPinned() && target.isPinned()) ||
                 (source.isCompleted() && target.isCompleted()) ||
@@ -171,6 +184,10 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
 
         return false;
+    }
+
+    public View getRemovePendingView() {
+        return removePendingView;
     }
 
 }

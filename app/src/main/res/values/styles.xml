@@ -154,8 +154,8 @@
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <!--<item name="android:minHeight">?android:attr/listPreferredItemHeight</item>-->
         <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@color/actionbar_dark</item>
     </style>
 
     <style name="ListThemeListTitleContainer" parent="AppTheme">
@@ -181,6 +181,16 @@
         <item name="android:paddingTop">7.5dp</item>
         <item name="android:paddingBottom">7.5dp</item>
         <item name="android:background">@drawable/list_selector</item>
+    </style>
+
+    <style name="ListItemThemePending" parent="ListItemTheme">
+        <item name="android:background">@color/actionbar_dark</item>
+    </style>
+
+    <style name="ListItemThemePending.Title" parent="AppTheme.ListTextView.Large">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+        <item name="android:paddingRight">15dp</item>
     </style>
 
     <!-- Settings activity theme. -->
