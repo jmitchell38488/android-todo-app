@@ -102,6 +102,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     public void onItemComplete(int position) {
         int nPosition = getFirstCompletedPosition();
         TodoItem item = mItems.get(position);
+
+        if (!item.isCompleted()) {
+            nPosition--;
+        }
+
         item.setCompleted(!item.isCompleted());
 
         if (item.isCompleted()) {
