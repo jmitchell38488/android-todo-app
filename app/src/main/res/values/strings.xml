@@ -1,13 +1,12 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <!-- App strings for titles/activities -->
-    <string name="app_name">Todo</string>
-    <string name="title_activity_main">View All</string>
-    <string name="title_list_main">Tasks</string>
+    <string name="app_name">To Do</string>
+    <string name="title_list_main">My To Do List</string>
 
     <!-- Action titles -->
     <string name="action_settings">Settings</string>
-    <string name="action_create">Add New Todo Item</string>
-    <string name="action_edit">Edit Todo Item</string>
+    <string name="action_create">Add New To Do Item</string>
+    <string name="action_edit">Edit To Do Item</string>
 
     <!-- string formats (non translatable) -->
     <string name="date_format" translatable="false">yyyy-MM-dd kk:mm:ssZ</string>
@@ -22,13 +21,13 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="status_overdue">Overdue</string>
-    <string name="status_todo">Todo</string>
+    <string name="status_todo">To Do</string>
     <string name="status_complete">Completed</string>
 
     <!-- Dialog stuff -->
     <string name="dialog_edit_title_label">Title</string>
     <string name="dialog_edit_description_label">Description</string>
-    <string name="dialog_edit_title_hint">The todo item</string>
+    <string name="dialog_edit_title_hint">The to do item</string>
     <string name="dialog_edit_description_hint">Additional details</string>
     <string name="dialog_edit_disabled">This item is already marked as complete. \nTo edit, you must re-enable it by unchecking it.</string>
     <string name="dialog_edit_reminder_label">Set a reminder</string>
@@ -43,21 +42,21 @@
     <string name="dialog_delete_button_positive">Yes</string>
     <string name="dialog_delete_button_negative">No</string>
 
-    <string name="dialog_edit_pin_label">Make sticky</string>
+    <string name="dialog_edit_pin_label">Flag as important</string>
     <string name="dialog_edit_pin_key">pinned</string>
     <string name="dialog_edit_pin_false"></string>
-    <string name="dialog_edit_pin_true">Always at the top</string>
+    <string name="dialog_edit_pin_true">This is an important task, so set this as a reminder.\nThis item will appear at the top of the list.</string>
     <string name="dialog_edit_pin_default">false</string>
 
     <string name="empty_list_top">Time to relax, kick your feet up\n you\'re all finished!</string>
     <string name="empty_list_bottom">Feel like getting busy?\nAdd a Todo using the button below.</string>
 
-    <string name="empty_title">A title for the Todo is required</string>
+    <string name="empty_title">A title for the to do is required</string>
 
     <string name="icon_flag">\uf024</string>
     <string name="icon_reminder">\uf0f3</string>
 
-    <string name="invalid_list_position">Sorry, I could not update the item for you.\nIf this keeps happening, please reload me</string>
+    <string name="invalid_list_position">Sorry, I could not update the item for you.\nIf this keeps happening,\nplease reload me</string>
 
     <string name="action_item_undo">UNDO</string>
     <string name="action_item_remove">REMOVE</string>
