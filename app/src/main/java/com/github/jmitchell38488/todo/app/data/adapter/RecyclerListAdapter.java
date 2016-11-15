@@ -26,7 +26,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
 
     private TodoStorage mTodoStorage;
     private List<TodoItem> mItems;
-    private List<TodoItem> mPendingRemoval;
+    private List<TodoItem> mPendingRemoveList;
+    private List<TodoItem> mPendingCompleteList;
 
     private Context mContext;
     private OnStartDragListener mDragStartListener;
@@ -35,7 +36,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private View.OnClickListener mCompleteClickListener;
 
     private boolean undoOn;
-    private Handler mHandler = new Handler();
+    private Handler mRunnableHandler = new Handler();
     HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
     private final static Object SEMAPHORE = new Object();
@@ -63,7 +64,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         mCompleteClickListener = completeClickListener;
 
         mItems = mTodoStorage.getTodos();
-        mPendingRemoval = new ArrayList<>();
+        mPendingRemoveList = new ArrayList<>();
+        mPendingCompleteList = new ArrayList<>();
         TodoItemSorter.sort(mItems);
     }
 
@@ -82,30 +84,42 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     public void onBindViewHolder(TodoItemHolder holder, final int position) {
         TodoItem item = mItems.get(position);
 
-        if (mPendingRemoval.contains(item)) {
-            holder.getRemovePendingView().setMinimumHeight(item.height);
+        if (mPendingRemoveList.contains(item) || mPendingCompleteList.contains(item)) {
+            boolean removeItem = mPendingRemoveList.contains(item);
+            View view = removeItem ?
+                    holder.getRemovePendingView() :
+                    holder.getCompletePendingView();
+
+            view.setMinimumHeight(item.height);
 
             final int index = mItems.indexOf(item);
 
-            holder.updateViewPendingRemoval(item);
-            holder.getRemovePendingView().setOnClickListener(new View.OnClickListener() {
+            if (removeItem) {
+                holder.updateViewPendingRemoval(item);
+            } else {
+                holder.updateViewPendingComplete(item);
+            }
+
+            view.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     TodoItem item = mItems.get(index);
-                    Runnable pendingRemovalRunnable = mPendingRunnables.get(item);
-                    mPendingRunnables.remove(item);
+                    Runnable pendingRemovalRunnable = mPendingRunnables.remove(item);
 
                     if (pendingRemovalRunnable != null) {
-                        mHandler.removeCallbacks(pendingRemovalRunnable);
-                        mPendingRemoval.remove(item);
+                        mRunnableHandler.removeCallbacks(pendingRemovalRunnable);
+
+                        if (mPendingRemoveList.contains(item)) {
+                            mPendingRemoveList.remove(item);
+                        } else {
+                            mPendingCompleteList.remove(item);
+                        }
+
                         notifyItemChanged(index);
                     }
                 }
-
             });
-            // user wants to undo the removal, let's cancel the pending task
-
         } else {
             holder.updateView(item);
 
@@ -128,8 +142,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     public void setItemPendingRemoval(int position) {
         final TodoItem item = mItems.get(position);
 
-        if (!mPendingRemoval.contains(item)) {
-            mPendingRemoval.add(item);
+        if (!mPendingRemoveList.contains(item)) {
+            mPendingRemoveList.add(item);
             notifyItemChanged(position);
 
             Runnable pending = new Runnable() {
@@ -139,15 +153,34 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                 }
             };
 
-            mHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
+            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
+            mPendingRunnables.put(item, pending);
+        }
+    }
+
+    public void setItemPendingComplete(int position) {
+        final TodoItem item = mItems.get(position);
+
+        if (!mPendingCompleteList.contains(item)) {
+            mPendingCompleteList.add(item);
+            notifyItemChanged(position);
+
+            Runnable pending = new Runnable() {
+                @Override
+                public void run() {
+                    remove(mItems.indexOf(item));
+                }
+            };
+
+            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
             mPendingRunnables.put(item, pending);
         }
     }
 
     public void remove(int position) {
         final TodoItem item = mItems.get(position);
-        if (mPendingRemoval.contains(item)) {
-            mPendingRemoval.remove(item);
+        if (mPendingRemoveList.contains(item)) {
+            mPendingRemoveList.remove(item);
         }
 
         mItems.remove(position);
@@ -159,21 +192,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         }
     }
 
-    @Override
-    public void onItemDismiss(int position) {
-        setItemPendingRemoval(position);
-        /*mItems.remove(position);
-        notifyItemRemoved(position);
-
-        if (mListChangeListener != null) {
-            // Notify data changes
-            mListChangeListener.onDataChange();
-        }*/
-    }
-
-    public void onItemComplete(int position) {
-        int nPosition = getFirstCompletedPosition();
+    public void complete(int position) {
         TodoItem item = mItems.get(position);
+
+        if (mPendingCompleteList.contains(item)) {
+            mPendingCompleteList.remove(item);
+        }
+
+        int nPosition = getFirstCompletedPosition();
 
         if (!item.isCompleted()) {
             nPosition--;
@@ -185,12 +211,29 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
             item.setPinned(false);
         }
 
-        onItemDismiss(position);
+        remove(position);
         addItem(nPosition, item);
 
         if (mListChangeListener != null) {
             // Notify data changes
             mListChangeListener.onDataChange();
+        }
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        if (undoOn) {
+            setItemPendingRemoval(position);
+        } else {
+            remove(position);
+        }
+    }
+
+    public void onItemComplete(int position) {
+        if (undoOn) {
+            setItemPendingComplete(position);
+        } else {
+            complete(position);
         }
     }
 
@@ -313,6 +356,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     }
 
     public boolean isPendingRemoval(int position) {
+        return mPendingRunnables.containsKey(mItems.get(position));
+    }
+
+    public boolean isPendingComplete(int position) {
         return mPendingRunnables.containsKey(mItems.get(position));
     }
 }

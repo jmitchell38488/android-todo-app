@@ -27,4 +27,7 @@
     <color name="actionbar_light">#59AF2F2F</color>
 
     <color name="listitem_highlight">#FF3F86F6</color>
+
+    <color name="list_item_background_delete">#D2AAAA</color>
+    <color name="list_item_background_complete">#0A8F08</color>
 </resources>

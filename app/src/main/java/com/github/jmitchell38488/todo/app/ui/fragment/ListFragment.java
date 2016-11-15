@@ -18,6 +18,7 @@ import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
+import com.github.jmitchell38488.todo.app.ui.helper.AnimationDecorationHelper;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.helper.SimpleItemTouchHelperCallback;
 
@@ -110,6 +111,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
         // Set adapter
         mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick, onCompleteClick);
+        mAdapter.setUndoOn(true);
 
         // Set view
         mRecyclerView = (RecyclerView) view;
@@ -121,6 +123,9 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter, getActivity());
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        AnimationDecorationHelper decorationHelper = new AnimationDecorationHelper(getActivity());
+        mRecyclerView.addItemDecoration(decorationHelper);
 
         // Scroll to previous position
         if (mPosition != ListView.INVALID_POSITION) {

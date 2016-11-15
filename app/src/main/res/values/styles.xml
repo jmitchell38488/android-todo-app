@@ -155,7 +155,6 @@
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@color/actionbar_dark</item>
     </style>
 
     <style name="ListThemeListTitleContainer" parent="AppTheme">
@@ -183,8 +182,12 @@
         <item name="android:background">@drawable/list_selector</item>
     </style>
 
-    <style name="ListItemThemePending" parent="ListItemTheme">
-        <item name="android:background">@color/actionbar_dark</item>
+    <style name="ListItemThemePendingRemove" parent="ListItemTheme">
+        <item name="android:background">@color/list_item_background_delete</item>
+    </style>
+
+    <style name="ListItemThemePendingComplete" parent="ListItemTheme">
+        <item name="android:background">@color/list_item_background_complete</item>
     </style>
 
     <style name="ListItemThemePending.Title" parent="AppTheme.ListTextView.Large">

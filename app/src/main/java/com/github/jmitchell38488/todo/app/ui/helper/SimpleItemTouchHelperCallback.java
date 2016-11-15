@@ -34,9 +34,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private final ItemTouchHelperAdapter mAdapter;
 
     // we want to cache these and not allocate anything repeatedly in the onChildDraw method
-    private Drawable background;
-    private Drawable xMark;
-    private int xMarkMargin;
+    private Drawable backgroundRemove;
+    private Drawable backgroundComplete;
     private boolean initiated;
     private Context mContext;
 
@@ -48,10 +47,9 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         mAdapter = adapter;
         mContext = context;
 
-        background = new ColorDrawable(mContext.getResources().getColor(R.color.actionbar_dark));
-        xMark = ContextCompat.getDrawable(mContext, R.drawable.ic_clear_24dp);
-        xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        xMarkMargin = (int) mContext.getResources().getDimension(R.dimen.ic_clear_margin);
+        backgroundRemove = new ColorDrawable(mContext.getResources().getColor(R.color.list_item_background_delete));
+        backgroundComplete = new ColorDrawable(mContext.getResources().getColor(R.color.list_item_background_complete));
+
         initiated = true;
     }
 
@@ -70,7 +68,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         TodoItemHolder holder = (TodoItemHolder) viewHolder;
 
         // Do nothing if this view holder is pending removal
-        if (holder.isPendingRemoval()) {
+        if (holder.isPendingRemoval() || holder.isPendingComplete()) {
             return 0;
         }
 
@@ -112,7 +110,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         TodoItemHolder holder = (TodoItemHolder) viewHolder;
 
         // Do nothing if this view holder is pending removal
-        if (holder.isPendingRemoval()) {
+        if (holder.isPendingRemoval() || holder.isPendingComplete()) {
             return;
         }
 
@@ -146,27 +144,35 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         int pLeft = mView.getLeft() + mView.getPaddingLeft();
         int pTop = mView.getTop() - mView.getPaddingTop();
         int pRight = mView.getRight() - mView.getPaddingRight();
-        int pBottom = mView.getBottom() + mView.getPaddingBottom();
+        int pBottom = mView.getBottom() + mView.getPaddingBottom() - 2;
 
-        background.setBounds(pLeft, pTop, pRight, pBottom);
-        background.draw(c);
+        // Only render on X axis movement
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            if (dX > 0) {
+                backgroundRemove.setBounds(pLeft, pTop, pRight, pBottom);
+                backgroundRemove.draw(c);
+            } else if (dX < 0) {
+                backgroundComplete.setBounds(pLeft, pTop, pRight, pBottom);
+                backgroundComplete.draw(c);
+            } else {
+                // Don't draw anything, we don't need a background if we aren't sliiiiiding
+            }
+        }
 
         // Force the update in the draw
         int position = recyclerView.getChildLayoutPosition(mView);
         TodoItem item = ((RecyclerListAdapter) recyclerView.getAdapter()).getItem(position);
-        item.height = item.height == 0 ? pBottom - pTop : item.height;
+        item.height = item.height == 0 ? pBottom - pTop - 2 : item.height;
         item.width = item.width == 0 ?pRight - pLeft : item.width;
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             // Fade out the view as it is swiped out of the parent's bounds
-            final float alpha = ALPHA_FULL - Math.abs(dX) / (float) viewHolder.itemView.getWidth();
-            viewHolder.itemView.setAlpha(alpha);
+            /*final float alpha = ALPHA_FULL - (float) ((Math.abs(dX) / (float) viewHolder.itemView.getWidth()) * .3);
+            viewHolder.itemView.setAlpha(alpha);*/
             viewHolder.itemView.setTranslationX(dX);
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
-
-        //super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 
     @Override
