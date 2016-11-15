@@ -120,8 +120,8 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
 
     public void updateViewPendingComplete(TodoItem item) {
         // Make sure that the item content isn't visible
-        removePendingView.setVisibility(View.GONE);
         completePendingView.setVisibility(View.VISIBLE);
+        removePendingView.setVisibility(View.GONE);
         itemVisibleView.setVisibility(View.GONE);
         isPendingRemoval = false;
         isPendingComplete = true;
@@ -188,7 +188,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
     }
 
     public boolean canMove(TodoItem source, TodoItem target) {
-        if (isPendingRemoval) {
+        if (isPendingRemoval || isPendingComplete) {
             return false;
         }
 

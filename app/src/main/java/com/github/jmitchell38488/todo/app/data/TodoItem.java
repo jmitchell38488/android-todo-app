@@ -18,6 +18,8 @@ public class TodoItem {
 
     public int width;
     public int height;
+    public int sX;
+    public int sY;
 
     public TodoItem() {
         completed = false;

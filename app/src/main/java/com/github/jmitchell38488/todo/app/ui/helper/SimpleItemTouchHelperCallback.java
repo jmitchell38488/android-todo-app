@@ -164,6 +164,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         TodoItem item = ((RecyclerListAdapter) recyclerView.getAdapter()).getItem(position);
         item.height = item.height == 0 ? pBottom - pTop - 2 : item.height;
         item.width = item.width == 0 ?pRight - pLeft : item.width;
+        item.sX = item.sX == 0 ? mView.getLeft() : item.sX;
+        item.sY = item.sY == 0 ? mView.getTop() : item.sY;
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             // Fade out the view as it is swiped out of the parent's bounds

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
@@ -33,7 +34,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private OnStartDragListener mDragStartListener;
     private ListChangeListener mListChangeListener;
     private ListClickListener mListClickListener;
-    private View.OnClickListener mCompleteClickListener;
 
     private boolean undoOn;
     private Handler mRunnableHandler = new Handler();
@@ -54,14 +54,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     public RecyclerListAdapter(Context context, TodoStorage todoStorage,
                                OnStartDragListener dragStartListener,
                                ListChangeListener listChangeListener,
-                               ListClickListener listClickListener,
-                               View.OnClickListener completeClickListener) {
+                               ListClickListener listClickListener) {
         mContext = context;
         mTodoStorage = todoStorage;
         mDragStartListener = dragStartListener;
         mListChangeListener = listChangeListener;
         mListClickListener = listClickListener;
-        mCompleteClickListener = completeClickListener;
 
         mItems = mTodoStorage.getTodos();
         mPendingRemoveList = new ArrayList<>();
@@ -90,7 +88,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                     holder.getRemovePendingView() :
                     holder.getCompletePendingView();
 
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 0, 3);
+
             view.setMinimumHeight(item.height);
+            view.setLayoutParams(lp);
 
             final int index = mItems.indexOf(item);
 
@@ -125,8 +128,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
 
             // Start a drag whenever the handle view it touched
             holder.bindDragEvent(mDragStartListener);
-
-            holder.completeHandle.setOnClickListener(mCompleteClickListener);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
 
@@ -168,7 +169,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
             Runnable pending = new Runnable() {
                 @Override
                 public void run() {
-                    remove(mItems.indexOf(item));
+                    complete(mItems.indexOf(item));
                 }
             };
 
@@ -209,6 +210,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
 
         if (item.isCompleted()) {
             item.setPinned(false);
+        }
+
+        // No completed items yet
+        if (nPosition < 0) {
+            nPosition = mItems.size() - 1;
         }
 
         remove(position);
