@@ -80,7 +80,6 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-        //return new RecyclerView(container.getContext());
         return rootView;
     }
 

@@ -164,8 +164,6 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
                 descView.setPaintFlags(descView.getPaintFlags()& (~Paint.STRIKE_THRU_TEXT_FLAG));
             }
 
-            completeHandle.setBackgroundResource(R.drawable.list_item_category_selector);
-
         } else {
             titleView.setPaintFlags(titleView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             titleView.setTextColor(Color.LTGRAY);
@@ -174,8 +172,6 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
                 descView.setPaintFlags(descView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 descView.setTextColor(Color.LTGRAY);
             }
-
-            completeHandle.setBackgroundResource(R.drawable.list_item_category_selected);
         }
 
         if (item.isPinned() && item.isCompleted()) {

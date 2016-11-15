@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:exitFadeDuration="@integer/config_list_item_anim_time"
-    android:enterFadeDuration="@integer/config_list_item_anim_time">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/item_selector_unselected" android:state_focused="true" android:state_pressed="false"/>
     <item android:drawable="@drawable/item_selector_selected" android:state_pressed="true"/>
