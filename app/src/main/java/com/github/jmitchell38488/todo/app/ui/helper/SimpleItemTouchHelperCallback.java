@@ -57,7 +57,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setTextSize(72f);
-        mPaint.setAlpha(100);
+        mPaint.setAlpha(175);
         mPaint.setAntiAlias(true);
         mPaint.setTypeface(Typeface.SANS_SERIF);
 
@@ -167,14 +167,14 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 mBackgroundRemove.draw(canvas);
 
                 String str = mContext.getString(R.string.action_item_remove);
-                canvas.drawText(str, pLeft + 150, pTop + height/2 + 15, mPaint);
+                canvas.drawText(str, pLeft + 170, pTop + height/2 + 15, mPaint);
 
             } else if (dX < 0) {
                 mBackgroundComplete.setBounds(pLeft, pTop, pRight, pBottom);
                 mBackgroundComplete.draw(canvas);
 
                 String str = mContext.getString(R.string.action_item_complete);
-                canvas.drawText(str, pRight - 235, pTop + height/2 + 15, mPaint);
+                canvas.drawText(str, pRight - 240, pTop + height/2 + 15, mPaint);
 
             } else {
                 // Don't draw anything, we don't need a background if we aren't sliiiiiding
@@ -190,9 +190,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         item.sY = item.sY == 0 ? mView.getTop() : item.sY;
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            // Fade out the view as it is swiped out of the parent's bounds
-            /*final float alpha = ALPHA_FULL - (float) ((Math.abs(dX) / (float) viewHolder.itemView.getWidth()) * .3);
-            viewHolder.itemView.setAlpha(alpha);*/
             viewHolder.itemView.setTranslationX(dX);
         } else {
             super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
