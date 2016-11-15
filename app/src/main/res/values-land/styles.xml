@@ -24,7 +24,7 @@
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:layout_marginTop">@dimen/fab_margin</item>
         <item name="android:layout_marginLeft">@dimen/fab_margin</item>
-        <item name="android:layout_marginRight">50dp</item>
+        <item name="android:layout_marginRight">20dp</item>
         <item name="android:layout_marginBottom">20dp</item>
         <item name="android:tint">@color/white</item>
     </style>
@@ -54,11 +54,6 @@
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:layout_marginTop">50dp</item>
-    </style>
-
-    <style name="ListThemeListFragment" parent="AppTheme">
-        <item name="android:layout_marginTop">56dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
     </style>
 
     <style name="ListThemeDialog.Label" parent="@android:style/TextAppearance">
@@ -94,9 +89,9 @@
     </style>
 
     <style name="AppTheme.ListTextView.Icon.List" parent="@android:style/TextAppearance">
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginBottom">2dp</item>
-        <item name="android:layout_marginLeft">45dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_width">20dp</item>
     </style>
 
 </resources>

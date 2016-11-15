@@ -105,9 +105,6 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        AnimationDecorationHelper decorationHelper = new AnimationDecorationHelper(getActivity());
-        mRecyclerView.addItemDecoration(decorationHelper);
-
         // Scroll to previous position
         if (mPosition != ListView.INVALID_POSITION) {
             mRecyclerView.smoothScrollToPosition(mPosition);
@@ -138,7 +135,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     @Override
     public void onDataChange() {
-        todoStorage.saveTodos(mAdapter.getItems());
+        //todoStorage.saveTodos(mAdapter.getItems());
 
         // Show alternative view
         if (mAdapter.getItemCount() == 0) {

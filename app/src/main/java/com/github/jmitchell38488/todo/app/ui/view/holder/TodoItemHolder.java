@@ -29,7 +29,6 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
     LinearLayout notificationLayout;
     TextView iconPinned;
     TextView iconReminder;
-    public ImageView completeHandle;
     ImageView moveHandle;
 
     View removePendingView;
@@ -49,7 +48,6 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         notificationLayout = (LinearLayout) itemView.findViewById(R.id.list_item_notification_wrapper);
         iconPinned = (TextView) itemView.findViewById(R.id.list_item_notification_pinned);
         iconReminder = (TextView) itemView.findViewById(R.id.list_item_notification_reminder);
-        completeHandle = (ImageView) itemView.findViewById(R.id.list_item_complete_handle);
         moveHandle = (ImageView) itemView.findViewById(R.id.list_item_move_handle);
 
         removePendingView = itemView.findViewById(R.id.list_item_pending_remove);
@@ -68,18 +66,21 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         isPendingRemoval = false;
         isPendingComplete = false;
 
+        iconPinned.setVisibility(View.VISIBLE);
+        iconReminder.setVisibility(View.VISIBLE);
+
         String desc = item.getDescription();
         final boolean hasDesc = !TextUtils.isEmpty(desc);
         final boolean isPinned = item.isPinned();
-        final boolean hasNotifications = isPinned ? true : false;
+        //final boolean hasNotifications = isPinned ? true : false;
         final boolean hasReminder = false;
         
         // Set visibility for various elements
-        if (hasNotifications) {
+        /*if (hasNotifications) {
             notificationLayout.setVisibility(View.VISIBLE);
         } else {
             notificationLayout.setVisibility(View.GONE);
-        }
+        }*/
         
         if (!hasDesc) {
             descView.setVisibility(View.GONE);
@@ -88,7 +89,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
 
         // Set which notifications are visible
-        if (hasNotifications) {
+        //if (hasNotifications) {
             if (!isPinned) {
                 iconPinned.setVisibility(View.GONE);
             }
@@ -96,7 +97,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
             if (!hasReminder) {
                 iconReminder.setVisibility(View.GONE);
             }
-        }
+        //}
         
         // Set title
         titleView.setText(item.getTitle());
@@ -177,9 +178,9 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         if (item.isPinned() && item.isCompleted()) {
             item.setPinned(false);
 
-            if (notificationLayout != null) {
+            /*if (notificationLayout != null) {
                 notificationLayout.setVisibility(View.GONE);
-            }
+            }*/
         }
     }
 
