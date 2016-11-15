@@ -79,7 +79,9 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
                             item.setPinned(false);
                         }
 
-                        replaceAdapterItem(iposition, item);
+                        // When marking as completed, we remove it from the list, then add it again
+                        ListFragment.this.removeItem(iposition);
+                        ListFragment.this.addItem(item);
                     } else {
                         Toast toast = Toast.makeText(ListFragment.this.getActivity(), getString(R.string.invalid_list_position), Toast.LENGTH_LONG);
                         toast.show();
@@ -189,16 +191,45 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         return mAdapter.getItem(position);
     }
 
+    public void saveUpdatedItem(int position, TodoItem item) {
+        TodoItem mItem = mAdapter.getItem(position);
+
+        // Flags haven't changed?
+        if ((!mItem.isCompleted() && !item.isCompleted()) &&
+                (!mItem.isPinned() && !item.isPinned())) {
+            replaceAdapterItem(position, item);
+        }
+
+        // Not so lucky, remove and add it!
+        removeItem(position);
+        addItem(item);
+    }
+
     public void replaceAdapterItem(int position, TodoItem item) {
         mAdapter.replace(position, item);
         mRecyclerView.getAdapter().notifyItemChanged(position);
     }
 
     public void addItem(TodoItem item) {
-        int newPosition = item.isPinned() ? 0 : mAdapter.getFirstUnpinnedPosition();
+        int newPosition = RecyclerView.NO_POSITION;
+
+        if (item.isCompleted()) {
+            newPosition = mAdapter.getFirstCompletedPosition();
+        } else {
+            newPosition = item.isPinned() ? 0 : mAdapter.getFirstUnpinnedPosition();
+        }
+
+        if (newPosition == RecyclerView.NO_POSITION) {
+            newPosition = 0;
+        }
+
         mAdapter.addItem(newPosition, item);
         mRecyclerView.getAdapter().notifyItemInserted(newPosition);
         mRecyclerView.smoothScrollToPosition(newPosition);
+    }
+
+    public void removeItem(int position) {
+        mAdapter.onItemDismiss(position);
     }
 
 }

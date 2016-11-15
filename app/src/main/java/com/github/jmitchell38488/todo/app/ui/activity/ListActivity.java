@@ -121,7 +121,8 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         item.setPinned(pinned);
 
         // Update item in the adapter and view
-        mFragment.replaceAdapterItem(position, item);
+        //mFragment.replaceAdapterItem(position, item);
+        mFragment.saveUpdatedItem(position, item);
     }
 
     @Override

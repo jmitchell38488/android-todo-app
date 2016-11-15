@@ -103,7 +103,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
         return mItems.size();
     }
 
-    /*public void reorderList() {
+    public void reorderList() {
         // Clone the items, Map is <id, i>
         HashMap<Integer, Integer> preSortMap = new HashMap<>();
         for (int i = 0; i < mItems.size(); i++) {
@@ -116,7 +116,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
         if (mListChangeListener != null) {
             mListChangeListener.onOrderChange(mItems, mItemsCopy);
         }
-    }*/
+    }
 
     private List<TodoItem> copyItems() {
         List<TodoItem> list = new ArrayList<>();
