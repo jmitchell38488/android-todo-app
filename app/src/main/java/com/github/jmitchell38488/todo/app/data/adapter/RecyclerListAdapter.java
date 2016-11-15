@@ -87,19 +87,21 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                     item.height == 0 ? 100 : item.height
             );
 
+            final int index = mItems.indexOf(item);
+
             holder.updateViewPendingRemoval(item);
             holder.getRemovePendingView().setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-                    TodoItem item = mItems.get(position);
+                    TodoItem item = mItems.get(index);
                     Runnable pendingRemovalRunnable = mPendingRunnables.get(item);
                     mPendingRunnables.remove(item);
 
                     if (pendingRemovalRunnable != null) {
                         mHandler.removeCallbacks(pendingRemovalRunnable);
                         mPendingRemoval.remove(item);
-                        notifyItemChanged(mItems.indexOf(item));
+                        notifyItemChanged(index);
                     }
                 }
 

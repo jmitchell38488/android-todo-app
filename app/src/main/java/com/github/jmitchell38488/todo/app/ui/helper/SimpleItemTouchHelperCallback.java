@@ -64,6 +64,13 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        TodoItemHolder holder = (TodoItemHolder) viewHolder;
+
+        // Do nothing if this view holder is pending removal
+        if (holder.isPendingRemoval()) {
+            return 0;
+        }
+
         // Set movement flags based on the layout manager
         if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
             final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
@@ -99,6 +106,13 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+        TodoItemHolder holder = (TodoItemHolder) viewHolder;
+
+        // Do nothing if this view holder is pending removal
+        if (holder.isPendingRemoval()) {
+            return;
+        }
+
         switch (direction) {
             case ItemTouchHelper.END:
                 ((RecyclerListAdapter) mAdapter).onItemDismiss(viewHolder.getAdapterPosition());

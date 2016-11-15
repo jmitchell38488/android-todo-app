@@ -190,4 +190,11 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         return removePendingView;
     }
 
+    public boolean isPendingRemoval() {
+        return isPendingRemoval;
+    }
+
+    public void setPendingRemoval(boolean pendingRemoval) {
+        isPendingRemoval = pendingRemoval;
+    }
 }
