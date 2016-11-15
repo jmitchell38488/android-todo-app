@@ -71,17 +71,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
                     int iposition = mRecyclerView.getChildLayoutPosition(rootView);
 
                     if (iposition != RecyclerView.NO_POSITION) {
-                        TodoItem item = mAdapter.getItem(iposition);
-
-                        item.setCompleted(!item.isCompleted());
-
-                        if (item.isCompleted()) {
-                            item.setPinned(false);
-                        }
-
-                        // When marking as completed, we remove it from the list, then add it again
-                        ListFragment.this.removeItem(iposition);
-                        ListFragment.this.addItem(item);
+                        mAdapter.onItemComplete(iposition);
                     } else {
                         Toast toast = Toast.makeText(ListFragment.this.getActivity(), getString(R.string.invalid_list_position), Toast.LENGTH_LONG);
                         toast.show();
