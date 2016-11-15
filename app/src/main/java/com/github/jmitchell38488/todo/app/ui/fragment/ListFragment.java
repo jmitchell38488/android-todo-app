@@ -191,11 +191,14 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     public void replaceAdapterItem(int position, TodoItem item) {
         mAdapter.replace(position, item);
-        mAdapter.reorderList();
+        mRecyclerView.getAdapter().notifyItemChanged(position);
     }
 
     public void addItem(TodoItem item) {
-        mAdapter.addItem(0, item);
+        int newPosition = item.isPinned() ? 0 : mAdapter.getFirstUnpinnedPosition();
+        mAdapter.addItem(newPosition, item);
+        mRecyclerView.getAdapter().notifyItemInserted(newPosition);
+        mRecyclerView.smoothScrollToPosition(newPosition);
     }
 
 }

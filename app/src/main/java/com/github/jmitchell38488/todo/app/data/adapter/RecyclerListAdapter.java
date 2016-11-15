@@ -28,6 +28,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
     private ListClickListener mListClickListener;
     private View.OnClickListener mCompleteClickListener;
 
+    private final static Object SEMAPHORE = new Object();
+
     public interface ListChangeListener {
         public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
         public void onItemChange(int position);
@@ -101,7 +103,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
         return mItems.size();
     }
 
-    public void reorderList() {
+    /*public void reorderList() {
         // Clone the items, Map is <id, i>
         HashMap<Integer, Integer> preSortMap = new HashMap<>();
         for (int i = 0; i < mItems.size(); i++) {
@@ -114,7 +116,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
         if (mListChangeListener != null) {
             mListChangeListener.onOrderChange(mItems, mItemsCopy);
         }
-    }
+    }*/
 
     private List<TodoItem> copyItems() {
         List<TodoItem> list = new ArrayList<>();
@@ -144,8 +146,33 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
 
     public void addItem(int position, TodoItem item) {
         mItems.add(position, item);
+    }
 
-        // reorder the list
-        reorderList();
+    public int getFirstUnpinnedPosition() {
+        int position = RecyclerView.NO_POSITION;
+        synchronized (SEMAPHORE) {
+            for (int i = 0, k = mItems.size(); i < k; i++) {
+                if (!getItem(i).isPinned()) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+
+        return position;
+    }
+
+    public int getFirstCompletedPosition() {
+        int position = RecyclerView.NO_POSITION;
+        synchronized (SEMAPHORE) {
+            for (int i = 0, k = mItems.size(); i < k; i++) {
+                if (getItem(i).isCompleted()) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+
+        return position;
     }
 }
