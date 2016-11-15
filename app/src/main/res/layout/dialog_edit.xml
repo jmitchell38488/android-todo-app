@@ -10,7 +10,7 @@
         android:id="@+id/edit_dialog_logo_main"
         style="@style/ListThemeDialog.Logo"/>
 
-    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_dialog_disabled"
@@ -26,7 +26,7 @@
         android:orientation="vertical"
         android:id="@+id/edit_dialog_container">
 
-        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_edit_title_label"
@@ -41,7 +41,7 @@
             android:hint="@string/dialog_edit_title_hint"
             style="@style/ListThemeDialog.Input"/>
 
-        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_edit_description_label"
@@ -53,7 +53,7 @@
             android:hint="@string/dialog_edit_description_hint"
             style="@style/ListThemeDialog.Input.TextArea"/>
 
-        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_edit_pin_label"

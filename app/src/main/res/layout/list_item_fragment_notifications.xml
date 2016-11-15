@@ -19,10 +19,9 @@
             android:orientation="horizontal">
 
             <FrameLayout
-                android:layout_width="45dp"
-                android:layout_height="45dp"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                style="@style/ListItemCategoryContainer">
                 <ImageView
                     android:id="@+id/list_item_complete_handle"
                     style="@style/ListItemCategory"/>
@@ -35,7 +34,7 @@
                 android:layout_weight="10"
                 android:paddingLeft="15dp">
 
-                <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+                <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
                     android:id="@+id/list_fragment_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

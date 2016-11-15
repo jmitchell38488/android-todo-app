@@ -165,21 +165,10 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
     }
 
     private int getItemPositionFromYOffset() {
-        int[] heights = new int[mRecyclerView.getChildCount()];
-
-        View v = mRecyclerView.getChildAt(0);
-        if (v == null) {
-            return 0;
-        }
-
         LinearLayoutManager lMan = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        int lastVisible = lMan.findLastCompletelyVisibleItemPosition();
 
-        int firstVisible = lMan.findFirstCompletelyVisibleItemPosition();
-        if (firstVisible < mAdapter.getItemCount() && heights[firstVisible + 1] == 0) {
-            heights[firstVisible + 1] += heights[firstVisible] + v.getHeight();
-        }
-
-        return v.getTop() + heights[firstVisible];
+        return lastVisible;
     }
 
     public TodoItem getItemFromAdapter(int position) {

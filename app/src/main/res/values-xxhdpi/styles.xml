@@ -15,11 +15,11 @@
 
     <style name="AppTheme.ListTextView" parent="@android:style/TextAppearance">
         <item name="android:textColor">@drawable/list_selector_text</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">12dp</item>
     </style>
 
     <style name="AppTheme.ListTextView.Icon" parent="@android:style/TextAppearance">
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:layout_gravity">center_vertical|left</item>
         <item name="android:layout_marginRight">6dp</item>
         <item name="android:textColor">@color/actionbar_dark_50</item>
@@ -36,12 +36,12 @@
     </style>
 
     <style name="AppTheme.ListTextView.Large" parent="AppTheme.ListTextView">
-        <item name="android:textSize">16.5dp</item>
+        <item name="android:textSize">13dp</item>
         <item name="android:textColor">@drawable/list_selector_text</item>
     </style>
 
     <style name="AppTheme.ListTextView.Large.Section" parent="AppTheme.ListTextView">
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/grey_757575_100</item>
     </style>
@@ -90,14 +90,14 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">@color/logo</item>
-        <item name="android:textSize">38dp</item>
+        <item name="android:textSize">36dp</item>
     </style>
 
     <style name="ListThemeDialog" parent="AppTheme"></style>
 
     <style name="ListThemeDialog.Logo" parent="ListThemeLogo">
         <item name="android:background">@color/grey_f5f5f5_100</item>
-        <item name="android:textSize">28dp</item>
+        <item name="android:textSize">26dp</item>
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">5dp</item>
@@ -105,7 +105,7 @@
     </style>
 
     <style name="ListThemeDialog.Label" parent="@android:style/TextAppearance">
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textColor">@color/grey_333333_100</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">2dp</item>
@@ -113,7 +113,7 @@
     </style>
 
     <style name="ListThemeDialog.Label.Small" parent="@android:style/TextAppearance">
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/grey_333333_100</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">2dp</item>
@@ -121,7 +121,7 @@
     </style>
 
     <style name="ListThemeDialog.Switch" parent="@android:style/TextAppearance">
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">13dp</item>
         <item name="android:textColor">@color/grey_333333_100</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">2dp</item>
@@ -139,7 +139,7 @@
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginLeft">12dp</item>
         <item name="android:layout_marginRight">12dp</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">13dp</item>
         <item name="android:textColor">@color/grey_555555_100</item>
     </style>
 
@@ -196,11 +196,6 @@
         <item name="android:layout_marginRight">50dp</item>
         <item name="android:layout_marginBottom">40dp</item>
         <item name="android:tint">@color/white</item>
-    </style>
-
-    <style name="ListItemCategoryContainer">
-        <item name="android:layout_width">45dp</item>
-        <item name="android:layout_height">45dp</item>
     </style>
 
 </resources>
