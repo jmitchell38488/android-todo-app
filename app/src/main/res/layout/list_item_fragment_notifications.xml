@@ -11,15 +11,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/list_item_pending_remove"
         style="@style/ListItemThemePending">
 
         <com.github.jmitchell38488.todo.app.ui.view.RobotoMediumTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UNDO"
-            style="@style/AppTheme.ListTextView.Large" />
+            style="@style/ListItemThemePending.Title" />
 
     </LinearLayout>
 

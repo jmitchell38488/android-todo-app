@@ -16,6 +16,9 @@ public class TodoItem {
 
     @Expose boolean pinned;
 
+    public int width;
+    public int height;
+
     public TodoItem() {
         completed = false;
         pinned = false;
