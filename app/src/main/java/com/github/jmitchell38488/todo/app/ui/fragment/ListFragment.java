@@ -40,9 +40,10 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
             new RecyclerListAdapter.ListClickListener() {
 
                 @Override
-                public void onItemClick(View view, int position) {
-                    int iposition = mRecyclerView.getChildLayoutPosition(view);
-                    TodoItem item = mAdapter.getItem(iposition);
+                public void onItemClick(View view) {
+                    int position = mRecyclerView.getChildLayoutPosition(view);
+                    TodoItem item = mAdapter.getItem(position);
+
                     Bundle arguments = new Bundle();
                     arguments.putCharSequence("title", item.getTitle());
                     arguments.putCharSequence("description", item.getDescription());
@@ -179,8 +180,8 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         TodoItem mItem = mAdapter.getItem(position);
 
         // Flags haven't changed?
-        if ((!mItem.isCompleted() && !item.isCompleted()) &&
-                (!mItem.isPinned() && !item.isPinned())) {
+        if (mItem.isCompleted() == item.isCompleted() &&
+                mItem.isPinned() == item.isPinned()) {
             replaceAdapterItem(position, item);
         }
 

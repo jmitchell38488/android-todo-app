@@ -39,7 +39,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     }
 
     public interface ListClickListener {
-        public void onItemClick(View view, int position);
+        public void onItemClick(View view);
     }
 
     public RecyclerListAdapter(Context context, TodoStorage todoStorage,
@@ -81,8 +81,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         holder.mView.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                mListClickListener.onItemClick(v, position);
+            public void onClick(View view) {
+                mListClickListener.onItemClick(view);
             }
 
         });
@@ -179,16 +179,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     }
 
     public void replace(int position, TodoItem item) {
-        if (mItems.size() > position) {
-            mItems.remove(position);
-            mItems.add(position, item);
-            notifyItemChanged(position);
+        if (mItems.size() < position) {
+            return;
+        }
 
-            if (mListChangeListener != null) {
-                // Notify data changes
-                mListChangeListener.onItemChange(position);
-                mListChangeListener.onDataChange();
-            }
+        mItems.remove(position);
+        mItems.add(position, item);
+        notifyItemChanged(position);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onItemChange(position);
+            mListChangeListener.onDataChange();
         }
     }
 
