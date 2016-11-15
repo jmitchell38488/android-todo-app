@@ -144,6 +144,11 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
     }
 
     @Override
+    public void onDataChange() {
+        todoStorage.saveTodos(mAdapter.getItems());
+    }
+
+    @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
     }
@@ -197,7 +202,6 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     public void replaceAdapterItem(int position, TodoItem item) {
         mAdapter.replace(position, item);
-        mRecyclerView.getAdapter().notifyItemChanged(position);
     }
 
     public void addItem(TodoItem item) {
@@ -214,7 +218,6 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         }
 
         mAdapter.addItem(newPosition, item);
-        mRecyclerView.getAdapter().notifyItemInserted(newPosition);
         mRecyclerView.smoothScrollToPosition(newPosition);
     }
 

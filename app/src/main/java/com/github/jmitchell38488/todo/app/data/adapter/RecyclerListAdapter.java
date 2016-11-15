@@ -19,7 +19,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> implements ItemTouchHelperAdapter {
+public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
+        implements ItemTouchHelperAdapter {
 
     private TodoStorage mTodoStorage;
     private List<TodoItem> mItems;
@@ -34,6 +35,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
     public interface ListChangeListener {
         public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
         public void onItemChange(int position);
+        public void onDataChange();
     }
 
     public interface ListClickListener {
@@ -90,6 +92,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
     public void onItemDismiss(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
     }
 
     public void onItemComplete(int position) {
@@ -103,13 +110,23 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
 
         onItemDismiss(position);
         addItem(nPosition, item);
-        notifyItemInserted(nPosition);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
     }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(mItems, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
+
         return true;
     }
 
@@ -129,7 +146,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
         TodoItemSorter.sort(mItemsCopy);
 
         if (mListChangeListener != null) {
+            // Notify data changes
             mListChangeListener.onOrderChange(mItems, mItemsCopy);
+            mListChangeListener.onDataChange();
         }
     }
 
@@ -150,17 +169,32 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
         return null;
     }
 
+    public List<TodoItem> getItems() {
+        return mItems;
+    }
+
     public void replace(int position, TodoItem item) {
         if (mItems.size() > position) {
             mItems.remove(position);
             mItems.add(position, item);
+            notifyItemChanged(position);
 
-            mListChangeListener.onItemChange(position);
+            if (mListChangeListener != null) {
+                // Notify data changes
+                mListChangeListener.onItemChange(position);
+                mListChangeListener.onDataChange();
+            }
         }
     }
 
     public void addItem(int position, TodoItem item) {
         mItems.add(position, item);
+        notifyItemInserted(position);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
     }
 
     public int getFirstUnpinnedPosition() {
