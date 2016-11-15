@@ -83,9 +83,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         TodoItem item = mItems.get(position);
 
         if (mPendingRemoval.contains(item)) {
-            holder.getRemovePendingView().setMinimumHeight(
-                    item.height == 0 ? 100 : item.height
-            );
+            holder.getRemovePendingView().setMinimumHeight(item.height);
 
             final int index = mItems.indexOf(item);
 
@@ -124,11 +122,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                 }
 
             });
-
-            // The view should be inflated and laid out
-            holder.mView.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            mItems.get(position).width = holder.mView.getMeasuredWidth();
-            mItems.get(position).height = holder.mView.getMeasuredHeight();
         }
     }
 

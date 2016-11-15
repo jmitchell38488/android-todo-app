@@ -215,4 +215,8 @@
         <item name="android:layout_height">45dp</item>
     </style>
 
+    <style name="TodoPinkTheme" parent="android:Theme.Material">
+
+    </style>
+
 </resources>
