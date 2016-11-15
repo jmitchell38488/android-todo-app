@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.helper.ItemTouchHelperAdapter;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
@@ -89,6 +90,20 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder> im
     public void onItemDismiss(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void onItemComplete(int position) {
+        int nPosition = getFirstCompletedPosition();
+        TodoItem item = mItems.get(position);
+        item.setCompleted(!item.isCompleted());
+
+        if (item.isCompleted()) {
+            item.setPinned(false);
+        }
+
+        onItemDismiss(position);
+        addItem(nPosition, item);
+        notifyItemInserted(nPosition);
     }
 
     @Override
