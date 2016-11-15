@@ -49,11 +49,14 @@
     <string name="dialog_edit_pin_true">Always at the top</string>
     <string name="dialog_edit_pin_default">false</string>
 
-    <string name="empty_list">You don\'t have any Todo\'s.\nAdd a Todo using the button below.</string>
+    <string name="empty_list_top">Time to relax, kick your feet up\n you\'re all finished!</string>
+    <string name="empty_list_bottom">Feel like getting busy?\nAdd a Todo using the button below.</string>
+
     <string name="empty_title">A title for the Todo is required</string>
 
     <string name="icon_flag">\uf024</string>
     <string name="icon_reminder">\uf0f3</string>
 
     <string name="invalid_list_position">Sorry, I could not update the item for you.\nIf this keeps happening, please reload me</string>
+    <string name="aciton_item_undo">UNDO</string>
 </resources>

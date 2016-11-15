@@ -31,6 +31,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
     private ItemTouchHelper mItemTouchHelper;
     private RecyclerListAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private View mEmptyListView;
 
     @Inject TodoStorage todoStorage;
 
@@ -78,9 +79,9 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /*View drawer = inflater.inflate(R.layout.fragment_list, container, false);
-        mRecyclerView = (RecyclerView) drawer.findViewById(R.id.list_container);*/
-        return new RecyclerView(container.getContext());
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        //return new RecyclerView(container.getContext());
+        return rootView;
     }
 
     @Override
@@ -92,8 +93,10 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick);
         mAdapter.setUndoOn(true);
 
+        mEmptyListView = view.findViewById(R.id.empty_list);
+
         // Set view
-        mRecyclerView = (RecyclerView) view;
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.list_container);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -109,6 +112,12 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         // Scroll to previous position
         if (mPosition != ListView.INVALID_POSITION) {
             mRecyclerView.smoothScrollToPosition(mPosition);
+        }
+
+        if (mAdapter.getItemCount() == 0) {
+            mEmptyListView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyListView.setVisibility(View.GONE);
         }
     }
 
@@ -130,7 +139,16 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
     @Override
     public void onDataChange() {
-        //todoStorage.saveTodos(mAdapter.getItems());
+        todoStorage.saveTodos(mAdapter.getItems());
+
+        // Show alternative view
+        if (mAdapter.getItemCount() == 0) {
+            mEmptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else if (mAdapter.getItemCount() > 0 && mRecyclerView.getVisibility() == View.GONE) {
+            mEmptyListView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

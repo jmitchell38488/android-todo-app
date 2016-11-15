@@ -92,7 +92,6 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     }
 
     private void saveNewTodoItem(DialogFragment dialog) {
-        ArrayList<TodoItem> list = (ArrayList<TodoItem>) todoStorage.getTodos();
         String title = ((EditTodoItemDialog) dialog).titleView.getText().toString();
         String description = ((EditTodoItemDialog) dialog).descriptionView.getText().toString();
         boolean pinned = ((EditTodoItemDialog) dialog).pinned;

@@ -7,25 +7,46 @@
     android:id="@+id/list_fragment"
     style="@style/ListThemeListFragment">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/empty_list">
+
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="75dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/background_relax"
+            android:alpha="0.125"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="175dp"
+            android:gravity="center_horizontal|center"
+            android:layout_gravity="center_horizontal|center"
+            android:textColor="@color/grey_333333_50"
+            android:text="@string/empty_list_top"
+            android:textSize="32dp"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:gravity="center_horizontal|center"
+            android:layout_gravity="center_horizontal|center"
+            android:textColor="@color/grey_333333_50"
+            android:text="@string/empty_list_bottom"
+            android:textSize="32dp"/>
+    </FrameLayout>
+
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/actionbar_dark"
         style="@style/ListThemeList"/>
-
-    <TextView
-        android:id="@+id/empty_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/empty_list"
-        android:gravity="center_horizontal"
-        android:textColor="@color/grey_757575_100"
-        android:textSize="18dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"/>
 
 </LinearLayout>
