@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.data.api;
+package com.github.jmitchell38488.todo.app.data;
 
 public enum Sort {
 
