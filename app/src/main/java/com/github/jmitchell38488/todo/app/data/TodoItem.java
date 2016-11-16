@@ -16,9 +16,17 @@ public class TodoItem implements Cloneable {
 
     @Expose boolean pinned;
 
+    // We don't want to keep any of these public properties
+    @Expose(serialize = false, deserialize = false)
     public int width;
+
+    @Expose(serialize = false, deserialize = false)
     public int height;
+
+    @Expose(serialize = false, deserialize = false)
     public int sX;
+
+    @Expose(serialize = false, deserialize = false)
     public int sY;
 
     public TodoItem() {
