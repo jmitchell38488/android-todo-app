@@ -1,6 +1,7 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.helper.SimpleItemTouchHelperCallback;
@@ -55,15 +57,15 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
 
                     mPosition = position;
 
-                    ((ListActivity) getActivity()).showEditDialog(arguments);
+                    Intent intent = new Intent(ListFragment.this.getActivity(), EditItemActivity.class);
+                    intent.putExtras(arguments);
+                    startActivity(intent);
+                    //return;
+
+                    //((ListActivity) getActivity()).showEditDialog(arguments);
                 }
 
             };
-
-    public ListFragment() {
-        super();
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
