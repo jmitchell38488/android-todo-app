@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
-import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchHelperViewHolder;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 

@@ -1,16 +1,16 @@
-package com.github.jmitchell38488.todo.app.data;
+package com.github.jmitchell38488.todo.app.data.model;
 
 import com.google.gson.annotations.Expose;
 
 public class TodoItem implements Cloneable {
 
-    @Expose int id;
+    @Expose long id;
 
     @Expose String title;
 
     @Expose String description;
 
-    @Expose int order;
+    @Expose long order;
 
     @Expose boolean completed;
 
@@ -34,7 +34,7 @@ public class TodoItem implements Cloneable {
         pinned = false;
     }
 
-    public TodoItem(int id, String title, String description, int order, boolean completed, boolean pinned) {
+    public TodoItem(long id, String title, String description, long order, boolean completed, boolean pinned) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -43,52 +43,58 @@ public class TodoItem implements Cloneable {
         this.pinned = pinned;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public TodoItem setId(long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public TodoItem setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public TodoItem setDescription(String description) {
         this.description = description;
+        return this;
     }
 
-    public int getOrder() {
+    public long getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public TodoItem setOrder(long order) {
         this.order = order;
+        return this;
     }
 
     public boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public TodoItem setCompleted(boolean completed) {
         this.completed = completed;
+        return this;
     }
 
     public boolean isPinned() {
         return pinned;
     }
 
-    public void setPinned(boolean pinned) {
+    public TodoItem setPinned(boolean pinned) {
         this.pinned = pinned;
+        return this;
     }
 
     @Override

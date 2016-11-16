@@ -7,4 +7,6 @@
     <dimen name="section_div_height">20dp</dimen>
     <dimen name="ic_clear_margin">16dp</dimen>
     <dimen name="list_divider">2.5dp</dimen>
+
+    <dimen name="item_load_more_size">48dp</dimen>
 </resources>

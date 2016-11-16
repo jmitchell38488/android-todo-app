@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
-import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;

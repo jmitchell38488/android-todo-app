@@ -3,13 +3,12 @@ package com.github.jmitchell38488.todo.app.data;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;

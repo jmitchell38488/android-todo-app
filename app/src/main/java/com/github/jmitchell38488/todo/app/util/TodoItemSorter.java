@@ -1,6 +1,6 @@
 package com.github.jmitchell38488.todo.app.util;
 
-import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 
 import java.util.Collections;
 import java.util.Comparator;

@@ -13,7 +13,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.github.jmitchell38488.todo.app.R;
-import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.ui.adapter.ItemTouchHelperAdapter;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;

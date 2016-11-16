@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.github.jmitchell38488.todo.app.R;
-import com.github.jmitchell38488.todo.app.data.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.util.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
@@ -263,7 +263,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
 
     public void reorderList() {
         // Clone the items, Map is <id, i>
-        HashMap<Integer, Integer> preSortMap = new HashMap<>();
+        HashMap<Long, Integer> preSortMap = new HashMap<>();
         for (int i = 0; i < mItems.size(); i++) {
             preSortMap.put(mItems.get(i).getId(), i);
         }
