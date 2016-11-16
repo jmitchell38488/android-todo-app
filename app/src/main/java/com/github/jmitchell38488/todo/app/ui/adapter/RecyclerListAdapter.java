@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.data.adapter;
+package com.github.jmitchell38488.todo.app.ui.adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,13 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
-import com.github.jmitchell38488.todo.app.ui.helper.ItemTouchHelperAdapter;
-import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
+import com.github.jmitchell38488.todo.app.util.TodoItemSorter;
+import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 import java.util.ArrayList;

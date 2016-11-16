@@ -15,13 +15,12 @@ import android.widget.ListView;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
-import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
+import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
-import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
-import com.github.jmitchell38488.todo.app.ui.helper.OnStartDragListener;
-import com.github.jmitchell38488.todo.app.ui.helper.SimpleItemTouchHelperCallback;
-import com.github.jmitchell38488.todo.app.ui.helper.VerticalSpaceItemDecoration;
+import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
+import com.github.jmitchell38488.todo.app.ui.listener.SimpleItemTouchHelperCallback;
+import com.github.jmitchell38488.todo.app.ui.decoration.VerticalSpaceItemDecoration;
 
 import java.util.List;
 

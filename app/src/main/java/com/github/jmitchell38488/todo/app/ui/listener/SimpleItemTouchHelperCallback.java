@@ -1,7 +1,6 @@
-package com.github.jmitchell38488.todo.app.ui.helper;
+package com.github.jmitchell38488.todo.app.ui.listener;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,7 +14,8 @@ import android.view.View;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoItem;
-import com.github.jmitchell38488.todo.app.data.adapter.RecyclerListAdapter;
+import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
+import com.github.jmitchell38488.todo.app.ui.adapter.ItemTouchHelperAdapter;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 /**

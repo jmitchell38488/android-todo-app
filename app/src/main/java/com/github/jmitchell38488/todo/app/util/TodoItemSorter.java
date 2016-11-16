@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.data.adapter;
+package com.github.jmitchell38488.todo.app.util;
 
 import com.github.jmitchell38488.todo.app.data.TodoItem;
 

@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.ui.helper;
+package com.github.jmitchell38488.todo.app.ui.decoration;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
