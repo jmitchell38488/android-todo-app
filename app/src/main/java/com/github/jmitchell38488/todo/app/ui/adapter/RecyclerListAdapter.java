@@ -2,6 +2,8 @@ package com.github.jmitchell38488.todo.app.ui.adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,40 +32,31 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
 
     // Listeners
     private OnStartDragListener mDragStartListener;
-    private ListChangeListener mListChangeListener;
-    private ListClickListener mListClickListener;
+    private ListChangeListener mListChangeListener = ListChangeListener.Placeholder;
+    private ListClickListener mListClickListener = ListClickListener.Placeholder;
 
     private boolean undoOn;
     private Handler mRunnableHandler = new Handler();
     HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
-    public interface ListChangeListener {
-        public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
-        public void onItemChange(int position);
-        public void onDataChange();
-    }
-
-    public interface ListClickListener {
-        public void onItemClick(View view);
-    }
-
-    public RecyclerListAdapter(Context context, List<TodoItem> items,
-                               OnStartDragListener dragStartListener,
-                               ListChangeListener listChangeListener,
-                               ListClickListener listClickListener) {
-        super(context, items);
-
-        mDragStartListener = dragStartListener;
-        mListChangeListener = listChangeListener;
-        mListClickListener = listClickListener;
-
+    public RecyclerListAdapter(Fragment fragment, List<TodoItem> items) {
+        super(fragment.getActivity(), items);
+        mDragStartListener = null;
         mPendingRemoveList = new ArrayList<>();
         mPendingCompleteList = new ArrayList<>();
-        TodoItemSorter.sort(mItems);
+        setHasStableIds(true);
     }
 
-    public void setListData(List<TodoItem> listData) {
-        mItems = listData;
+    public void setStartDragListener(OnStartDragListener listener) {
+        mDragStartListener = listener;
+    }
+
+    public void setListChangeListener(ListChangeListener listener) {
+        mListChangeListener = listener;
+    }
+
+    public void setListClickListener(ListClickListener listener) {
+        mListClickListener = listener;
     }
 
     @Override
@@ -257,6 +250,11 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
         return mItems.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return (!isLoadMore(position)) ? mItems.get(position).getId() : -1;
+    }
+
     public TodoItem getItem(int position) {
         if (mItems.size() > position) {
             return mItems.get(position);
@@ -337,5 +335,52 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
 
     public boolean isPendingComplete(int position) {
         return mPendingRunnables.containsKey(mItems.get(position));
+    }
+
+    public interface OnItemTouchedListener {
+
+        void onItemClicked(TodoItem item, View view, int position);
+
+        OnItemTouchedListener Placeholder = new OnItemTouchedListener() {
+            @Override
+            public void onItemClicked(TodoItem item, View view, int position) {
+                // Empty default callback holder
+            }
+        };
+
+    }
+
+    public interface ListChangeListener {
+        void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
+        void onItemChange(int position);
+        void onDataChange();
+
+        ListChangeListener Placeholder = new ListChangeListener() {
+            @Override
+            public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
+                // Empty default callback holder
+            }
+
+            @Override
+            public void onItemChange(int position) {
+                // Empty default callback holder
+            }
+
+            @Override
+            public void onDataChange() {
+                // Empty default callback holder
+            }
+        };
+    }
+
+    public interface ListClickListener {
+        void onItemClick(View view);
+
+        ListClickListener Placeholder = new ListClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                // Empty default callback holder
+            }
+        };
     }
 }

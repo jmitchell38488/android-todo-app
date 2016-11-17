@@ -46,11 +46,11 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
 
         if (savedInstanceState == null) {
             mFragment = new ListFragment();
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.activity_list_container, mFragment)
                     .commit();
         } else {
-            mFragment = (ListFragment) getFragmentManager().getFragment(savedInstanceState, "mFragment");
+            mFragment = (ListFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
         }
 
         ButterKnife.bind(this);
@@ -146,7 +146,7 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        getFragmentManager().putFragment(outState, "mFragment", mFragment);
+        getSupportFragmentManager().putFragment(outState, "mFragment", mFragment);
     }
 
 }

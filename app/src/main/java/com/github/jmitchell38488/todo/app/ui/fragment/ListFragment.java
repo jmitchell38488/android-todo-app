@@ -1,9 +1,9 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ListFragment extends Fragment implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
+public class ListFragment extends BaseFragment implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
 
     private ItemTouchHelper mItemTouchHelper;
     private RecyclerListAdapter mAdapter;
@@ -95,8 +95,12 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         int listDividerHeight = (int) getResources().getDimension(R.dimen.list_divider);
 
         // Set adapter
-        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage.getTodos(), this, this, onClick);
+        //mAdapter = new RecyclerListAdapter(getActivity(), todoStorage.getTodos(), this, this, onClick);
+        mAdapter = new RecyclerListAdapter(this, todoStorage.getTodos());
         mAdapter.setUndoOn(true);
+        mAdapter.setStartDragListener(this);
+        mAdapter.setListChangeListener(this);
+        mAdapter.setListClickListener(onClick);
 
         mEmptyListView = view.findViewById(R.id.empty_list);
 
@@ -127,7 +131,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
     @Override
     public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
         // Set the new sorted list
-        ((RecyclerListAdapter) mRecyclerView.getAdapter()).setListData(newList);
+        ((RecyclerListAdapter) mRecyclerView.getAdapter()).set(newList);
 
         // Notify data changed, invalidate and reset the layout manager
         mRecyclerView.getAdapter().notifyDataSetChanged();
