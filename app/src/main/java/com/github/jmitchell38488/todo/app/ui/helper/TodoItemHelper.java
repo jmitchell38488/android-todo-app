@@ -29,39 +29,27 @@ public class TodoItemHelper {
         return mObservableSubjectRemove.asObservable();
     }
 
-    public void setItemComplete(TodoItem item, boolean complete) {
-        //item.setCompleted(complete);
-
-        if (item.isCompleted()) {
-
-        } else {
-
-        }
-
-        mObservableSubjectComplete.onNext(new CompletedEvent(item.getId(), complete));
+    public void setItemComplete(long id) {
+        mObservableSubjectComplete.onNext(new CompletedEvent(id));
     }
 
-    public void setItemRemoved(TodoItem item, boolean removed) {
-
+    public void setItemRemoved(long id) {
+        mObservableSubjectRemove.onNext(new RemovedEvent(id));
     }
 
     public static class CompletedEvent {
         public long itemId;
-        public boolean completed;
 
-        private CompletedEvent(long itemId, boolean completed) {
+        private CompletedEvent(long itemId) {
             this.itemId = itemId;
-            this.completed = completed;
         }
     }
 
     public static class RemovedEvent {
         public long itemId;
-        public boolean removed;
 
-        private RemovedEvent(long itemId, boolean removed) {
+        private RemovedEvent(long itemId) {
             this.itemId = itemId;
-            this.removed = removed;
         }
     }
 

@@ -123,12 +123,22 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
         }
     }
 
-    public void remove(int position) {
-        /*final TodoItem item = mItems.get(position);
-        if (mPendingRemoveList.contains(item)) {
-            mPendingRemoveList.remove(item);
-        }*/
+    public void remove(TodoItem item) {
+        if (!mItems.contains(item)) {
+            return;
+        }
 
+        int position = mItems.indexOf(item);
+        mItems.remove(item);
+        notifyItemRemoved(position);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
+    }
+
+    public void remove(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
 

@@ -23,15 +23,38 @@ public class SortedListFragment extends ListFragment {
                     int count = mAdapter.getItemCount();
                     for (int position = 0; position < count; position++) {
                         if (mAdapter.getItemId(position) == event.itemId) {
-                            TodoItem item = mAdapter.getItem(position);
-                            if (item.isCompleted()) {
-                                Log.d(LOG_TAG, String.format("%s added to the complete list!", item.getTitle()));
-                            } else {
-                                Log.d(LOG_TAG, String.format("%s removed from the complete list!", item.getTitle()));
-                            }
+                            doCompleteAction(position);
                         }
                     }
         }));
+    }
+
+    protected void doCompleteAction(int position) {
+        TodoItem item = mAdapter.getItem(position);
+
+        if (mPendingCompleteList.contains(item)) {
+            mPendingCompleteList.remove(item);
+        }
+
+        int nPosition = getFirstCompletedPosition();
+
+        if (!item.isCompleted()) {
+            nPosition--;
+        }
+
+        item.setCompleted(!item.isCompleted());
+
+        if (item.isCompleted()) {
+            item.setPinned(false);
+        }
+
+        // No completed items yet
+        if (nPosition < 0) {
+            nPosition = mAdapter.getItemCount() - 1;
+        }
+
+        mAdapter.remove(position);
+        mAdapter.addItem(nPosition, item);
     }
 
 }

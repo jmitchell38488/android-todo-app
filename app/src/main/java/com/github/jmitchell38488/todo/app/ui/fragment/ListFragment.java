@@ -110,8 +110,7 @@ public abstract class ListFragment extends BaseFragment
                 mPendingCompleteList.add(item);
 
                 Runnable pending = () -> {
-                    mHelper.setItemComplete(item, true);
-                    mPendingCompleteList.remove(item);
+                    mHelper.setItemComplete(item.getId());
                 };
 
                 mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
@@ -158,7 +157,8 @@ public abstract class ListFragment extends BaseFragment
             if (mUndoOn) {
                 mItemStateChangeListener.onItemDismiss(position);
             } else {
-                mAdapter.remove(position);
+                TodoItem item = mAdapter.getItem(position);
+                mHelper.setItemRemoved(item.getId());
             }
         }
 
@@ -168,30 +168,7 @@ public abstract class ListFragment extends BaseFragment
                 mItemStateChangeListener.onItemComplete(position);
             } else {
                 TodoItem item = mAdapter.getItem(position);
-
-                if (mPendingCompleteList.contains(item)) {
-                    mPendingCompleteList.remove(item);
-                }
-
-                int nPosition = getFirstCompletedPosition();
-
-                if (!item.isCompleted()) {
-                    nPosition--;
-                }
-
-                item.setCompleted(!item.isCompleted());
-
-                if (item.isCompleted()) {
-                    item.setPinned(false);
-                }
-
-                // No completed items yet
-                if (nPosition < 0) {
-                    nPosition = mAdapter.getItemCount() - 1;
-                }
-
-                mAdapter.remove(position);
-                mAdapter.addItem(nPosition, item);
+                mHelper.setItemComplete(item.getId());
             }
             Log.d(LOG_TAG, "onItemSwipeLeft(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
         }
