@@ -95,7 +95,7 @@ public class ListFragment extends Fragment implements OnStartDragListener, Recyc
         int listDividerHeight = (int) getResources().getDimension(R.dimen.list_divider);
 
         // Set adapter
-        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage, this, this, onClick);
+        mAdapter = new RecyclerListAdapter(getActivity(), todoStorage.getTodos(), this, this, onClick);
         mAdapter.setUndoOn(true);
 
         mEmptyListView = view.findViewById(R.id.empty_list);

@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchListener;
 import com.github.jmitchell38488.todo.app.util.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
@@ -21,17 +20,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
-        implements ItemTouchListener {
+public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> implements ItemTouchListener {
 
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
 
-    private TodoStorage mTodoStorage;
-    private List<TodoItem> mItems;
+    // Pending list
     private List<TodoItem> mPendingRemoveList;
     private List<TodoItem> mPendingCompleteList;
 
-    private Context mContext;
+    // Listeners
     private OnStartDragListener mDragStartListener;
     private ListChangeListener mListChangeListener;
     private ListClickListener mListClickListener;
@@ -39,8 +36,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     private boolean undoOn;
     private Handler mRunnableHandler = new Handler();
     HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
-
-    private final static Object SEMAPHORE = new Object();
 
     public interface ListChangeListener {
         public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
@@ -52,17 +47,16 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
         public void onItemClick(View view);
     }
 
-    public RecyclerListAdapter(Context context, TodoStorage todoStorage,
+    public RecyclerListAdapter(Context context, List<TodoItem> items,
                                OnStartDragListener dragStartListener,
                                ListChangeListener listChangeListener,
                                ListClickListener listClickListener) {
-        mContext = context;
-        mTodoStorage = todoStorage;
+        super(context, items);
+
         mDragStartListener = dragStartListener;
         mListChangeListener = listChangeListener;
         mListClickListener = listClickListener;
 
-        mItems = mTodoStorage.getTodos();
         mPendingRemoveList = new ArrayList<>();
         mPendingCompleteList = new ArrayList<>();
         TodoItemSorter.sort(mItems);
@@ -73,21 +67,22 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     }
 
     @Override
-    public TodoItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    protected TodoItemHolder onCreateItemHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_fragment_notifications, parent, false);
         TodoItemHolder holder = new TodoItemHolder(view, mContext);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(TodoItemHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        TodoItemHolder itemHolder = (TodoItemHolder) holder; 
         TodoItem item = mItems.get(position);
 
         if (mPendingRemoveList.contains(item) || mPendingCompleteList.contains(item)) {
             boolean removeItem = mPendingRemoveList.contains(item);
             View view = removeItem ?
-                    holder.getRemovePendingView() :
-                    holder.getCompletePendingView();
+                    itemHolder.getRemovePendingView() :
+                    itemHolder.getCompletePendingView();
 
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -99,9 +94,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
             final int index = mItems.indexOf(item);
 
             if (removeItem) {
-                holder.updateViewPendingRemoval(item);
+                itemHolder.updateViewPendingRemoval(item);
             } else {
-                holder.updateViewPendingComplete(item);
+                itemHolder.updateViewPendingComplete(item);
             }
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -125,12 +120,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
                 }
             });
         } else {
-            holder.updateView(item);
+            itemHolder.updateView(item);
 
             // Start a drag whenever the handle view it touched
-            holder.bindDragEvent(mDragStartListener);
+            itemHolder.bindDragEvent(mDragStartListener);
 
-            holder.mView.setOnClickListener(new View.OnClickListener() {
+            itemHolder.mView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
@@ -301,7 +296,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     }
 
     public int getFirstUnpinnedPosition() {
-        int position = RecyclerView.NO_POSITION;
+        int position = INVALID_POSITION;
         synchronized (SEMAPHORE) {
             for (int i = 0, k = mItems.size(); i < k; i++) {
                 if (!getItem(i).isPinned()) {
@@ -315,7 +310,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     }
 
     public int getFirstCompletedPosition() {
-        int position = RecyclerView.NO_POSITION;
+        int position = INVALID_POSITION;
         synchronized (SEMAPHORE) {
             for (int i = 0, k = mItems.size(); i < k; i++) {
                 if (getItem(i).isCompleted()) {
