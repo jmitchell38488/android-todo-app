@@ -1,8 +1,12 @@
 package com.github.jmitchell38488.todo.app.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 import com.google.gson.annotations.Expose;
 
-public class TodoItem implements Cloneable {
+public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
 
     @Expose long id;
 
@@ -107,4 +111,42 @@ public class TodoItem implements Cloneable {
 
         return t;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeLong(order);
+        dest.writeByte(completed ? (byte) 1 : 0);
+        dest.writeByte(pinned ? (byte) 1 : 0);
+    }
+
+    protected TodoItem(Parcel in) {
+        id = in.readLong();
+        title = in.readString();
+        description = in.readString();
+        order = in.readLong();
+        completed = in.readByte() != 0;
+        pinned = in.readByte() != 0;
+    }
+
+    public static final Creator<TodoItem> CREATOR = new Creator<TodoItem>() {
+
+        @Override
+        public TodoItem createFromParcel(Parcel source) {
+            return new TodoItem(source);
+        }
+
+        @Override
+        public TodoItem[] newArray(int size) {
+            return new TodoItem[size];
+        }
+
+    };
 }

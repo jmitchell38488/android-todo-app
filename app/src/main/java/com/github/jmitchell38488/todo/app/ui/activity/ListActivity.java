@@ -17,7 +17,7 @@ import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
 import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
-import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
+import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
     @Inject SharedPreferences prefs;
     @BindView(R.id.fab) FloatingActionButton fab;
 
-    private ListFragment mFragment;
+    private SortedListFragment mFragment;
 
     private final static String COUNTER = "counter";
 
@@ -45,12 +45,12 @@ public class ListActivity extends AppCompatActivity implements TodoItemDialogLis
         TodoApp.getComponent(this).inject(this);
 
         if (savedInstanceState == null) {
-            mFragment = new ListFragment();
+            mFragment = new SortedListFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.activity_list_container, mFragment)
                     .commit();
         } else {
-            mFragment = (ListFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
+            mFragment = (SortedListFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
         }
 
         ButterKnife.bind(this);

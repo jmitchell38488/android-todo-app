@@ -8,7 +8,9 @@ import com.github.jmitchell38488.todo.app.data.provider.ProviderModule;
 import com.github.jmitchell38488.todo.app.data.repository.RepositoryModule;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.data.DataModule;
+import com.github.jmitchell38488.todo.app.ui.fragment.BaseFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
+import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 import com.github.jmitchell38488.todo.app.ui.module.TodoItemModule;
 import com.google.gson.Gson;
 
@@ -28,7 +30,11 @@ public interface TodoAppComponent {
 
     public void inject(ListActivity listActivity);
 
+    public void inject(SortedListFragment sortedListFragment);
+
     public void inject(ListFragment listFragment);
+
+    public void inject(BaseFragment baseFragment);
 
     Application application();
 
