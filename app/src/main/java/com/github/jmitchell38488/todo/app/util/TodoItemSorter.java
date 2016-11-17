@@ -2,8 +2,10 @@ package com.github.jmitchell38488.todo.app.util;
 
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class TodoItemSorter {
@@ -44,6 +46,18 @@ public class TodoItemSorter {
             return (lhs.isPinned() == rhs.isPinned() ? 0 : rhs.isPinned() ? 1 : -1);
         }
 
+    }
+
+    public void reorderList(List<TodoItem> itemList) {
+        // Clone the items, Map is <id, i>
+        HashMap<Long, Integer> preSortMap = new HashMap<>();
+        for (int i = 0; i < itemList.size(); i++) {
+            preSortMap.put(itemList.get(i).getId(), i);
+        }
+
+        List<TodoItem> mItemsCopy = new ArrayList<>(itemList.size());
+        Collections.copy(mItemsCopy, itemList);
+        TodoItemSorter.sort(mItemsCopy);
     }
 
 }

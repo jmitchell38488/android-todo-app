@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchListener;
 import com.github.jmitchell38488.todo.app.util.TodoItemSorter;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
-        implements ItemTouchHelperAdapter {
+        implements ItemTouchListener {
 
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
 
@@ -259,32 +260,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<TodoItemHolder>
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    public void reorderList() {
-        // Clone the items, Map is <id, i>
-        HashMap<Long, Integer> preSortMap = new HashMap<>();
-        for (int i = 0; i < mItems.size(); i++) {
-            preSortMap.put(mItems.get(i).getId(), i);
-        }
-
-        List<TodoItem> mItemsCopy = copyItems();
-        TodoItemSorter.sort(mItemsCopy);
-
-        if (mListChangeListener != null) {
-            // Notify data changes
-            mListChangeListener.onOrderChange(mItems, mItemsCopy);
-            mListChangeListener.onDataChange();
-        }
-    }
-
-    private List<TodoItem> copyItems() {
-        List<TodoItem> list = new ArrayList<>();
-        for (TodoItem item : mItems) {
-            list.add(item);
-        }
-
-        return list;
     }
 
     public TodoItem getItem(int position) {

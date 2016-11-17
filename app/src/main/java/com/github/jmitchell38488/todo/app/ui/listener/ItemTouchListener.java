@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.todo.app.ui.adapter;
+package com.github.jmitchell38488.todo.app.ui.listener;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -8,7 +8,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  *
  * @author Paul Burke (ipaulpro)
  */
-public interface ItemTouchHelperAdapter {
+public interface ItemTouchListener {
 
     /**
      * Called when an item has been dragged far enough to trigger a move. This is called every time
