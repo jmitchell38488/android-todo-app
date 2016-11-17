@@ -20,7 +20,6 @@ import java.util.List;
 
 public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> {
 
-
     // Pending list
     private List<TodoItem> mPendingRemoveList;
     private List<TodoItem> mPendingCompleteList;
@@ -33,8 +32,6 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     private boolean undoOn;
     private Handler mRunnableHandler = new Handler();
     HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
-
-    protected TodoItemHelper mHelper;
 
     public RecyclerListAdapter(Fragment fragment, List<TodoItem> items) {
         super(fragment.getActivity(), items);
@@ -127,46 +124,13 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     }
 
     public void remove(int position) {
-        final TodoItem item = mItems.get(position);
+        /*final TodoItem item = mItems.get(position);
         if (mPendingRemoveList.contains(item)) {
             mPendingRemoveList.remove(item);
-        }
+        }*/
 
         mItems.remove(position);
         notifyItemRemoved(position);
-
-        if (mListChangeListener != null) {
-            // Notify data changes
-            mListChangeListener.onDataChange();
-        }
-    }
-
-    public void complete(int position) {
-        TodoItem item = mItems.get(position);
-
-        if (mPendingCompleteList.contains(item)) {
-            mPendingCompleteList.remove(item);
-        }
-
-        int nPosition = getFirstCompletedPosition();
-
-        if (!item.isCompleted()) {
-            nPosition--;
-        }
-
-        item.setCompleted(!item.isCompleted());
-
-        if (item.isCompleted()) {
-            item.setPinned(false);
-        }
-
-        // No completed items yet
-        if (nPosition < 0) {
-            nPosition = mItems.size() - 1;
-        }
-
-        remove(position);
-        addItem(nPosition, item);
 
         if (mListChangeListener != null) {
             // Notify data changes
@@ -220,34 +184,6 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
             // Notify data changes
             mListChangeListener.onDataChange();
         }
-    }
-
-    public int getFirstUnpinnedPosition() {
-        int position = INVALID_POSITION;
-        synchronized (SEMAPHORE) {
-            for (int i = 0, k = mItems.size(); i < k; i++) {
-                if (!getItem(i).isPinned()) {
-                    position = i;
-                    break;
-                }
-            }
-        }
-
-        return position;
-    }
-
-    public int getFirstCompletedPosition() {
-        int position = INVALID_POSITION;
-        synchronized (SEMAPHORE) {
-            for (int i = 0, k = mItems.size(); i < k; i++) {
-                if (getItem(i).isCompleted()) {
-                    position = i;
-                    break;
-                }
-            }
-        }
-
-        return position;
     }
 
     public interface OnItemClickedListener {

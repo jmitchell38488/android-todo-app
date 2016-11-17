@@ -6,6 +6,8 @@ import android.util.Log;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.Observable;
+import rx.subjects.BehaviorSubject;
 
 public class SortedListFragment extends ListFragment {
 

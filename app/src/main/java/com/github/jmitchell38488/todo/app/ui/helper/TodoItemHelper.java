@@ -10,8 +10,8 @@ import rx.subjects.PublishSubject;
 
 public class TodoItemHelper {
 
-    private static final PublishSubject<CompletedEvent> SUBJECT_COMPLETED = PublishSubject.create();
-    private static final PublishSubject<RemovedEvent> SUBJECT_REMOVED = PublishSubject.create();
+    private static final PublishSubject<CompletedEvent> mObservableSubjectComplete = PublishSubject.create();
+    private static final PublishSubject<RemovedEvent> mObservableSubjectRemove = PublishSubject.create();
 
     private final Activity mActivity;
     private final TodoItemRepository mRepository;
@@ -22,15 +22,23 @@ public class TodoItemHelper {
     }
 
     public Observable<CompletedEvent> getCompletedObservable() {
-        return SUBJECT_COMPLETED.asObservable();
+        return mObservableSubjectComplete.asObservable();
     }
 
     public Observable<RemovedEvent> getRemovedObservable() {
-        return SUBJECT_REMOVED.asObservable();
+        return mObservableSubjectRemove.asObservable();
     }
 
     public void setItemComplete(TodoItem item, boolean complete) {
+        //item.setCompleted(complete);
 
+        if (item.isCompleted()) {
+
+        } else {
+
+        }
+
+        mObservableSubjectComplete.onNext(new CompletedEvent(item.getId(), complete));
     }
 
     public void setItemRemoved(TodoItem item, boolean removed) {

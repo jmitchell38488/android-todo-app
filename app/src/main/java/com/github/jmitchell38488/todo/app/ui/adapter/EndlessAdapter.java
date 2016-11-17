@@ -15,9 +15,6 @@ import rx.functions.Action1;
 public abstract class EndlessAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Action1<List<T>> {
 
-    protected final static Object SEMAPHORE = new Object();
-    protected final int INVALID_POSITION = RecyclerView.NO_POSITION;
-
     protected static final int VIEW_TYPE_LOAD_MORE = 1;
     protected static final int VIEW_TYPE_ITEM = 2;
 

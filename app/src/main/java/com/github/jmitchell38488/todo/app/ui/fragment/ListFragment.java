@@ -39,6 +39,9 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class ListFragment extends BaseFragment
         implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
 
+    protected final static Object SEMAPHORE = new Object();
+    protected final int INVALID_POSITION = RecyclerView.NO_POSITION;
+
     private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
 
     private static final String LOG_TAG = ListFragment.class.getSimpleName();
@@ -58,15 +61,15 @@ public abstract class ListFragment extends BaseFragment
 
     protected TodoItemHelper mHelper;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected CompositeSubscription mSubscriptions;
     protected TodoItemRepository mItemRepository;
+    protected CompositeSubscription mSubscriptions;
 
-    private List<TodoItem> mPendingRemoveList;
-    private List<TodoItem> mPendingCompleteList;
+    protected List<TodoItem> mPendingRemoveList;
+    protected List<TodoItem> mPendingCompleteList;
 
-    private boolean mUndoOn;
-    private Handler mRunnableHandler = new Handler();
-    private HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
+    protected boolean mUndoOn;
+    protected Handler mRunnableHandler = new Handler();
+    protected HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
     private RecyclerListAdapter.ListClickListener onClick =
             new RecyclerListAdapter.ListClickListener() {
@@ -100,12 +103,37 @@ public abstract class ListFragment extends BaseFragment
 
         @Override
         public void onItemComplete(int position) {
+            Log.d(LOG_TAG, "Marking item at position (" + position + ") for completion");
+            final TodoItem item = mAdapter.getItem(position);
 
+            if (!mPendingCompleteList.contains(item)) {
+                mPendingCompleteList.add(item);
+
+                Runnable pending = () -> {
+                    mHelper.setItemComplete(item, true);
+                    mPendingCompleteList.remove(item);
+                };
+
+                mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
+                mPendingRunnables.put(item, pending);
+            }
         }
 
         @Override
         public void onItemDismiss(int position) {
+            Log.d(LOG_TAG, "Marking item at position (" + position + ") for removal");
+            final TodoItem item = mAdapter.getItem(position);
 
+            if (!mPendingRemoveList.contains(item)) {
+                mPendingRemoveList.add(item);
+
+                Runnable pending = () -> {
+                    mPendingRemoveList.remove(item);
+                };
+
+                mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
+                mPendingRunnables.put(item, pending);
+            }
         }
     };
 
@@ -127,27 +155,77 @@ public abstract class ListFragment extends BaseFragment
         @Override
         public void onItemSwipeRight(int position) {
             Log.d(LOG_TAG, "onItemSwipeRight(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
-
-
-            //((RecyclerListAdapter) mItemTouchListener).onItemDismiss(viewHolder.getAdapterPosition());
-            /*if (undoOn) {
-                setItemPendingRemoval(position);
+            if (mUndoOn) {
+                mItemStateChangeListener.onItemDismiss(position);
             } else {
-                remove(position);
-            }*/
+                mAdapter.remove(position);
+            }
         }
 
         @Override
         public void onItemSwipeLeft(int position) {
-            //((RecyclerListAdapter) mItemTouchListener).onItemComplete(viewHolder.getAdapterPosition());
-            /*if (undoOn) {
-                setItemPendingComplete(position);
+            if (mUndoOn) {
+                mItemStateChangeListener.onItemComplete(position);
             } else {
-                complete(position);
-            }*/
+                TodoItem item = mAdapter.getItem(position);
+
+                if (mPendingCompleteList.contains(item)) {
+                    mPendingCompleteList.remove(item);
+                }
+
+                int nPosition = getFirstCompletedPosition();
+
+                if (!item.isCompleted()) {
+                    nPosition--;
+                }
+
+                item.setCompleted(!item.isCompleted());
+
+                if (item.isCompleted()) {
+                    item.setPinned(false);
+                }
+
+                // No completed items yet
+                if (nPosition < 0) {
+                    nPosition = mAdapter.getItemCount() - 1;
+                }
+
+                mAdapter.remove(position);
+                mAdapter.addItem(nPosition, item);
+            }
             Log.d(LOG_TAG, "onItemSwipeLeft(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
         }
     };
+
+
+
+    public int getFirstUnpinnedPosition() {
+        int position = INVALID_POSITION;
+        synchronized (SEMAPHORE) {
+            for (int i = 0, k = mAdapter.getItemCount(); i < k; i++) {
+                if (!mAdapter.getItem(i).isPinned()) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+
+        return position;
+    }
+
+    public int getFirstCompletedPosition() {
+        int position = INVALID_POSITION;
+        synchronized (SEMAPHORE) {
+            for (int i = 0, k = mAdapter.getItemCount(); i < k; i++) {
+                if (mAdapter.getItem(i).isCompleted()) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+
+        return position;
+    }
 
 
 /*
@@ -190,6 +268,12 @@ public abstract class ListFragment extends BaseFragment
     }
     */
 
+    public ListFragment() {
+        mPendingRemoveList = new ArrayList<>();
+        mPendingCompleteList = new ArrayList<>();
+        mUndoOn = true;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -201,9 +285,6 @@ public abstract class ListFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
-
-        mPendingRemoveList = new ArrayList<>();
-        mPendingCompleteList = new ArrayList<>();
     }
 
     @Override
@@ -234,7 +315,7 @@ public abstract class ListFragment extends BaseFragment
 
         mUndoOn = savedInstanceState != null
                 ? savedInstanceState.getBoolean(STATE_UNDO)
-                : false;
+                : true;
 
         mAdapter = new RecyclerListAdapter(this, restoredList);
         mAdapter.setStartDragListener(this);
@@ -345,9 +426,9 @@ public abstract class ListFragment extends BaseFragment
         int newPosition = RecyclerView.NO_POSITION;
 
         if (item.isCompleted()) {
-            newPosition = mAdapter.getFirstCompletedPosition();
+            newPosition = getFirstCompletedPosition();
         } else {
-            newPosition = item.isPinned() ? 0 : mAdapter.getFirstUnpinnedPosition();
+            newPosition = item.isPinned() ? 0 : getFirstUnpinnedPosition();
         }
 
         if (newPosition == RecyclerView.NO_POSITION) {
