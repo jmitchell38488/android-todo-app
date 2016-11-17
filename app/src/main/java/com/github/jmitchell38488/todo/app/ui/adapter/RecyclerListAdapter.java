@@ -1,8 +1,6 @@
 package com.github.jmitchell38488.todo.app.ui.adapter;
 
-import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,19 +10,16 @@ import android.widget.FrameLayout;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchListener;
-import com.github.jmitchell38488.todo.app.util.TodoItemSorter;
+import com.github.jmitchell38488.todo.app.ui.helper.TodoItemHelper;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> implements ItemTouchListener {
+public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> {
 
-    private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
 
     // Pending list
     private List<TodoItem> mPendingRemoveList;
@@ -38,6 +33,8 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     private boolean undoOn;
     private Handler mRunnableHandler = new Handler();
     HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
+
+    protected TodoItemHelper mHelper;
 
     public RecyclerListAdapter(Fragment fragment, List<TodoItem> items) {
         super(fragment.getActivity(), items);
@@ -129,44 +126,6 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
         }
     }
 
-    public void setItemPendingRemoval(int position) {
-        final TodoItem item = mItems.get(position);
-
-        if (!mPendingRemoveList.contains(item)) {
-            mPendingRemoveList.add(item);
-            notifyItemChanged(position);
-
-            Runnable pending = new Runnable() {
-                @Override
-                public void run() {
-                    remove(mItems.indexOf(item));
-                }
-            };
-
-            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-            mPendingRunnables.put(item, pending);
-        }
-    }
-
-    public void setItemPendingComplete(int position) {
-        final TodoItem item = mItems.get(position);
-
-        if (!mPendingCompleteList.contains(item)) {
-            mPendingCompleteList.add(item);
-            notifyItemChanged(position);
-
-            Runnable pending = new Runnable() {
-                @Override
-                public void run() {
-                    complete(mItems.indexOf(item));
-                }
-            };
-
-            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-            mPendingRunnables.put(item, pending);
-        }
-    }
-
     public void remove(int position) {
         final TodoItem item = mItems.get(position);
         if (mPendingRemoveList.contains(item)) {
@@ -213,36 +172,6 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
             // Notify data changes
             mListChangeListener.onDataChange();
         }
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-        if (undoOn) {
-            setItemPendingRemoval(position);
-        } else {
-            remove(position);
-        }
-    }
-
-    public void onItemComplete(int position) {
-        if (undoOn) {
-            setItemPendingComplete(position);
-        } else {
-            complete(position);
-        }
-    }
-
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(mItems, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-
-        if (mListChangeListener != null) {
-            // Notify data changes
-            mListChangeListener.onDataChange();
-        }
-
-        return true;
     }
 
     @Override
@@ -321,27 +250,11 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
         return position;
     }
 
-    public boolean isUndoOn() {
-        return undoOn;
-    }
-
-    public void setUndoOn(boolean undoOn) {
-        this.undoOn = undoOn;
-    }
-
-    public boolean isPendingRemoval(int position) {
-        return mPendingRunnables.containsKey(mItems.get(position));
-    }
-
-    public boolean isPendingComplete(int position) {
-        return mPendingRunnables.containsKey(mItems.get(position));
-    }
-
-    public interface OnItemTouchedListener {
+    public interface OnItemClickedListener {
 
         void onItemClicked(TodoItem item, View view, int position);
 
-        OnItemTouchedListener Placeholder = new OnItemTouchedListener() {
+        OnItemClickedListener Placeholder = new OnItemClickedListener() {
             @Override
             public void onItemClicked(TodoItem item, View view, int position) {
                 // Empty default callback holder

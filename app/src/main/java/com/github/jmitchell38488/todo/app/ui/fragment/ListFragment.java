@@ -1,13 +1,13 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +20,15 @@ import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
-import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.helper.TodoItemHelper;
+import com.github.jmitchell38488.todo.app.ui.listener.ItemStateChangeListener;
+import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchListener;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
-import com.github.jmitchell38488.todo.app.ui.listener.SimpleItemTouchHelperCallback;
+import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchCallback;
 import com.github.jmitchell38488.todo.app.ui.decoration.VerticalSpaceItemDecoration;
 
- import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,8 +39,13 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class ListFragment extends BaseFragment
         implements OnStartDragListener, RecyclerListAdapter.ListChangeListener {
 
+    private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
+
+    private static final String LOG_TAG = ListFragment.class.getSimpleName();
+
     private static final String STATE_LIST = "state_list";
     private static final String STATE_POSITION = "state_position";
+    private static final String STATE_UNDO = "state_undo";
 
     protected ItemTouchHelper mItemTouchHelper;
     protected RecyclerListAdapter mAdapter;
@@ -53,6 +60,13 @@ public abstract class ListFragment extends BaseFragment
     protected RecyclerView.LayoutManager mLayoutManager;
     protected CompositeSubscription mSubscriptions;
     protected TodoItemRepository mItemRepository;
+
+    private List<TodoItem> mPendingRemoveList;
+    private List<TodoItem> mPendingCompleteList;
+
+    private boolean mUndoOn;
+    private Handler mRunnableHandler = new Handler();
+    private HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
     private RecyclerListAdapter.ListClickListener onClick =
             new RecyclerListAdapter.ListClickListener() {
@@ -82,6 +96,100 @@ public abstract class ListFragment extends BaseFragment
 
             };
 
+    private ItemStateChangeListener mItemStateChangeListener = new ItemStateChangeListener() {
+
+        @Override
+        public void onItemComplete(int position) {
+
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+
+        }
+    };
+
+    private ItemTouchListener mItemTouchListener = new ItemTouchListener() {
+        @Override
+        public boolean onItemMove(int fromPosition, int toPosition) {
+            /*Collections.swap(mItems, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+
+            if (mListChangeListener != null) {
+                // Notify data changes
+                mListChangeListener.onDataChange();
+            }
+
+            return true;*/
+            return false;
+        }
+
+        @Override
+        public void onItemSwipeRight(int position) {
+            Log.d(LOG_TAG, "onItemSwipeRight(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
+
+
+            //((RecyclerListAdapter) mItemTouchListener).onItemDismiss(viewHolder.getAdapterPosition());
+            /*if (undoOn) {
+                setItemPendingRemoval(position);
+            } else {
+                remove(position);
+            }*/
+        }
+
+        @Override
+        public void onItemSwipeLeft(int position) {
+            //((RecyclerListAdapter) mItemTouchListener).onItemComplete(viewHolder.getAdapterPosition());
+            /*if (undoOn) {
+                setItemPendingComplete(position);
+            } else {
+                complete(position);
+            }*/
+            Log.d(LOG_TAG, "onItemSwipeLeft(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
+        }
+    };
+
+
+/*
+    public void setItemPendingRemoval(int position) {
+        final TodoItem item = mItems.get(position);
+
+        if (!mPendingRemoveList.contains(item)) {
+            mPendingRemoveList.add(item);
+            notifyItemChanged(position);
+
+            Runnable pending = new Runnable() {
+                @Override
+                public void run() {
+                    remove(mItems.indexOf(item));
+                }
+            };
+
+            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
+            mPendingRunnables.put(item, pending);
+        }
+    }
+
+    public void setItemPendingComplete(int position) {
+        final TodoItem item = mItems.get(position);
+
+        if (!mPendingCompleteList.contains(item)) {
+            mPendingCompleteList.add(item);
+            notifyItemChanged(position);
+
+            Runnable pending = new Runnable() {
+                @Override
+                public void run() {
+                    complete(mItems.indexOf(item));
+                }
+            };
+
+            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
+            mPendingRunnables.put(item, pending);
+        }
+    }
+    */
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -93,6 +201,9 @@ public abstract class ListFragment extends BaseFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
+
+        mPendingRemoveList = new ArrayList<>();
+        mPendingCompleteList = new ArrayList<>();
     }
 
     @Override
@@ -121,8 +232,11 @@ public abstract class ListFragment extends BaseFragment
                 ? savedInstanceState.getParcelableArrayList(STATE_LIST)
                 : todoStorage.getTodos();
 
+        mUndoOn = savedInstanceState != null
+                ? savedInstanceState.getBoolean(STATE_UNDO)
+                : false;
+
         mAdapter = new RecyclerListAdapter(this, restoredList);
-        mAdapter.setUndoOn(true);
         mAdapter.setStartDragListener(this);
         mAdapter.setListChangeListener(this);
         mAdapter.setListClickListener(onClick);
@@ -152,6 +266,7 @@ public abstract class ListFragment extends BaseFragment
         List<TodoItem> itemList = new ArrayList<>(mAdapter.getItems());
         outState.putParcelableArrayList(STATE_LIST, new ArrayList<>(mAdapter.getItems()));
         outState.putInt(STATE_POSITION, mPosition);
+        outState.putBoolean(STATE_UNDO, mUndoOn);
     }
 
     @Override
@@ -172,7 +287,7 @@ public abstract class ListFragment extends BaseFragment
 
     @Override
     public void onDataChange() {
-        todoStorage.saveTodos(mAdapter.getItems());
+        //todoStorage.saveTodos(mAdapter.getItems());
 
         // Show alternative view
         if (mAdapter.getItemCount() == 0) {
@@ -244,11 +359,11 @@ public abstract class ListFragment extends BaseFragment
     }
 
     public void removeItem(int position, boolean undo) {
-        if (undo) {
+        /*if (undo) {
             mAdapter.onItemDismiss(position);
         } else {
             mAdapter.remove(position);
-        }
+        }*/
     }
 
     protected void initRecyclerView() {
@@ -260,7 +375,7 @@ public abstract class ListFragment extends BaseFragment
         mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(listDividerHeight));
 
         // Set touch helper
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter, getActivity());
+        ItemTouchHelper.Callback callback = new ItemTouchCallback(mItemTouchListener, getActivity());
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
 
