@@ -17,21 +17,24 @@ import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchHelperViewHolder;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
     public View mView;
     private Context mContext;
 
-    TextView titleView;
-    TextView descView;
-    LinearLayout notificationLayout;
-    TextView iconPinned;
-    TextView iconReminder;
-    ImageView moveHandle;
+    @BindView(R.id.list_fragment_title) TextView titleView;
+    @BindView(R.id.list_fragment_description) TextView descView;
+    @BindView(R.id.list_item_notification_wrapper) LinearLayout notificationLayout;
+    @BindView(R.id.list_item_notification_pinned) TextView iconPinned;
+    @BindView(R.id.list_item_notification_reminder) TextView iconReminder;
+    @BindView(R.id.list_item_move_handle) ImageView moveHandle;
 
-    View removePendingView;
-    View completePendingView;
-    View itemVisibleView;
+    @BindView(R.id.list_item_pending_remove) View removePendingView;
+    @BindView(R.id.list_item_pending_complete) View completePendingView;
+    @BindView(R.id.list_item_container) View itemVisibleView;
 
     private boolean isPendingRemoval;
     private boolean isPendingComplete;
@@ -40,20 +43,10 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         super(itemView);
         mView = itemView;
         mContext = context;
-        
-        titleView = (TextView) itemView.findViewById(R.id.list_fragment_title);
-        descView = (TextView) itemView.findViewById(R.id.list_fragment_description);
-        notificationLayout = (LinearLayout) itemView.findViewById(R.id.list_item_notification_wrapper);
-        iconPinned = (TextView) itemView.findViewById(R.id.list_item_notification_pinned);
-        iconReminder = (TextView) itemView.findViewById(R.id.list_item_notification_reminder);
-        moveHandle = (ImageView) itemView.findViewById(R.id.list_item_move_handle);
-
-        removePendingView = itemView.findViewById(R.id.list_item_pending_remove);
-        completePendingView = itemView.findViewById(R.id.list_item_pending_complete);
-        itemVisibleView = itemView.findViewById(R.id.list_item_container);
-
         isPendingRemoval = false;
         isPendingComplete = false;
+
+        ButterKnife.bind(this, itemView);
     }
 
     public void updateView(TodoItem item) {
