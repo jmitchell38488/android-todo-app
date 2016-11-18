@@ -7,7 +7,7 @@
     android:id="@+id/list_item_fragment"
     style="@style/ListThemeListItemContainer">
 
-    <LinearLayout
+    <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -21,9 +21,9 @@
             android:text="UNDO"
             style="@style/ListItemThemePending.Title" />
 
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:text="UNDO"
             style="@style/ListItemThemePending.Title" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
@@ -29,7 +31,6 @@ import com.github.jmitchell38488.todo.app.ui.decoration.VerticalSpaceItemDecorat
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,48 +74,73 @@ public abstract class ListFragment extends BaseFragment
     protected Handler mRunnableHandler = new Handler();
     protected HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
-    private RecyclerListAdapter.ListClickListener onClick =
-            new RecyclerListAdapter.ListClickListener() {
-
-                @Override
-                public void onItemClick(View view) {
-                    int position = mRecyclerView.getChildLayoutPosition(view);
-                    TodoItem item = mAdapter.getItem(position);
-
-                    Bundle arguments = new Bundle();
-                    arguments.putParcelable("todoitem", item);
-
-                    mPosition = position;
-
-                    /*Intent intent = new Intent(ListFragment.this.getActivity(), EditItemActivity.class);
-                    intent.putExtras(arguments);
-                    startActivity(intent);*/
-                    //return;
-
-                    ((ListActivity) getActivity()).showEditDialog(arguments);
-                }
-
-            };
-
-    private View.OnClickListener itemPendingClick = view -> {
+    private RecyclerListAdapter.ListClickListener mListClickListener = view -> {
         int position = mRecyclerView.getChildLayoutPosition(view);
         TodoItem item = mAdapter.getItem(position);
-        TodoItemHolder holder = (TodoItemHolder) view.getTag();
 
-        if (holder.isPendingComplete()) {
-            mPendingCompleteList.remove(item);
+        Bundle arguments = new Bundle();
+        arguments.putParcelable("todoitem", item);
+
+        mPosition = position;
+
+        /*Intent intent = new Intent(ListFragment.this.getActivity(), EditItemActivity.class);
+        intent.putExtras(arguments);
+        startActivity(intent);*/
+        //return;
+
+        ((ListActivity) getActivity()).showEditDialog(arguments);
+    };
+
+    private RecyclerListAdapter.BindViewHolderListener mBindViewHolderListener = (holder, position) -> {
+        final TodoItemHolder itemHolder = (TodoItemHolder) holder;
+        final TodoItem item = mAdapter.getItem(position);
+
+        // Display the pending action view, remove or complete
+        if (mAdapter.pendingActionListContains(item)) {
+            final boolean actionRemove = mPendingRemoveList.contains(item);
+
+            View actionView = (actionRemove) ?
+                    itemHolder.getRemovePendingView() :
+                    itemHolder.getCompletePendingView();
+
+            if (actionRemove) {
+                itemHolder.updateViewPendingRemoval();
+            } else {
+                itemHolder.updateViewPendingComplete();
+            }
+
+            ViewGroup.LayoutParams lp = itemHolder.mView.getLayoutParams();
+            lp.height = item.height;
+            itemHolder.mView.setLayoutParams(lp);
+
+            //actionView.setMinimumHeight(item.height);
+
+            actionView.setOnClickListener(view -> {
+                if (itemHolder.isPendingComplete()) {
+                    mPendingCompleteList.remove(item);
+                } else {
+                    mPendingRemoveList.remove(item);
+                }
+
+                mAdapter.removeItemFromPendingActionList(item);
+                Runnable runner = mPendingRunnables.remove(item);
+
+                if (runner != null) {
+                    mRunnableHandler.removeCallbacks(runner);
+                }
+
+                mAdapter.notifyItemChanged(position);
+            });
+
+        // Display the default view
         } else {
-            mPendingRemoveList.remove(item);
+            itemHolder.updateView(item);
+            itemHolder.bindDragEvent(ListFragment.this);
+            itemHolder.mView.setOnClickListener(view -> mListClickListener.onItemClick(view));
+            itemHolder.getItemVisibleView().getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+                item.height = itemHolder.getItemVisibleView().getHeight();
+            });
         }
-
-        mAdapter.removeItemFromPendingActionList(item);
-        Runnable runner = mPendingRunnables.remove(item);
-
-        if (runner != null) {
-            mRunnableHandler.removeCallbacks(runner);
-        }
-
-        mAdapter.notifyItemChanged(position);
     };
 
     private ItemStateChangeListener mItemStateChangeListener = new ItemStateChangeListener() {
@@ -127,19 +153,15 @@ public abstract class ListFragment extends BaseFragment
             if (!mPendingCompleteList.contains(item)) {
                 mPendingCompleteList.add(item);
                 mAdapter.addItemToPendingActionList(item);
+                mAdapter.notifyItemChanged(position);
 
-                // Update the view holder state
-                TodoItemHolder holder = (TodoItemHolder) mRecyclerView.getChildAt(position).getTag();
-                holder.updateViewPendingComplete();
-                holder.mView.setOnClickListener(itemPendingClick);
-
-                Runnable pending = () -> {
+                /*Runnable pending = () -> {
                     mAdapter.removeItemFromPendingActionList(item);
                     mHelper.setItemComplete(item.getId());
                 };
 
                 mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-                mPendingRunnables.put(item, pending);
+                mPendingRunnables.put(item, pending);*/
             }
         }
 
@@ -151,19 +173,15 @@ public abstract class ListFragment extends BaseFragment
             if (!mPendingRemoveList.contains(item)) {
                 mPendingRemoveList.add(item);
                 mAdapter.addItemToPendingActionList(item);
+                mAdapter.notifyItemChanged(position);
 
-                // Update the view holder state
-                TodoItemHolder holder = (TodoItemHolder) mRecyclerView.getChildAt(position).getTag();
-                holder.updateViewPendingRemoval();
-                holder.mView.setOnClickListener(itemPendingClick);
-
-                Runnable pending = () -> {
+                /*Runnable pending = () -> {
                     mAdapter.removeItemFromPendingActionList(item);
                     mHelper.setItemRemoved(item.getId());
                 };
 
                 mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-                mPendingRunnables.put(item, pending);
+                mPendingRunnables.put(item, pending);*/
             }
         }
     };
@@ -278,9 +296,8 @@ public abstract class ListFragment extends BaseFragment
                 : true;
 
         mAdapter = new RecyclerListAdapter(this, restoredList);
-        mAdapter.setStartDragListener(this);
         mAdapter.setListChangeListener(this);
-        mAdapter.setListClickListener(onClick);
+        mAdapter.setBindViewHolderListener(mBindViewHolderListener);
 
         initRecyclerView();
     }
@@ -293,7 +310,6 @@ public abstract class ListFragment extends BaseFragment
 
     @Override
     public void onDetach() {
-        mAdapter.setListClickListener(RecyclerListAdapter.ListClickListener.Placeholder);
         super.onDetach();
     }
 

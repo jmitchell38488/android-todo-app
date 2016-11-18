@@ -178,10 +178,12 @@
 
     <style name="ListItemThemePendingRemove" parent="ListItemTheme">
         <item name="android:background">@color/list_item_background_delete</item>
+        <item name="android:padding">0dp</item>
     </style>
 
     <style name="ListItemThemePendingComplete" parent="ListItemTheme">
         <item name="android:background">@color/list_item_background_complete</item>
+        <item name="android:padding">0dp</item>
     </style>
 
     <style name="ListItemThemePending.Title" parent="AppTheme.ListTextView.Large">

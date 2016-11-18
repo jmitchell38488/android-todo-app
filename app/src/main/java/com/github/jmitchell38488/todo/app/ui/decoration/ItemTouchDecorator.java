@@ -61,7 +61,6 @@ public abstract class ItemTouchDecorator extends ItemTouchHelper.Callback {
         int pTop = mView.getTop() - mView.getPaddingTop();
         int pRight = mView.getRight() - mView.getPaddingRight();
         int pBottom = mView.getBottom() + mView.getPaddingBottom() - 2;
-        int width = pRight - pLeft;
         int height = pBottom - pTop - 2;
 
         // Only render on X axis movement
@@ -81,18 +80,16 @@ public abstract class ItemTouchDecorator extends ItemTouchHelper.Callback {
                 String str = mContext.getString(R.string.action_item_complete);
                 canvas.drawText(str, pRight - 240, pTop + height/2 + 15, mPaint);
 
-            } else {
-                // Don't draw anything, we don't need a background if we aren't sliiiiiding
             }
         }
 
         // Force the update in the draw
-        int position = recyclerView.getChildLayoutPosition(mView);
+        /*int position = recyclerView.getChildLayoutPosition(mView);
         TodoItem item = ((RecyclerListAdapter) recyclerView.getAdapter()).getItem(position);
         item.height = item.height == 0 ? height : item.height;
         item.width = item.width == 0 ? width : item.width;
         item.sX = item.sX == 0 ? mView.getLeft() : item.sX;
-        item.sY = item.sY == 0 ? mView.getTop() : item.sY;
+        item.sY = item.sY == 0 ? mView.getTop() : item.sY;*/
 
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             viewHolder.itemView.setTranslationX(dX);

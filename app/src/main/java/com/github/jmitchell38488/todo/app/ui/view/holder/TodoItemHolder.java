@@ -185,6 +185,10 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         return completePendingView;
     }
 
+    public View getItemVisibleView() {
+        return itemVisibleView;
+    }
+
     public boolean isPendingRemoval() {
         return isPendingRemoval;
     }
