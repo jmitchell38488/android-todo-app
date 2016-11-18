@@ -26,9 +26,12 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     private ListChangeListener mListChangeListener = ListChangeListener.Placeholder;
     private ListClickListener mListClickListener = ListClickListener.Placeholder;
 
+    private List<TodoItem> mPendingActionList;
+
     public RecyclerListAdapter(Fragment fragment, List<TodoItem> items) {
         super(fragment.getActivity(), items);
         mDragStartListener = null;
+        mPendingActionList = new ArrayList<>();
         setHasStableIds(true);
     }
 
@@ -44,68 +47,65 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
         mListClickListener = listener;
     }
 
+    public List<TodoItem> getPendingActionList() {
+        return mPendingActionList;
+    }
+
+    public void setPendingActionList(List<TodoItem> items) {
+        mPendingActionList = items;
+    }
+
+    public boolean pendingListContainsItem(TodoItem item) {
+        return mPendingActionList.contains(item);
+    }
+
+    public void addItemToPendingActionList(TodoItem item) {
+        if (!mPendingActionList.contains(item)) {
+            mPendingActionList.add(item);
+        }
+    }
+
+    public void removeItemFromPendingActionList(TodoItem item) {
+        if (mPendingActionList.contains(item)) {
+            mPendingActionList.remove(item);
+        }
+    }
+
     @Override
     protected TodoItemHolder onCreateItemHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_fragment_notifications, parent, false);
         TodoItemHolder holder = new TodoItemHolder(view, mContext);
+        view.setTag(holder);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        TodoItemHolder itemHolder = (TodoItemHolder) holder; 
+        TodoItemHolder itemHolder = (TodoItemHolder) holder;
         TodoItem item = mItems.get(position);
 
-        /*
-        if (mPendingRemoveList.contains(item) || mPendingCompleteList.contains(item)) {
-            boolean removeItem = mPendingRemoveList.contains(item);
-            View view = removeItem ?
+        if (mPendingActionList.contains(item)) {
+            View view = itemHolder.isPendingRemoval() ?
                     itemHolder.getRemovePendingView() :
                     itemHolder.getCompletePendingView();
 
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+            );
+
             lp.setMargins(0, 0, 0, 3);
 
             view.setMinimumHeight(item.height);
             view.setLayoutParams(lp);
-
-            final int index = mItems.indexOf(item);
-
-            if (removeItem) {
-                itemHolder.updateViewPendingRemoval(item);
-            } else {
-                itemHolder.updateViewPendingComplete(item);
-            }
-
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    TodoItem item = mItems.get(index);
-                    Runnable pendingRemovalRunnable = mPendingRunnables.remove(item);
-
-                    if (pendingRemovalRunnable != null) {
-                        mRunnableHandler.removeCallbacks(pendingRemovalRunnable);
-
-                        if (mPendingRemoveList.contains(item)) {
-                            mPendingRemoveList.remove(item);
-                        } else {
-                            mPendingCompleteList.remove(item);
-                        }
-
-                        notifyItemChanged(index);
-                    }
-                }
-            });
-        } else {*/
+        } else {
             itemHolder.updateView(item);
 
             // Start a drag whenever the handle view it touched
             itemHolder.bindDragEvent(mDragStartListener);
 
             itemHolder.mView.setOnClickListener(view -> mListClickListener.onItemClick(view));
-        //}
+        }
     }
 
     public void remove(int position) {
@@ -215,11 +215,6 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     public interface ListClickListener {
         void onItemClick(View view);
 
-        ListClickListener Placeholder = new ListClickListener() {
-            @Override
-            public void onItemClick(View view) {
-                // Empty default callback holder
-            }
-        };
+        ListClickListener Placeholder = view -> {};
     }
 }

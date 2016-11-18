@@ -23,11 +23,25 @@ public class SortedListFragment extends ListFragment {
                     int count = mAdapter.getItemCount();
                     for (int position = 0; position < count; position++) {
                         if (mAdapter.getItemId(position) == event.itemId) {
+                            Log.v(LOG_TAG, "Changing complete status for item at position (" + position + ")");
                             doCompleteAction(position);
                             break;
                         }
                     }
         }));
+
+        mSubscriptions.add(mHelper.getRemovedObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    int count = mAdapter.getItemCount();
+                    for (int position = 0; position < count; position++) {
+                        if (mAdapter.getItemId(position) == event.itemId) {
+                            Log.v(LOG_TAG, "Removing item from list at position (" + position + ")");
+                            mAdapter.remove(position);
+                            break;
+                        }
+                    }
+                }));
     }
 
     protected void doCompleteAction(int position) {
@@ -56,8 +70,6 @@ public class SortedListFragment extends ListFragment {
 
         mAdapter.remove(position);
         mAdapter.addItem(nPosition, item);
-
-        Log.d(LOG_TAG, "doCompleteAction (" + item.getTitle() + "), " + item.isCompleted());
     }
 
 }

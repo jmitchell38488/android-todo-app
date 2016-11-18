@@ -98,7 +98,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         setItemViewCompleted(item);
     }
 
-    public void updateViewPendingRemoval(TodoItem item) {
+    public void updateViewPendingRemoval() {
         // Make sure that the item content isn't visible
         removePendingView.setVisibility(View.VISIBLE);
         completePendingView.setVisibility(View.GONE);
@@ -107,7 +107,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         isPendingComplete = false;
     }
 
-    public void updateViewPendingComplete(TodoItem item) {
+    public void updateViewPendingComplete() {
         // Make sure that the item content isn't visible
         completePendingView.setVisibility(View.VISIBLE);
         removePendingView.setVisibility(View.GONE);
@@ -196,15 +196,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         return isPendingRemoval;
     }
 
-    public void setPendingRemoval(boolean pendingRemoval) {
-        isPendingRemoval = pendingRemoval;
-    }
-
     public boolean isPendingComplete() {
         return isPendingComplete;
-    }
-
-    public void setPendingComplete(boolean pendingComplete) {
-        isPendingComplete = pendingComplete;
     }
 }

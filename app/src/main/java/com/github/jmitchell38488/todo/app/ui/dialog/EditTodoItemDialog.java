@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.github.jmitchell38488.todo.app.R;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView;
 import com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView;
@@ -34,6 +35,7 @@ public class EditTodoItemDialog extends DialogFragment {
     @BindView(R.id.edit_dialog_pinned_label) public RobotoLightTextView pinnedLabel;
 
     TodoItemDialogListener mListener;
+    public TodoItem item;
     public String title;
     public String description;
     public int position;

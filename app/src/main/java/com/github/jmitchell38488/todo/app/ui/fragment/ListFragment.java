@@ -26,6 +26,7 @@ import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchListener;
 import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchCallback;
 import com.github.jmitchell38488.todo.app.ui.decoration.VerticalSpaceItemDecoration;
+import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,12 +82,7 @@ public abstract class ListFragment extends BaseFragment
                     TodoItem item = mAdapter.getItem(position);
 
                     Bundle arguments = new Bundle();
-                    arguments.putCharSequence("title", item.getTitle());
-                    arguments.putCharSequence("description", item.getDescription());
-                    arguments.putInt("position", position);
-                    arguments.putBoolean("edit", true);
-                    arguments.putBoolean("pinned", item.isPinned());
-                    arguments.putBoolean("completed", item.isCompleted());
+                    arguments.putParcelable("todoitem", item);
 
                     mPosition = position;
 
@@ -100,6 +96,27 @@ public abstract class ListFragment extends BaseFragment
 
             };
 
+    private View.OnClickListener itemPendingClick = view -> {
+        int position = mRecyclerView.getChildLayoutPosition(view);
+        TodoItem item = mAdapter.getItem(position);
+        TodoItemHolder holder = (TodoItemHolder) view.getTag();
+
+        if (holder.isPendingComplete()) {
+            mPendingCompleteList.remove(item);
+        } else {
+            mPendingRemoveList.remove(item);
+        }
+
+        mAdapter.removeItemFromPendingActionList(item);
+        Runnable runner = mPendingRunnables.remove(item);
+
+        if (runner != null) {
+            mRunnableHandler.removeCallbacks(runner);
+        }
+
+        mAdapter.notifyItemChanged(position);
+    };
+
     private ItemStateChangeListener mItemStateChangeListener = new ItemStateChangeListener() {
 
         @Override
@@ -109,8 +126,15 @@ public abstract class ListFragment extends BaseFragment
 
             if (!mPendingCompleteList.contains(item)) {
                 mPendingCompleteList.add(item);
+                mAdapter.addItemToPendingActionList(item);
+
+                // Update the view holder state
+                TodoItemHolder holder = (TodoItemHolder) mRecyclerView.getChildAt(position).getTag();
+                holder.updateViewPendingComplete();
+                holder.mView.setOnClickListener(itemPendingClick);
 
                 Runnable pending = () -> {
+                    mAdapter.removeItemFromPendingActionList(item);
                     mHelper.setItemComplete(item.getId());
                 };
 
@@ -126,8 +150,15 @@ public abstract class ListFragment extends BaseFragment
 
             if (!mPendingRemoveList.contains(item)) {
                 mPendingRemoveList.add(item);
+                mAdapter.addItemToPendingActionList(item);
+
+                // Update the view holder state
+                TodoItemHolder holder = (TodoItemHolder) mRecyclerView.getChildAt(position).getTag();
+                holder.updateViewPendingRemoval();
+                holder.mView.setOnClickListener(itemPendingClick);
 
                 Runnable pending = () -> {
+                    mAdapter.removeItemFromPendingActionList(item);
                     mHelper.setItemRemoved(item.getId());
                 };
 
