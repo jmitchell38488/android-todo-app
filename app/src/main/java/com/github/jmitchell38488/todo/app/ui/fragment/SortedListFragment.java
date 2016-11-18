@@ -24,6 +24,7 @@ public class SortedListFragment extends ListFragment {
                     for (int position = 0; position < count; position++) {
                         if (mAdapter.getItemId(position) == event.itemId) {
                             doCompleteAction(position);
+                            break;
                         }
                     }
         }));
@@ -55,6 +56,8 @@ public class SortedListFragment extends ListFragment {
 
         mAdapter.remove(position);
         mAdapter.addItem(nPosition, item);
+
+        Log.d(LOG_TAG, "doCompleteAction (" + item.getTitle() + "), " + item.isCompleted());
     }
 
 }

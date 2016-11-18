@@ -28,6 +28,7 @@ import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchCallback;
 import com.github.jmitchell38488.todo.app.ui.decoration.VerticalSpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -127,7 +128,7 @@ public abstract class ListFragment extends BaseFragment
                 mPendingRemoveList.add(item);
 
                 Runnable pending = () -> {
-                    mPendingRemoveList.remove(item);
+                    mHelper.setItemRemoved(item.getId());
                 };
 
                 mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
@@ -139,27 +140,20 @@ public abstract class ListFragment extends BaseFragment
     private ItemTouchListener mItemTouchListener = new ItemTouchListener() {
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
-            /*Collections.swap(mItems, fromPosition, toPosition);
-            notifyItemMoved(fromPosition, toPosition);
-
-            if (mListChangeListener != null) {
-                // Notify data changes
-                mListChangeListener.onDataChange();
-            }
-
-            return true;*/
-            return false;
+            mAdapter.moveItem(fromPosition, toPosition);
+            return true;
         }
 
         @Override
         public void onItemSwipeRight(int position) {
-            Log.d(LOG_TAG, "onItemSwipeRight(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
             if (mUndoOn) {
                 mItemStateChangeListener.onItemDismiss(position);
             } else {
                 TodoItem item = mAdapter.getItem(position);
                 mHelper.setItemRemoved(item.getId());
             }
+
+            Log.d(LOG_TAG, "onItemSwipeRight(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
         }
 
         @Override
@@ -170,11 +164,10 @@ public abstract class ListFragment extends BaseFragment
                 TodoItem item = mAdapter.getItem(position);
                 mHelper.setItemComplete(item.getId());
             }
+
             Log.d(LOG_TAG, "onItemSwipeLeft(" + position + "), Undo: " + (mUndoOn ? "On" : "Off"));
         }
     };
-
-
 
     public int getFirstUnpinnedPosition() {
         int position = INVALID_POSITION;
@@ -203,47 +196,6 @@ public abstract class ListFragment extends BaseFragment
 
         return position;
     }
-
-
-/*
-    public void setItemPendingRemoval(int position) {
-        final TodoItem item = mItems.get(position);
-
-        if (!mPendingRemoveList.contains(item)) {
-            mPendingRemoveList.add(item);
-            notifyItemChanged(position);
-
-            Runnable pending = new Runnable() {
-                @Override
-                public void run() {
-                    remove(mItems.indexOf(item));
-                }
-            };
-
-            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-            mPendingRunnables.put(item, pending);
-        }
-    }
-
-    public void setItemPendingComplete(int position) {
-        final TodoItem item = mItems.get(position);
-
-        if (!mPendingCompleteList.contains(item)) {
-            mPendingCompleteList.add(item);
-            notifyItemChanged(position);
-
-            Runnable pending = new Runnable() {
-                @Override
-                public void run() {
-                    complete(mItems.indexOf(item));
-                }
-            };
-
-            mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-            mPendingRunnables.put(item, pending);
-        }
-    }
-    */
 
     public ListFragment() {
         mPendingRemoveList = new ArrayList<>();
@@ -345,8 +297,6 @@ public abstract class ListFragment extends BaseFragment
 
     @Override
     public void onDataChange() {
-        //todoStorage.saveTodos(mAdapter.getItems());
-
         // Show alternative view
         if (mAdapter.getItemCount() == 0) {
             mEmptyListView.setVisibility(View.VISIBLE);

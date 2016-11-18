@@ -15,29 +15,20 @@ import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> {
-
-    // Pending list
-    private List<TodoItem> mPendingRemoveList;
-    private List<TodoItem> mPendingCompleteList;
 
     // Listeners
     private OnStartDragListener mDragStartListener;
     private ListChangeListener mListChangeListener = ListChangeListener.Placeholder;
     private ListClickListener mListClickListener = ListClickListener.Placeholder;
 
-    private boolean undoOn;
-    private Handler mRunnableHandler = new Handler();
-    HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
-
     public RecyclerListAdapter(Fragment fragment, List<TodoItem> items) {
         super(fragment.getActivity(), items);
         mDragStartListener = null;
-        mPendingRemoveList = new ArrayList<>();
-        mPendingCompleteList = new ArrayList<>();
         setHasStableIds(true);
     }
 
@@ -65,6 +56,7 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
         TodoItemHolder itemHolder = (TodoItemHolder) holder; 
         TodoItem item = mItems.get(position);
 
+        /*
         if (mPendingRemoveList.contains(item) || mPendingCompleteList.contains(item)) {
             boolean removeItem = mPendingRemoveList.contains(item);
             View view = removeItem ?
@@ -106,36 +98,14 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
                     }
                 }
             });
-        } else {
+        } else {*/
             itemHolder.updateView(item);
 
             // Start a drag whenever the handle view it touched
             itemHolder.bindDragEvent(mDragStartListener);
 
-            itemHolder.mView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    mListClickListener.onItemClick(view);
-                }
-
-            });
-        }
-    }
-
-    public void remove(TodoItem item) {
-        if (!mItems.contains(item)) {
-            return;
-        }
-
-        int position = mItems.indexOf(item);
-        mItems.remove(item);
-        notifyItemRemoved(position);
-
-        if (mListChangeListener != null) {
-            // Notify data changes
-            mListChangeListener.onDataChange();
-        }
+            itemHolder.mView.setOnClickListener(view -> mListClickListener.onItemClick(view));
+        //}
     }
 
     public void remove(int position) {
@@ -189,6 +159,16 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     public void addItem(int position, TodoItem item) {
         mItems.add(position, item);
         notifyItemInserted(position);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        Collections.swap(mItems, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
 
         if (mListChangeListener != null) {
             // Notify data changes

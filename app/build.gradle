@@ -11,6 +11,9 @@ android {
         targetSdkVersion 23
         versionCode 4
         versionName "0.4-alpha"
+        retrolambda {
+            jvmArgs '-noverify'
+        }
     }
     buildTypes {
         release {
