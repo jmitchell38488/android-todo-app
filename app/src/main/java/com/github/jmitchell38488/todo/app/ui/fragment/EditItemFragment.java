@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
 
 import javax.inject.Inject;
@@ -31,11 +32,15 @@ public class EditItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle arguments = getArguments();
+        TodoItem item = null;
+
+        if (arguments != null && arguments.getParcelable("todoitem") != null) {
+            item = arguments.getParcelable("todoitem");
+        }
 
         View view = inflater.inflate(R.layout.fragment_edit_item, container, false);
-        TodoItemEditHolder viewHolder = new TodoItemEditHolder(view, getActivity());
+        TodoItemEditHolder viewHolder = new TodoItemEditHolder(view, getActivity(), item);
         view.setTag(viewHolder);
-
         return view;
     }
 

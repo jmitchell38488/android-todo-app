@@ -1,6 +1,7 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
+import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
@@ -83,12 +85,9 @@ public abstract class ListFragment extends BaseFragment
 
         mPosition = position;
 
-        /*Intent intent = new Intent(ListFragment.this.getActivity(), EditItemActivity.class);
+        Intent intent = new Intent(ListFragment.this.getActivity(), EditItemActivity.class);
         intent.putExtras(arguments);
-        startActivity(intent);*/
-        //return;
-
-        ((ListActivity) getActivity()).showEditDialog(arguments);
+        startActivity(intent);
     };
 
     private RecyclerListAdapter.BindViewHolderListener mBindViewHolderListener = (holder, position) -> {
@@ -112,8 +111,6 @@ public abstract class ListFragment extends BaseFragment
             ViewGroup.LayoutParams lp = itemHolder.mView.getLayoutParams();
             lp.height = item.height;
             itemHolder.mView.setLayoutParams(lp);
-
-            //actionView.setMinimumHeight(item.height);
 
             actionView.setOnClickListener(view -> {
                 if (itemHolder.isPendingComplete()) {
@@ -140,6 +137,11 @@ public abstract class ListFragment extends BaseFragment
             itemHolder.getItemVisibleView().getViewTreeObserver().addOnGlobalLayoutListener(() -> {
                 item.height = itemHolder.getItemVisibleView().getHeight();
             });
+
+            ViewGroup.LayoutParams lp = itemHolder.mView.getLayoutParams();
+            lp.width = FrameLayout.LayoutParams.MATCH_PARENT;
+            lp.height = FrameLayout.LayoutParams.WRAP_CONTENT;
+            itemHolder.mView.setLayoutParams(lp);
         }
     };
 
@@ -155,13 +157,13 @@ public abstract class ListFragment extends BaseFragment
                 mAdapter.addItemToPendingActionList(item);
                 mAdapter.notifyItemChanged(position);
 
-                /*Runnable pending = () -> {
+                Runnable pending = () -> {
                     mAdapter.removeItemFromPendingActionList(item);
                     mHelper.setItemComplete(item.getId());
                 };
 
                 mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-                mPendingRunnables.put(item, pending);*/
+                mPendingRunnables.put(item, pending);
             }
         }
 
@@ -175,13 +177,13 @@ public abstract class ListFragment extends BaseFragment
                 mAdapter.addItemToPendingActionList(item);
                 mAdapter.notifyItemChanged(position);
 
-                /*Runnable pending = () -> {
+                Runnable pending = () -> {
                     mAdapter.removeItemFromPendingActionList(item);
                     mHelper.setItemRemoved(item.getId());
                 };
 
                 mRunnableHandler.postDelayed(pending, PENDING_REMOVAL_TIMEOUT);
-                mPendingRunnables.put(item, pending);*/
+                mPendingRunnables.put(item, pending);
             }
         }
     };
@@ -371,54 +373,6 @@ public abstract class ListFragment extends BaseFragment
             mRecyclerView.smoothScrollToPosition(0);
         else
             mRecyclerView.scrollToPosition(0);
-    }
-
-    public TodoItem getItemFromAdapter(int position) {
-        return mAdapter.getItem(position);
-    }
-
-    public void saveUpdatedItem(int position, TodoItem item) {
-        TodoItem mItem = mAdapter.getItem(position);
-
-        // Flags haven't changed?
-        if (mItem.isCompleted() == item.isCompleted() &&
-                mItem.isPinned() == item.isPinned()) {
-            replaceAdapterItem(position, item);
-            return;
-        }
-
-        // Not so lucky, remove and add it!
-        removeItem(position, false);
-        addItem(item);
-    }
-
-    public void replaceAdapterItem(int position, TodoItem item) {
-        mAdapter.replace(position, item);
-    }
-
-    public void addItem(TodoItem item) {
-        int newPosition = RecyclerView.NO_POSITION;
-
-        if (item.isCompleted()) {
-            newPosition = getFirstCompletedPosition();
-        } else {
-            newPosition = item.isPinned() ? 0 : getFirstUnpinnedPosition();
-        }
-
-        if (newPosition == RecyclerView.NO_POSITION) {
-            newPosition = 0;
-        }
-
-        mAdapter.addItem(newPosition, item);
-        mRecyclerView.smoothScrollToPosition(newPosition);
-    }
-
-    public void removeItem(int position, boolean undo) {
-        /*if (undo) {
-            mAdapter.onItemDismiss(position);
-        } else {
-            mAdapter.remove(position);
-        }*/
     }
 
     protected void initRecyclerView() {

@@ -1,22 +1,17 @@
 package com.github.jmitchell38488.todo.app.ui.adapter;
 
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.ui.helper.TodoItemHelper;
-import com.github.jmitchell38488.todo.app.ui.listener.OnStartDragListener;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> {
