@@ -346,7 +346,7 @@ public abstract class ListFragment extends BaseFragment
         if (mAdapter.getItemCount() == 0) {
             mEmptyListView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-        } else if (mAdapter.getItemCount() > 0 && mRecyclerView.getVisibility() == View.GONE) {
+        } else if (mAdapter.getItemCount() > 0) {
             mEmptyListView.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
         }

@@ -147,7 +147,6 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
                         mAdapter.clear();
                     }
 
-                    mAdapter.setLoadMore(!items.isEmpty());
                     mAdapter.add(items);
                 }, throwable -> {
                     Log.d(LOG_TAG, "Items loading failed");
@@ -155,7 +154,8 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
     }
 
     private void pullPage(int page) {
-        int offset = (page > 0) ? (page * VISIBLE_THRESHOLD) - page : 0;
+        int offset = (page > 1) ? (page * VISIBLE_THRESHOLD) - VISIBLE_THRESHOLD : 0;
+        Log.d(LOG_TAG, String.format("Loading page %d, from %d to %d", page, offset, offset + VISIBLE_THRESHOLD));
         mItemsObservableSubject.onNext(
             mItemRepository.getItems(offset, VISIBLE_THRESHOLD, mSort, mFilter)
         );

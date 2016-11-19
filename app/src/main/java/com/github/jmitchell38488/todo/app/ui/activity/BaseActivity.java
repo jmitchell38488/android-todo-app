@@ -48,7 +48,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         ViewCompat.setElevation(mToolbar, getResources().getDimension(R.dimen.toolbar_elevation));
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) return;
+
+        if (actionBar == null) {
+            return;
+        }
+
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setHomeButtonEnabled(false);
     }

@@ -1,5 +1,6 @@
 package com.github.jmitchell38488.todo.app.ui.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -126,6 +127,15 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     public void addItem(int position, TodoItem item) {
         mItems.add(position, item);
         notifyItemInserted(position);
+
+        if (mListChangeListener != null) {
+            // Notify data changes
+            mListChangeListener.onDataChange();
+        }
+    }
+
+    public void add(@NonNull List<TodoItem> newItems) {
+        super.add(newItems);
 
         if (mListChangeListener != null) {
             // Notify data changes

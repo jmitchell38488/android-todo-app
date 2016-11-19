@@ -61,7 +61,7 @@ public abstract class EndlessAdapter<T, VH extends RecyclerView.ViewHolder> exte
 
     @Override
     public int getItemViewType(int position) {
-        return isLoadMore(position) ? VIEW_TYPE_LOAD_MORE : VIEW_TYPE_ITEM;
+        return VIEW_TYPE_ITEM;
     }
 
     @Override
