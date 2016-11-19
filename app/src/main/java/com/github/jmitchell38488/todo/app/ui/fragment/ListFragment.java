@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
@@ -21,9 +20,7 @@ import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
 import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
-import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
-import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.ui.helper.TodoItemHelper;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemStateChangeListener;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemTouchListener;
@@ -60,13 +57,12 @@ public abstract class ListFragment extends BaseFragment
     @BindView(R.id.list_container) RecyclerView mRecyclerView;
     @BindView(R.id.empty_list) View mEmptyListView;
 
-    @Inject TodoStorage todoStorage;
+    @Inject protected TodoItemRepository mItemRepository;
 
     private int mPosition;
 
     protected TodoItemHelper mHelper;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected TodoItemRepository mItemRepository;
     protected CompositeSubscription mSubscriptions;
 
     protected List<TodoItem> mPendingRemoveList;
@@ -291,7 +287,7 @@ public abstract class ListFragment extends BaseFragment
 
         List<TodoItem> restoredList = savedInstanceState != null
                 ? savedInstanceState.getParcelableArrayList(STATE_LIST)
-                : todoStorage.getTodos();
+                : new ArrayList<>();
 
         mUndoOn = savedInstanceState != null
                 ? savedInstanceState.getBoolean(STATE_UNDO)

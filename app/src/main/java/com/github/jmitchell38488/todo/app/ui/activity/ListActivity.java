@@ -1,43 +1,32 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
-import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.data.TodoStorage;
-import com.github.jmitchell38488.todo.app.ui.dialog.EditTodoItemDialog;
-import com.github.jmitchell38488.todo.app.ui.dialog.TodoItemDialogListener;
-import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
-
-import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends BaseActivity {
+
+    private static final String STATE_MODE = "state_mode";
+    private static final String ITEMS_FRAGMENT_TAG = "fragment_items";
 
     @BindView(R.id.fab) FloatingActionButton fab;
     private SortedListFragment mFragment;
+    private String mMode = null;
+    private boolean mTwoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        setMenuBar();
 
         TodoApp.getComponent(this).inject(this);
 
@@ -62,18 +51,28 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
-    private void setMenuBar() {
-        Toolbar t = (Toolbar) findViewById(R.id.list_toolbar);
-        setSupportActionBar(t);
-        getSupportActionBar().setTitle(null);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putString(STATE_MODE, mMode);
         getSupportFragmentManager().putFragment(outState, "mFragment", mFragment);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
 }

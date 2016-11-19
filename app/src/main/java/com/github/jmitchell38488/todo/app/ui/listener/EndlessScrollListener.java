@@ -2,6 +2,7 @@ package com.github.jmitchell38488.todo.app.ui.listener;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -81,6 +82,25 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
         if (mCallback != null) {
             mCallback.onLoadMore(page, totalItemsCount);
         }
+    }
+
+    public static EndlessScrollListener fromLinearLayoutManager(
+            @NonNull final LinearLayoutManager layoutManager,
+            int visibleThreshold,
+            int startPage) {
+
+        return new EndlessScrollListener(visibleThreshold, startPage) {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy <= 0) return;
+
+                final int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
+                final int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                final int totalItemCount = layoutManager.getItemCount();
+
+                onScrolled(firstVisibleItem, lastVisibleItem - firstVisibleItem, totalItemCount);
+            }
+        };
     }
 
     public static EndlessScrollListener fromGridLayoutManager(

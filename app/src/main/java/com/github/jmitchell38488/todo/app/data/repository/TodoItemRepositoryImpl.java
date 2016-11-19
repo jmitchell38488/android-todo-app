@@ -3,6 +3,8 @@ package com.github.jmitchell38488.todo.app.data.repository;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 
+import com.github.jmitchell38488.todo.app.data.Filter;
+import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
@@ -55,6 +57,54 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
 
         return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
                 TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
+                .map(TodoItemMeta.PROJECTION_MAP)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<List<TodoItem>> getItems(int offset, int length, Sort sort, Filter filter) {
+        String selection = "";
+        String[] args = {};
+        String tsort = "";
+
+        if (sort == null) {
+            sort = Sort.DEFAULT;
+        }
+
+        if (filter == null) {
+            filter = Filter.DEFAULT;
+        }
+
+        switch (filter) {
+            case COMPLETED:
+                selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
+                args = new String[]{"1"};
+                break;
+
+            case PINNED:
+                selection = TodoContract.TodoItem.TODO_PINNED + "=?";
+                args = new String[]{"1"};
+                break;
+        }
+
+        switch (sort) {
+            case DEFAULT:
+                tsort = TodoContract.TodoItem.DEFAULT_SORT;
+                break;
+
+            case COMPLETED:
+                tsort = TodoContract.TodoItem.TODO_COMPLETED + " ASC";
+                break;
+
+            case PINNED:
+                tsort = TodoContract.TodoItem.TODO_PINNED + " ASC";
+                break;
+        }
+
+        tsort += String.format(" LIMIT %d,%d", offset, length);
+
+        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, tsort, true)
                 .map(TodoItemMeta.PROJECTION_MAP)
                 .subscribeOn(Schedulers.io());
     }

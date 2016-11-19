@@ -15,10 +15,6 @@ import com.github.jmitchell38488.todo.app.util.SelectionBuilder;
 
 import java.util.Arrays;
 
-/**
- * Created by justinmitchell on 16/11/2016.
- */
-
 public class TodoProvider extends ContentProvider {
 
     private static final String LOG_TAG = TodoProvider.class.getSimpleName();

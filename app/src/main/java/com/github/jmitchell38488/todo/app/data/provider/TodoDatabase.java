@@ -31,7 +31,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 TodoItemColumns.TODO_DESCRIPTION + " TEXT, " +
                 TodoItemColumns.TODO_ORDER + " INTEGER NOT NULL DEFAULT 0, " +
                 TodoItemColumns.TODO_PINNED + " INTEGER NOT NULL DEFAULT 0, " +
-                TodoItemColumns.TODO_COMPLETED + " INTEGER NOT NULL DEFAULT 0"
+                TodoItemColumns.TODO_COMPLETED + " INTEGER NOT NULL DEFAULT 0);"
         );
 
         insertTodos(db);
@@ -44,23 +44,51 @@ final public class TodoDatabase extends SQLiteOpenHelper {
     private void insertTodos(SQLiteDatabase db) {
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
                 .id(1).title("Test To Do").description("This is a test")
-                .order(1).completed(false).pinned(false).build());
+                .order(4).completed(false).pinned(false).build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(1).title("Test pinned").description("This is a pinned to do, it should be at the top")
+                .id(2).title("Test pinned").description("This is a pinned to do, it should be at the top")
                 .order(1).completed(false).pinned(true).build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(1).title("Test complete").description("This is a completed to to, it should be at the bottom")
-                .order(1).completed(true).pinned(false).build());
+                .id(3).title("Test complete").description("This is a completed to to, it should be at the bottom")
+                .order(5).completed(true).pinned(false).build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(1).title("Test foo").description("This should be 2nd")
-                .order(1).completed(false).pinned(false).build());
+                .id(4).title("Test foo").description("This should be 2nd")
+                .order(2).completed(false).pinned(false).build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(1).title("Test bar").description("This should be 3rd")
-                .order(1).completed(false).pinned(false).build());
+                .id(5).title("Test bar").description("This should be 3rd")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(6).title("Test bar").description("This should be 4th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(7).title("Test bar").description("This should be 5th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(8).title("Test bar").description("This should be 6th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(9).title("Test bar").description("This should be 7th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(10).title("Test bar").description("This should be 8th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(11).title("Test bar").description("This should be 9th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(12).title("Test bar").description("This should be 10th")
+                .order(3).completed(false).pinned(false).build());
     }
 
     @Override

@@ -16,12 +16,14 @@ public class TodoModule {
         this.app = app;
     }
 
-    @Provides @PerApp
+    @Provides
+    @PerApp
     TodoApp provideTodoApp() {
         return app;
     }
 
-    @Provides @PerApp
+    @Provides
+    @PerApp
     Application provideApplication(TodoApp app) {
         return app;
     }

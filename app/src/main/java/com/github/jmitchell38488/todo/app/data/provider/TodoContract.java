@@ -9,7 +9,7 @@ public class TodoContract {
     public interface TodoItemColumns {
         String TODO_TITLE = "item";
         String TODO_DESCRIPTION = "description";
-        String TODO_ORDER = "order";
+        String TODO_ORDER = "item_order";
         String TODO_COMPLETED = "completed";
         String TODO_PINNED = "pinned";
     }
@@ -28,8 +28,10 @@ public class TodoContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TODO;
 
-        public static final String DEFAULT_SORT = TODO_PINNED + " DESC, " +
-                TODO_COMPLETED + " ASC" + TODO_ORDER + " ASC";
+        public static final String DEFAULT_SORT =
+                TODO_PINNED + " DESC, " +
+                TODO_COMPLETED + " ASC, " +
+                TODO_ORDER + " ASC";
 
         public static Uri buildTodoItemsUri() {
             return CONTENT_URI;

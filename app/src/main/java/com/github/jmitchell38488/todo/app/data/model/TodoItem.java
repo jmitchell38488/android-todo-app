@@ -3,22 +3,30 @@ package com.github.jmitchell38488.todo.app.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
 
-    @Expose long id;
+    @Expose @SerializedName(TodoContract.TodoItem._ID)
+    long id;
 
-    @Expose String title;
+    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_TITLE)
+    String title;
 
-    @Expose String description;
+    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_DESCRIPTION)
+    String description;
 
-    @Expose long order;
+    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_ORDER)
+    long order;
 
-    @Expose boolean completed;
+    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_COMPLETED)
+    boolean completed;
 
-    @Expose boolean pinned;
+    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_PINNED)
+    boolean pinned;
 
     // We don't want to keep any of these public properties
     @Expose(serialize = false, deserialize = false)
