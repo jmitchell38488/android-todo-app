@@ -37,74 +37,32 @@ final public class TodoDatabase extends SQLiteOpenHelper {
         insertTodos(db);
     }
 
-    /**
-     * Inserts predefined list of movie genres taken from Movie Database.
-     * Ideally we should fetch them from api on first launch.
-     */
     private void insertTodos(SQLiteDatabase db) {
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(1).title("Test To Do").description("This is a test")
-                .order(4).completed(false).pinned(false).build());
+                .id(1).order(1).completed(false).pinned(true)
+                .title("Pick up Airplane tickets")
+                .description("This is a high priority item that will always appear at the top of the" +
+                        "list. You can reorder high priority items among other high priority items, but" +
+                        "not with other items.")
+                .build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(2).title("Test pinned").description("This is a pinned to do, it should be at the top")
-                .order(1).completed(false).pinned(true).build());
+                .id(2).order(1).completed(false).pinned(false)
+                .title("Pick up milk at the market")
+                .description("This is a standard to do item that will appear beneath high priority" +
+                        "items and above completed items. For all items, swiping left will mark" +
+                        "them as complete, or active if already completed, and swiping left will" +
+                        "permanently remove them. You can undo each action if you have undo enabled" +
+                        "(it is by default).")
+                .build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(3).title("Test complete").description("This is a completed to to, it should be at the bottom")
-                .order(5).completed(true).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(4).title("Test foo").description("This should be 2nd")
-                .order(2).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(5).title("Test bar").description("This should be 3rd")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(6).title("Test bar").description("This should be 4th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(7).title("Test bar").description("This should be 5th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(8).title("Test bar").description("This should be 6th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(9).title("Test bar").description("This should be 7th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(10).title("Test bar").description("This should be 8th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(11).title("Test bar").description("This should be 9th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(12).title("Test bar").description("This should be 10th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(13).title("Test bar").description("This should be 11th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(14).title("Test bar").description("This should be 12th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(15).title("Test bar").description("This should be 13th")
-                .order(3).completed(false).pinned(false).build());
-
-        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(16).title("Test bar").description("This should be 14th")
-                .order(3).completed(false).pinned(false).build());
+                .id(3).order(1).completed(true).pinned(false)
+                .title("Buy movie tickets")
+                .description("This is a completed to do item. You can make me active again by " +
+                        "swiping to the left. Since I am complete, I will always be greyed out with" +
+                        "strikethrough text, and will always appear at the bottom of the list.")
+                .build());
     }
 
     @Override
