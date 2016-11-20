@@ -11,7 +11,8 @@ import dagger.Provides;
 @Module
 public final class RepositoryModule {
 
-    @Provides @PerApp
+    @Provides
+    @Singleton
     public TodoItemRepository providesGenresRepository(BriteContentResolver contentResolver) {
         return new TodoItemRepositoryImpl(contentResolver);
     }

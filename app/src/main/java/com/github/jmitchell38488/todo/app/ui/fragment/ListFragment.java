@@ -62,7 +62,7 @@ public abstract class ListFragment extends BaseFragment
     private int mPosition;
 
     protected TodoItemHelper mHelper;
-    protected RecyclerView.LayoutManager mLayoutManager;
+    protected LinearLayoutManager mLayoutManager;
     protected CompositeSubscription mSubscriptions;
 
     protected List<TodoItem> mPendingRemoveList;
@@ -365,19 +365,22 @@ public abstract class ListFragment extends BaseFragment
     }
 
     public void scrollToTop(boolean smooth) {
-        if (smooth)
+        if (smooth) {
             mRecyclerView.smoothScrollToPosition(0);
-        else
+        } else {
             mRecyclerView.scrollToPosition(0);
+        }
     }
 
     protected void initRecyclerView() {
+        mLayoutManager = new LinearLayoutManager(getActivity());
+
         int listDividerHeight = (int) getResources().getDimension(R.dimen.list_divider);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(listDividerHeight));
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Set touch helper
         ItemTouchHelper.Callback callback = new ItemTouchCallback(mItemTouchListener, getActivity());

@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.github.jmitchell38488.todo.app.annotation.PerApp;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,13 +19,13 @@ public class TodoModule {
     }
 
     @Provides
-    @PerApp
+    @Singleton
     TodoApp provideTodoApp() {
         return app;
     }
 
     @Provides
-    @PerApp
+    @Singleton
     Application provideApplication(TodoApp app) {
         return app;
     }

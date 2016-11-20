@@ -1,6 +1,7 @@
 package com.github.jmitchell38488.todo.app.data.provider;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -39,6 +40,11 @@ public class TodoContract {
 
         public static Uri buildTodoItemUri(String itemId) {
             return CONTENT_URI.buildUpon().appendPath(itemId).build();
+        }
+
+        public static Uri buildTodoItemUriWithPage(int pageNo) {
+            return CONTENT_URI.buildUpon().appendPath("page")
+                    .appendPath(Integer.toString(pageNo)).build();
         }
 
         public static String getTodoItemId(Uri uri) {

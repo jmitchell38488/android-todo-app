@@ -25,12 +25,14 @@ public class TodoProvider extends ContentProvider {
 
     private static final int TODOITEMS = 100;
     private static final int TODOITEM_ID = 101;
+    private static final int TODOITEM_PAGE = 102;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = TodoContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, "todo", TODOITEMS);
+        matcher.addURI(authority, "todo/page/*", TODOITEM_PAGE);
         matcher.addURI(authority, "todo/*", TODOITEM_ID);
 
         return matcher;
@@ -55,6 +57,8 @@ public class TodoProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case TODOITEMS:
+                return TodoContract.TodoItem.CONTENT_TYPE;
+            case TODOITEM_PAGE:
                 return TodoContract.TodoItem.CONTENT_TYPE;
             case TODOITEM_ID:
                 return TodoContract.TodoItem.CONTENT_ITEM_TYPE;
@@ -147,6 +151,7 @@ public class TodoProvider extends ContentProvider {
         switch (match) {
             // get all items
             case TODOITEMS:
+            case TODOITEM_PAGE:
                 return builder.table(TodoDatabase.Tables.TODO_ITEMS);
 
             // get single item

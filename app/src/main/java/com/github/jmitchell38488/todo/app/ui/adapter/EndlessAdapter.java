@@ -12,7 +12,8 @@ import java.util.List;
 
 import rx.functions.Action1;
 
-public abstract class EndlessAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public abstract class EndlessAdapter<T, VH extends RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Action1<List<T>> {
 
     protected static final int VIEW_TYPE_LOAD_MORE = 1;
@@ -102,9 +103,10 @@ public abstract class EndlessAdapter<T, VH extends RecyclerView.ViewHolder> exte
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return viewType == VIEW_TYPE_LOAD_MORE
+        return onCreateItemHolder(parent, viewType);
+        /*return viewType == VIEW_TYPE_LOAD_MORE
                 ? new RecyclerView.ViewHolder(mInflater.inflate(R.layout.item_load_more, parent, false)) {}
-                : onCreateItemHolder(parent, viewType);
+                : onCreateItemHolder(parent, viewType);*/
     }
 
     protected abstract VH onCreateItemHolder(ViewGroup parent, int viewType);

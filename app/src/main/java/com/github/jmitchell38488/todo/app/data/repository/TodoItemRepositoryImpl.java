@@ -39,30 +39,7 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
     }
 
     @Override
-    public Observable<List<TodoItem>> getAllCompletedItems() {
-        String selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
-        String[] args = {"1"};
-
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
-                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
-    }
-
-    @Override
-    public Observable<List<TodoItem>> getAllNotCompletedItems() {
-
-        String selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
-        String[] args = {"0"};
-
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
-                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
-    }
-
-    @Override
-    public Observable<List<TodoItem>> getItems(int offset, int length, Sort sort, Filter filter) {
+    public Observable<List<TodoItem>> getAllItems(Sort sort, Filter filter) {
         String selection = "";
         String[] args = {};
         String tsort = "";
@@ -101,9 +78,80 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
                 break;
         }
 
-        tsort += String.format(" LIMIT %d,%d", offset, length);
+        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, tsort, true)
+                .map(TodoItemMeta.PROJECTION_MAP)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<List<TodoItem>> getAllCompletedItems() {
+        String selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
+        String[] args = {"1"};
 
         return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
+                .map(TodoItemMeta.PROJECTION_MAP)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<List<TodoItem>> getAllNotCompletedItems() {
+
+        String selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
+        String[] args = {"0"};
+
+        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
+                .map(TodoItemMeta.PROJECTION_MAP)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<List<TodoItem>> getItems(int page, Sort sort, Filter filter) {
+        String selection = "";
+        String[] args = {};
+        String tsort = "";
+
+        if (sort == null) {
+            sort = Sort.DEFAULT;
+        }
+
+        if (filter == null) {
+            filter = Filter.DEFAULT;
+        }
+
+        switch (filter) {
+            case COMPLETED:
+                selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
+                args = new String[]{"1"};
+                break;
+
+            case PINNED:
+                selection = TodoContract.TodoItem.TODO_PINNED + "=?";
+                args = new String[]{"1"};
+                break;
+        }
+
+        switch (sort) {
+            case DEFAULT:
+                tsort = TodoContract.TodoItem.DEFAULT_SORT;
+                break;
+
+            case COMPLETED:
+                tsort = TodoContract.TodoItem.TODO_COMPLETED + " ASC";
+                break;
+
+            case PINNED:
+                tsort = TodoContract.TodoItem.TODO_PINNED + " ASC";
+                break;
+        }
+
+        int offset = (page > 1) ? (page * VISIBLE_THRESHOLD) - VISIBLE_THRESHOLD : 0;
+
+        tsort += String.format(" LIMIT %d,%d", offset, VISIBLE_THRESHOLD - 1);
+
+        return mBriteContentResolver.createQuery(TodoContract.TodoItem.buildTodoItemUriWithPage(page),
                 TodoItemMeta.PROJECTION, selection, args, tsort, true)
                 .map(TodoItemMeta.PROJECTION_MAP)
                 .subscribeOn(Schedulers.io());

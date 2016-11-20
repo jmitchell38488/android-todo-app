@@ -14,9 +14,11 @@ import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 import com.github.jmitchell38488.todo.app.ui.module.TodoItemModule;
 import com.google.gson.Gson;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
-@PerApp
+@Singleton
 @Component (
         modules = {
                 TodoModule.class,

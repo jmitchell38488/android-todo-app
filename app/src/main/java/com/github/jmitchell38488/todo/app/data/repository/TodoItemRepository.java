@@ -10,13 +10,17 @@ import rx.Observable;
 
 public interface TodoItemRepository {
 
+    public final int VISIBLE_THRESHOLD = 10;
+
     Observable<List<TodoItem>> getAllItems();
+
+    Observable<List<TodoItem>> getAllItems(Sort sort, Filter filter);
 
     Observable<List<TodoItem>> getAllCompletedItems();
 
     Observable<List<TodoItem>> getAllNotCompletedItems();
 
-    Observable<List<TodoItem>> getItems(int offset, int length, Sort sort, Filter filter);
+    Observable<List<TodoItem>> getItems(int page, Sort sort, Filter filter);
 
     void saveTodoItem(TodoItem item);
 

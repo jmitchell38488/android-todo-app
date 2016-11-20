@@ -89,6 +89,22 @@ final public class TodoDatabase extends SQLiteOpenHelper {
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
                 .id(12).title("Test bar").description("This should be 10th")
                 .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(13).title("Test bar").description("This should be 11th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(14).title("Test bar").description("This should be 12th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(15).title("Test bar").description("This should be 13th")
+                .order(3).completed(false).pinned(false).build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(16).title("Test bar").description("This should be 14th")
+                .order(3).completed(false).pinned(false).build());
     }
 
     @Override

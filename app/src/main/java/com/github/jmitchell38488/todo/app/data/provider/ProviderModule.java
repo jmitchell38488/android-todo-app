@@ -12,24 +12,23 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by justinmitchell on 16/11/2016.
- */
-
 @Module
 public class ProviderModule {
 
-    @Provides @PerApp
+    @Provides
+    @Singleton
     SqlBrite provideSqlBrite() {
         return SqlBrite.create();
     }
 
-    @Provides @PerApp
+    @Provides
+    @Singleton
     ContentResolver provideContentResolver(Application application) {
         return application.getContentResolver();
     }
 
-    @Provides @PerApp
+    @Provides
+    @Singleton
     BriteContentResolver provideBrideContentResolver(SqlBrite sqlBrite, ContentResolver contentResolver) {
         return sqlBrite.wrapContentProvider(contentResolver);
     }

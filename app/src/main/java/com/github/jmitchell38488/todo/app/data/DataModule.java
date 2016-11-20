@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,12 +27,14 @@ public class DataModule {
     public DataModule() {
     }
 
-    @Provides @PerApp
+    @Provides
+    @Singleton
     SharedPreferences provideSharedPreferences(Application app) {
         return app.getSharedPreferences(PREFS_DEFAULT, Context.MODE_PRIVATE);
     }
 
-    @Provides @PerApp
+    @Provides
+    @Singleton
     Gson provideGson() {
         return new Gson();
     }

@@ -57,7 +57,9 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
         if (totalItemCount < previousTotalItemCount) {
             this.currentPage = this.startingPageIndex;
             this.previousTotalItemCount = totalItemCount;
-            if (totalItemCount == 0) { this.loading = true; }
+            if (totalItemCount == 0) {
+                this.loading = true;
+            }
         }
         // If it’s still loading, we check to see if the dataset count has
         // changed, if so we conclude it has finished loading and update the current page
@@ -92,7 +94,9 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
         return new EndlessScrollListener(visibleThreshold, startPage) {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy <= 0) return;
+                if (dy <= 0) {
+                    return;
+                }
 
                 final int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 final int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
