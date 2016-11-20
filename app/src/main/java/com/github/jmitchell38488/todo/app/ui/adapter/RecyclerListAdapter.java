@@ -162,7 +162,5 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
 
     public interface ListClickListener {
         void onItemClick(View view);
-
-        ListClickListener Placeholder = view -> {};
     }
 }

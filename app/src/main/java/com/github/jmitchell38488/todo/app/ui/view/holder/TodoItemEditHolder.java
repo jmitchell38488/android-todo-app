@@ -21,7 +21,6 @@ public class TodoItemEditHolder {
     Context mContext;
     TodoItem mItem;
 
-    @BindView(R.id.edit_dialog_logo_main) SignPainterRegularTextView logoView;
     @BindView(R.id.edit_dialog_title) RobotoLightEditText titleView;
     @BindView(R.id.edit_dialog_description) RobotoLightEditText descriptionView;
     @BindView(R.id.edit_dialog_pinned) Switch pinnedSwitch;
@@ -38,8 +37,6 @@ public class TodoItemEditHolder {
     }
 
     public void updateView() {
-        logoView.setText(mContext.getString(R.string.action_create));
-
         pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_false));
 
         pinnedSwitch.setChecked(false);
@@ -55,8 +52,6 @@ public class TodoItemEditHolder {
         if (mItem == null) {
             return;
         }
-
-        logoView.setText(mContext.getString(R.string.action_edit));
 
         if (mItem.isPinned()) {
             pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_true));
