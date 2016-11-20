@@ -3,11 +3,14 @@ package com.github.jmitchell38488.todo.app.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.util.SortedList;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
+import com.github.jmitchell38488.todo.app.data.Filter;
+import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 
 import butterknife.BindView;
@@ -31,7 +34,7 @@ public class ListActivity extends BaseActivity {
         TodoApp.getComponent(this).inject(this);
 
         if (savedInstanceState == null) {
-            mFragment = new SortedListFragment();
+            mFragment = SortedListFragment.newInstance(Sort.DEFAULT, Filter.DEFAULT);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.activity_list_container, mFragment)
                     .commit();

@@ -3,42 +3,29 @@ package com.github.jmitchell38488.todo.app.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
 import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
-import com.github.jmitchell38488.todo.app.ui.adapter.Pager;
-import com.github.jmitchell38488.todo.app.ui.listener.EndlessScrollListener;
 
 import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
-public class SortedListFragment extends ListFragment implements EndlessScrollListener.OnLoadMoreCallback {
+public class SortedListFragment extends ListFragment {
 
     private static final String LOG_TAG = SortedListFragment.class.getSimpleName();
     private static final String ARG_SORT = "state_sort";
     private static final String ARG_FILTER = "state_filter";
-    private static final String STATE_CURRENT_PAGE = "state_current_page";
-    private static final String STATE_IS_LOADING = "state_is_loading";
 
-    private EndlessScrollListener mEndlessScrollListener;
     private static final BehaviorSubject<Observable<List<TodoItem>>> mItemsObservableSubject = BehaviorSubject.create();
-    private Pager<List<TodoItem>, List<TodoItem>> mPager;
 
     private Sort mSort;
     private Filter mFilter;
-    private int mCurrentPage = 0;
-    private boolean mIsLoading = false;
-    private boolean mPagerInitialized = false;
 
     public static SortedListFragment newInstance(@NonNull Sort sort, @Nullable Filter filter) {
         Bundle args = new Bundle();
@@ -67,11 +54,8 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
         }
 
         if (savedInstanceState != null) {
-            mCurrentPage = savedInstanceState.getInt(STATE_CURRENT_PAGE, 0);
-            mIsLoading = savedInstanceState.getBoolean(STATE_IS_LOADING, true);
+            // Nothing at the moment
         }
-
-        mAdapter.setLoadMore(true);
     }
 
     @Override
@@ -104,7 +88,7 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
                     }
                 }));
 
-        //subscribeToItems();
+        subscribeToItems();
         if (savedInstanceState == null) {
             reloadContent();
         }
@@ -113,9 +97,6 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_CURRENT_PAGE, mCurrentPage);
-        outState.putBoolean(STATE_IS_LOADING, mIsLoading);
-        outState.putSerializable(ARG_SORT, mSort);
     }
 
     @Override
@@ -124,77 +105,29 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
         super.onDestroyView();
     }
 
-    @Override
-    public void onLoadMore(int page, int totalItemsCount) {
-        if (mAdapter.isLoadMore()) {
-            pullPage(page);
-        }
-    }
-
     protected final void reloadContent() {
-        mCurrentPage = -1;
-        reAddOnScrollListener(mLayoutManager, mCurrentPage = 0);
         mAdapter.clear();
-        pullPage(1);
-    }
-
-    protected boolean noMorePages() {
-        return false;
     }
 
     private void subscribeToItems() {
-        Observable<List<TodoItem>> source = mItemRepository.getItems(mCurrentPage > 0 ? mCurrentPage : 1, mSort, mFilter);
-        mPager = Pager.create(list -> !mPagerInitialized ? null : mItemRepository.getItems(mCurrentPage + 1, mSort, mFilter));
-
-        mPager.page(source)
-                .subscribeOn(Schedulers.io())
+        Log.d(LOG_TAG, "Subscribing to TodoItems");
+        mSubscriptions.add(Observable.concat(mItemsObservableSubject)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
-                    mCurrentPage++;
-
-                    if (items == null) {
-                        return;
-                    }
-
-                    if (mCurrentPage == 1) {
-                        mAdapter.clear();
-                    }
-
+                    mAdapter.clear();
                     mAdapter.add(items);
-                    return;
-                });
+                }, throwable -> {
+                    Log.d(LOG_TAG, "Items loading failed");
+                }));
 
-        mPagerInitialized = true;
+        mItemsObservableSubject.onNext(
+                mItemRepository.getAllItems(mSort, mFilter)
+        );
     }
-
-    private void pullPage(int page) {
-        Log.d(LOG_TAG, String.format("Loading page %d", page));
-
-        if (mPager == null) {
-            subscribeToItems();
-            mCurrentPage = 0;
-        } else {
-            mPager.next();
-        }
-    }
-
 
     @Override
     protected void initRecyclerView() {
         super.initRecyclerView();
-        reAddOnScrollListener(mLayoutManager, mCurrentPage);
-    }
-
-    private void reAddOnScrollListener(LinearLayoutManager layoutManager, int startPage) {
-        if (mEndlessScrollListener != null) {
-            mRecyclerView.removeOnScrollListener(mEndlessScrollListener);
-        }
-
-        mEndlessScrollListener = EndlessScrollListener
-                .fromLinearLayoutManager(layoutManager, 5, startPage)
-                .setCallback(this);
-
-        mRecyclerView.addOnScrollListener(mEndlessScrollListener);
     }
 
     protected void doCompleteAction(int position) {

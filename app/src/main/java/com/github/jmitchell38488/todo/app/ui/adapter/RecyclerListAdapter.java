@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder> {
+public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolder> {
 
     // Listeners
     private ListChangeListener mListChangeListener = ListChangeListener.Placeholder;
@@ -35,14 +35,6 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
 
     public void setBindViewHolderListener(BindViewHolderListener listener) {
         mOnBindViewHolderListener = listener;
-    }
-
-    public List<TodoItem> getPendingActionList() {
-        return mPendingActionList;
-    }
-
-    public void setPendingActionList(List<TodoItem> items) {
-        mPendingActionList = items;
     }
 
     public boolean pendingActionListContains(TodoItem item) {
@@ -77,8 +69,7 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     }
 
     public void remove(int position) {
-        mItems.remove(position);
-        notifyItemRemoved(position);
+        super.remove(position);
 
         if (mListChangeListener != null) {
             // Notify data changes
@@ -87,13 +78,8 @@ public class RecyclerListAdapter extends EndlessAdapter<TodoItem, TodoItemHolder
     }
 
     @Override
-    public int getItemCount() {
-        return mItems.size();
-    }
-
-    @Override
     public long getItemId(int position) {
-        return (!isLoadMore(position)) ? mItems.get(position).getId() : -1;
+        return mItems.get(position).getId();
     }
 
     public TodoItem getItem(int position) {
