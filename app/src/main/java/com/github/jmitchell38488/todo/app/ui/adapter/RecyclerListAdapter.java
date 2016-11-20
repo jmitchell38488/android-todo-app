@@ -148,19 +148,6 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
         }
     }
 
-    public interface OnItemClickedListener {
-
-        void onItemClicked(TodoItem item, View view, int position);
-
-        OnItemClickedListener Placeholder = new OnItemClickedListener() {
-            @Override
-            public void onItemClicked(TodoItem item, View view, int position) {
-                // Empty default callback holder
-            }
-        };
-
-    }
-
     public interface ListChangeListener {
         void onDataChange();
         void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);

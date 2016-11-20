@@ -22,8 +22,6 @@ public class SortedListFragment extends ListFragment {
     private static final String ARG_SORT = "state_sort";
     private static final String ARG_FILTER = "state_filter";
 
-    private static final BehaviorSubject<Observable<List<TodoItem>>> mItemsObservableSubject = BehaviorSubject.create();
-
     private Sort mSort;
     private Filter mFilter;
 
@@ -55,6 +53,8 @@ public class SortedListFragment extends ListFragment {
 
         if (savedInstanceState != null) {
             // Nothing at the moment
+        } else {
+            reloadContent();
         }
     }
 
@@ -87,11 +87,6 @@ public class SortedListFragment extends ListFragment {
                         }
                     }
                 }));
-
-        subscribeToItems();
-        if (savedInstanceState == null) {
-            reloadContent();
-        }
     }
 
     @Override
@@ -107,22 +102,7 @@ public class SortedListFragment extends ListFragment {
 
     protected final void reloadContent() {
         mAdapter.clear();
-    }
-
-    private void subscribeToItems() {
-        Log.d(LOG_TAG, "Subscribing to TodoItems");
-        mSubscriptions.add(Observable.concat(mItemsObservableSubject)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                    mAdapter.clear();
-                    mAdapter.add(items);
-                }, throwable -> {
-                    Log.d(LOG_TAG, "Items loading failed");
-                }));
-
-        mItemsObservableSubject.onNext(
-            mItemRepository.getAllItems(mSort, mFilter)
-        );
+        mAdapter.add(mItemRepository.getAllItems(mSort, mFilter));
     }
 
     @Override

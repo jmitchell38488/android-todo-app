@@ -2,44 +2,35 @@ package com.github.jmitchell38488.todo.app.data.repository;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.database.Cursor;
 
 import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
-import com.squareup.sqlbrite.BriteContentResolver;
 
 import java.util.List;
-
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 public class TodoItemRepositoryImpl implements TodoItemRepository {
 
     private final ContentResolver mContentResolver;
-    private final BriteContentResolver mBriteContentResolver;
 
-    public TodoItemRepositoryImpl(ContentResolver contentResolver,
-                                  BriteContentResolver briteContentResolver) {
+    public TodoItemRepositoryImpl(ContentResolver contentResolver) {
         mContentResolver = contentResolver;
-        mBriteContentResolver = briteContentResolver;
-    }
-
-    public TodoItemRepositoryImpl(BriteContentResolver briteContentResolver) {
-        this(null, briteContentResolver);
     }
 
     @Override
-    public Observable<List<TodoItem>> getAllItems() {
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
-                TodoItemMeta.PROJECTION, null, null, TodoContract.TodoItem.DEFAULT_SORT, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
+    public List<TodoItem> getAllItems() {
+        Cursor cursor = mContentResolver.query(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, null, null, TodoContract.TodoItem.DEFAULT_SORT);
+
+        List<TodoItem> items = TodoItemMeta.PROJECTION_MAP.call(cursor);
+        return items;
     }
 
     @Override
-    public Observable<List<TodoItem>> getAllItems(Sort sort, Filter filter) {
+    public List<TodoItem> getAllItems(Sort sort, Filter filter) {
         String selection = "";
         String[] args = {};
         String tsort = "";
@@ -78,83 +69,52 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
                 break;
         }
 
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
-                TodoItemMeta.PROJECTION, selection, args, tsort, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
+        Cursor cursor = mContentResolver.query(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, tsort);
+
+        List<TodoItem> items = TodoItemMeta.PROJECTION_MAP.call(cursor);
+        return items;
     }
 
     @Override
-    public Observable<List<TodoItem>> getAllCompletedItems() {
+    public List<TodoItem> getAllCompletedItems() {
         String selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
         String[] args = {"1"};
 
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
-                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
+        Cursor cursor = mContentResolver.query(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT);
+
+        List<TodoItem> items = TodoItemMeta.PROJECTION_MAP.call(cursor);
+        return items;
     }
 
     @Override
-    public Observable<List<TodoItem>> getAllNotCompletedItems() {
-
+    public List<TodoItem> getAllNotCompletedItems() {
         String selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
         String[] args = {"0"};
 
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.CONTENT_URI,
-                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
+        Cursor cursor = mContentResolver.query(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT);
+
+        List<TodoItem> items = TodoItemMeta.PROJECTION_MAP.call(cursor);
+        return items;
     }
 
     @Override
-    public Observable<List<TodoItem>> getItems(int page, Sort sort, Filter filter) {
-        String selection = "";
-        String[] args = {};
-        String tsort = "";
+    public TodoItem getItem(int id) {
+        String selection = TodoContract.TodoItem._ID + "=?";
+        String[] args = {Integer.toString(id)};
 
-        if (sort == null) {
-            sort = Sort.DEFAULT;
+        Cursor cursor = mContentResolver.query(TodoContract.TodoItem.CONTENT_URI,
+                TodoItemMeta.PROJECTION, selection, args, TodoContract.TodoItem.DEFAULT_SORT);
+
+        List<TodoItem> items = TodoItemMeta.PROJECTION_MAP.call(cursor);
+
+        if (items.isEmpty()) {
+            return null;
         }
 
-        if (filter == null) {
-            filter = Filter.DEFAULT;
-        }
-
-        switch (filter) {
-            case COMPLETED:
-                selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
-                args = new String[]{"1"};
-                break;
-
-            case PINNED:
-                selection = TodoContract.TodoItem.TODO_PINNED + "=?";
-                args = new String[]{"1"};
-                break;
-        }
-
-        switch (sort) {
-            case DEFAULT:
-                tsort = TodoContract.TodoItem.DEFAULT_SORT;
-                break;
-
-            case COMPLETED:
-                tsort = TodoContract.TodoItem.TODO_COMPLETED + " ASC";
-                break;
-
-            case PINNED:
-                tsort = TodoContract.TodoItem.TODO_PINNED + " ASC";
-                break;
-        }
-
-        int offset = (page > 1) ? (page * VISIBLE_THRESHOLD) - VISIBLE_THRESHOLD : 0;
-
-        tsort += String.format(" LIMIT %d,%d", offset, VISIBLE_THRESHOLD - 1);
-
-        return mBriteContentResolver.createQuery(TodoContract.TodoItem.buildTodoItemUriWithPage(page),
-                TodoItemMeta.PROJECTION, selection, args, tsort, true)
-                .map(TodoItemMeta.PROJECTION_MAP)
-                .subscribeOn(Schedulers.io());
+        return items.get(0);
     }
 
     @Override
@@ -169,7 +129,7 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
     public void deleteTodoItem(TodoItem item) {
         String where = TodoContract.TodoItem._ID + "=?";
         String[] args = {String.valueOf(item.getId())};
-        
+
         AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {};
         handler.startDelete(-1, null, TodoContract.TodoItem.CONTENT_URI, where, args);
     }

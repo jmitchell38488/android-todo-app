@@ -26,8 +26,7 @@ public interface TodoItemMeta {
             TodoContract.TodoItem.TODO_COMPLETED
     };
 
-    Func1<SqlBrite.Query, List<TodoItem>> PROJECTION_MAP = query-> {
-        Cursor cursor = query.run();
+    Func1<Cursor, List<TodoItem>> PROJECTION_MAP = cursor-> {
         try {
             List<TodoItem> values = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {

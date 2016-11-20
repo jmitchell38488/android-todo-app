@@ -16,6 +16,12 @@ public class ProviderModule {
 
     @Provides
     @Singleton
+    TodoDatabase provideTodoDatabase(Application application) {
+        return new TodoDatabase(application);
+    }
+
+    @Provides
+    @Singleton
     SqlBrite provideSqlBrite() {
         return SqlBrite.create();
     }

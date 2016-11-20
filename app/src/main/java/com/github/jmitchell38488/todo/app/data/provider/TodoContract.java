@@ -42,11 +42,6 @@ public class TodoContract {
             return CONTENT_URI.buildUpon().appendPath(itemId).build();
         }
 
-        public static Uri buildTodoItemUriWithPage(int pageNo) {
-            return CONTENT_URI.buildUpon().appendPath("page")
-                    .appendPath(Integer.toString(pageNo)).build();
-        }
-
         public static String getTodoItemId(Uri uri) {
             return uri.getPathSegments().get(1);
         }

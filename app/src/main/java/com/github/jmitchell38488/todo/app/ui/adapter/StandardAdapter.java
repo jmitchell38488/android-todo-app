@@ -11,8 +11,7 @@ import java.util.List;
 import rx.functions.Action1;
 
 public abstract class StandardAdapter<T, VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements Action1<List<T>> {
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Action1<List<T>> {
 
     protected static final int VIEW_TYPE_ITEM = 1;
 
