@@ -10,11 +10,7 @@ import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 
-import java.util.List;
-
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.subjects.BehaviorSubject;
 
 public class SortedListFragment extends ListFragment {
 

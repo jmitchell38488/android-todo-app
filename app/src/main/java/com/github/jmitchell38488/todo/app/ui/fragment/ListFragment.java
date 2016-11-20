@@ -1,7 +1,6 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -381,17 +380,6 @@ public abstract class ListFragment extends BaseFragment
     }
 
     @Override
-    public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
-        // Set the new sorted list
-        ((RecyclerListAdapter) mRecyclerView.getAdapter()).set(newList);
-
-        // Notify data changed, invalidate and reset the layout manager
-        mRecyclerView.getAdapter().notifyDataSetChanged();
-        mRecyclerView.invalidate();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
-    @Override
     public void onItemChange(int position) {
         TodoItem item = mAdapter.getItem(position);
         mItemRepository.saveTodoItem(item);
@@ -420,6 +408,11 @@ public abstract class ListFragment extends BaseFragment
     public void onItemAdded(int position) {
         TodoItem item = mAdapter.getItem(position);
         mItemRepository.saveTodoItem(item);
+    }
+
+    @Override
+    public void onItemSetOrderReset() {
+        mItemRepository.saveTodoItemList(mAdapter.getItems());
     }
 
 }

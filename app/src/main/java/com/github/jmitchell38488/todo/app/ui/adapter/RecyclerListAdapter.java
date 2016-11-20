@@ -127,6 +127,55 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
             mListChangeListener.onItemAdded(position);
             mListChangeListener.onDataChange();
         }
+
+        recalculateItemOrderValues();
+    }
+
+    /**
+     * Helper method to recalculate the order of items in the list when an item is added or
+     * removed. This is necessary to maintain the order of items in the database in the same order
+     * that they appear on the screen.
+     */
+    public void recalculateItemOrderValues() {
+        if (mItems.isEmpty()) {
+            return;
+        }
+
+        int counter = 0;
+        boolean prevPinned = false;
+        boolean prevCompleted = false;
+        for (TodoItem item : mItems) {
+            counter++;
+            // Reset our previous pinned counter
+            // We have to reset it after we iterate past the previously pinned items
+            if (!item.isPinned() && prevPinned) {
+                counter = 1;
+                prevPinned = false;
+            } else if (item.isPinned()) {
+                if (!prevPinned) {
+                    prevPinned = true;
+                    counter = 1;
+                }
+            } else {
+                prevPinned = false;
+            }
+
+            if (item.isCompleted()) {
+                // Reset our previous completed counter
+                if (!prevCompleted) {
+                    prevCompleted = true;
+                    counter = 1;
+                }
+            } else {
+                prevCompleted = false;
+            }
+
+            item.setOrder(counter);
+        }
+
+        if (mListChangeListener != null) {
+            mListChangeListener.onItemSetOrderReset();
+        }
     }
 
     public void add(@NonNull List<TodoItem> newItems) {
@@ -138,6 +187,13 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
     }
 
     public void moveItem(int fromPosition, int toPosition) {
+        TodoItem from = getItem(fromPosition);
+        TodoItem to = getItem(toPosition);
+
+        // Increment/decrement the order values
+        from.setOrder(fromPosition < toPosition ? from.getOrder() + 1 : from.getOrder() - 1);
+        to.setOrder(fromPosition < toPosition ? to.getOrder() + 1 : to.getOrder() - 1);
+
         Collections.swap(mItems, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
 
@@ -149,8 +205,8 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
     }
 
     public interface ListChangeListener {
+        void onItemSetOrderReset();
         void onDataChange();
-        void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
         void onItemChange(int position);
         void onItemRemoved(int position);
         void onItemAdded(int position);

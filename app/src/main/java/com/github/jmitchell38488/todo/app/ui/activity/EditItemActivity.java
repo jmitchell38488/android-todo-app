@@ -1,6 +1,5 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

@@ -23,4 +23,7 @@ public interface TodoItemRepository {
     void saveTodoItem(TodoItem item);
 
     void deleteTodoItem(TodoItem item);
+
+    void saveTodoItemList(List<TodoItem> list);
+
 }

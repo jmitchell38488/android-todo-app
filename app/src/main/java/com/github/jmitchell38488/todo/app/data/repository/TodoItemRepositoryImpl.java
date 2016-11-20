@@ -2,6 +2,7 @@ package com.github.jmitchell38488.todo.app.data.repository;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.github.jmitchell38488.todo.app.data.Filter;
@@ -120,9 +121,24 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
     @Override
     public void saveTodoItem(TodoItem item) {
         AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {};
-        handler.startInsert(-1, null, TodoContract.TodoItem.CONTENT_URI, new TodoItemMeta.Builder()
-                .item(item)
-                .build());
+        ContentValues values = new TodoItemMeta.Builder().item(item).build();
+
+        // Update
+        if (item.getId() > 0) {
+            // Make sure that we strip the ID off
+            if (values.containsKey(TodoContract.TodoItem._ID)) {
+                values.remove(TodoContract.TodoItem._ID);
+            }
+
+            String selection = TodoContract.TodoItem._ID + "=?";
+            String[] args = {Long.toString(item.getId())};
+
+            handler.startUpdate(-1, null, TodoContract.TodoItem.CONTENT_URI, values, selection, args);
+
+        // Insert
+        } else {
+            handler.startInsert(-1, null, TodoContract.TodoItem.CONTENT_URI, values);
+        }
     }
 
     @Override
@@ -132,5 +148,16 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
 
         AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {};
         handler.startDelete(-1, null, TodoContract.TodoItem.CONTENT_URI, where, args);
+    }
+
+    @Override
+    public void saveTodoItemList(List<TodoItem> list) {
+        if (list.isEmpty()) {
+            return;
+        }
+
+        for (TodoItem item : list) {
+            saveTodoItem(item);
+        }
     }
 }
