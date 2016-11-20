@@ -19,7 +19,6 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
-import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 import com.github.jmitchell38488.todo.app.ui.helper.TodoItemHelper;
 import com.github.jmitchell38488.todo.app.ui.listener.ItemStateChangeListener;
@@ -57,13 +56,15 @@ public abstract class ListFragment extends BaseFragment
     @BindView(R.id.list_container) RecyclerView mRecyclerView;
     @BindView(R.id.empty_list) View mEmptyListView;
 
-    @Inject protected TodoItemRepository mItemRepository;
+    @Inject
+    protected TodoItemRepository mItemRepository;
 
     private int mPosition;
 
     protected TodoItemHelper mHelper;
     protected LinearLayoutManager mLayoutManager;
     protected CompositeSubscription mSubscriptions;
+    protected ActivityListClickListener mActivityListClickListener;
 
     protected List<TodoItem> mPendingRemoveList;
     protected List<TodoItem> mPendingCompleteList;
@@ -72,18 +73,23 @@ public abstract class ListFragment extends BaseFragment
     protected Handler mRunnableHandler = new Handler();
     protected HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
+    public interface ActivityListClickListener {
+        public final String ARG_TODOITEM = "todoitem";
+        public void onItemClick(Bundle arguments);
+    }
+
     private RecyclerListAdapter.ListClickListener mListClickListener = view -> {
         int position = mRecyclerView.getChildLayoutPosition(view);
+        mPosition = position;
+
         TodoItem item = mAdapter.getItem(position);
 
         Bundle arguments = new Bundle();
-        arguments.putParcelable("todoitem", item);
+        arguments.putParcelable(ActivityListClickListener.ARG_TODOITEM, item);
 
-        mPosition = position;
-
-        Intent intent = new Intent(ListFragment.this.getActivity(), EditItemActivity.class);
-        intent.putExtras(arguments);
-        startActivity(intent);
+        if (mActivityListClickListener != null) {
+            mActivityListClickListener.onItemClick(arguments);
+        }
     };
 
     private RecyclerListAdapter.BindViewHolderListener mBindViewHolderListener = (holder, position) -> {
@@ -216,6 +222,10 @@ public abstract class ListFragment extends BaseFragment
         }
     };
 
+    public void setActivityListClickListener(ActivityListClickListener listener) {
+        mActivityListClickListener = listener;
+    }
+
     public int getFirstUnpinnedPosition() {
         int position = INVALID_POSITION;
         synchronized (SEMAPHORE) {
@@ -318,38 +328,9 @@ public abstract class ListFragment extends BaseFragment
             mPosition = getItemPositionFromYOffset();
         }
 
-        List<TodoItem> itemList = new ArrayList<>(mAdapter.getItems());
         outState.putParcelableArrayList(STATE_LIST, new ArrayList<>(mAdapter.getItems()));
         outState.putInt(STATE_POSITION, mPosition);
         outState.putBoolean(STATE_UNDO, mUndoOn);
-    }
-
-    @Override
-    public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
-        // Set the new sorted list
-        ((RecyclerListAdapter) mRecyclerView.getAdapter()).set(newList);
-
-        // Notify data changed, invalidate and reset the layout manager
-        mRecyclerView.getAdapter().notifyDataSetChanged();
-        mRecyclerView.invalidate();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
-    @Override
-    public void onItemChange(int position) {
-        mRecyclerView.getAdapter().notifyItemChanged(position);
-    }
-
-    @Override
-    public void onDataChange() {
-        // Show alternative view
-        if (mAdapter.getItemCount() == 0) {
-            mEmptyListView.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        } else if (mAdapter.getItemCount() > 0) {
-            mEmptyListView.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -397,6 +378,48 @@ public abstract class ListFragment extends BaseFragment
         } else {
             mEmptyListView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
+        // Set the new sorted list
+        ((RecyclerListAdapter) mRecyclerView.getAdapter()).set(newList);
+
+        // Notify data changed, invalidate and reset the layout manager
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+        mRecyclerView.invalidate();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Override
+    public void onItemChange(int position) {
+        TodoItem item = mAdapter.getItem(position);
+        mItemRepository.saveTodoItem(item);
+        mRecyclerView.getAdapter().notifyItemChanged(position);
+    }
+
+    @Override
+    public void onDataChange() {
+        // Show alternative view
+        if (mAdapter.getItemCount() == 0) {
+            mEmptyListView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        } else if (mAdapter.getItemCount() > 0) {
+            mEmptyListView.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onItemRemoved(int position) {
+        TodoItem item = mAdapter.getItem(position);
+        mItemRepository.deleteTodoItem(item);
+    }
+
+    @Override
+    public void onItemAdded(int position) {
+        TodoItem item = mAdapter.getItem(position);
+        mItemRepository.saveTodoItem(item);
     }
 
 }

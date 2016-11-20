@@ -169,7 +169,7 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
     public void deleteTodoItem(TodoItem item) {
         String where = TodoContract.TodoItem._ID + "=?";
         String[] args = {String.valueOf(item.getId())};
-
+        
         AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {};
         handler.startDelete(-1, null, TodoContract.TodoItem.CONTENT_URI, where, args);
     }

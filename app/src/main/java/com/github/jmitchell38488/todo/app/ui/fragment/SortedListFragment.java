@@ -121,7 +121,7 @@ public class SortedListFragment extends ListFragment {
                 }));
 
         mItemsObservableSubject.onNext(
-                mItemRepository.getAllItems(mSort, mFilter)
+            mItemRepository.getAllItems(mSort, mFilter)
         );
     }
 

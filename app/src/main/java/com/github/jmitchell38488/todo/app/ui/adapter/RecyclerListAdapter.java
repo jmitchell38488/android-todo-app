@@ -18,7 +18,7 @@ import java.util.List;
 public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolder> {
 
     // Listeners
-    private ListChangeListener mListChangeListener = ListChangeListener.Placeholder;
+    private ListChangeListener mListChangeListener;
     private BindViewHolderListener mOnBindViewHolderListener;
 
     private List<TodoItem> mPendingActionList;
@@ -69,12 +69,13 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
     }
 
     public void remove(int position) {
-        super.remove(position);
-
         if (mListChangeListener != null) {
             // Notify data changes
+            mListChangeListener.onItemRemoved(position);
             mListChangeListener.onDataChange();
         }
+
+        super.remove(position);
     }
 
     @Override
@@ -99,15 +100,22 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
             return;
         }
 
+        // Remove, but make sure that we trigger list update first
+        if (mListChangeListener != null) {
+            mListChangeListener.onItemRemoved(position);
+            mListChangeListener.onDataChange();
+        }
+
         mItems.remove(position);
-        mItems.add(position, item);
         notifyItemChanged(position);
 
         if (mListChangeListener != null) {
-            // Notify data changes
-            mListChangeListener.onItemChange(position);
+            mListChangeListener.onItemAdded(position);
             mListChangeListener.onDataChange();
         }
+
+        mItems.add(position, item);
+        notifyItemChanged(position);
     }
 
     public void addItem(int position, TodoItem item) {
@@ -116,6 +124,7 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
 
         if (mListChangeListener != null) {
             // Notify data changes
+            mListChangeListener.onItemAdded(position);
             mListChangeListener.onDataChange();
         }
     }
@@ -124,7 +133,6 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
         super.add(newItems);
 
         if (mListChangeListener != null) {
-            // Notify data changes
             mListChangeListener.onDataChange();
         }
     }
@@ -134,7 +142,8 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
         notifyItemMoved(fromPosition, toPosition);
 
         if (mListChangeListener != null) {
-            // Notify data changes
+            mListChangeListener.onItemChange(fromPosition);
+            mListChangeListener.onItemChange(toPosition);
             mListChangeListener.onDataChange();
         }
     }
@@ -153,26 +162,11 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
     }
 
     public interface ListChangeListener {
+        void onDataChange();
         void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList);
         void onItemChange(int position);
-        void onDataChange();
-
-        ListChangeListener Placeholder = new ListChangeListener() {
-            @Override
-            public void onOrderChange(List<TodoItem> oldList, List<TodoItem> newList) {
-                // Empty default callback holder
-            }
-
-            @Override
-            public void onItemChange(int position) {
-                // Empty default callback holder
-            }
-
-            @Override
-            public void onDataChange() {
-                // Empty default callback holder
-            }
-        };
+        void onItemRemoved(int position);
+        void onItemAdded(int position);
     }
 
     public interface BindViewHolderListener {

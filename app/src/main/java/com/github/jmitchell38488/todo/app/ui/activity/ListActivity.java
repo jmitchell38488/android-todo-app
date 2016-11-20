@@ -11,12 +11,13 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
+import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListActivity extends BaseActivity {
+public class ListActivity extends BaseActivity implements ListFragment.ActivityListClickListener {
 
     private static final String STATE_MODE = "state_mode";
     private static final String ITEMS_FRAGMENT_TAG = "fragment_items";
@@ -40,13 +41,14 @@ public class ListActivity extends BaseActivity {
                     .commit();
         } else {
             mFragment = (SortedListFragment) getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
+            mFragment.setActivityListClickListener(this);
         }
 
         ButterKnife.bind(this);
 
         fab.setOnClickListener(view -> {
             Bundle arguments = new Bundle();
-            arguments.putParcelable("todoitem", null);
+            arguments.putParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM, null);
 
             Intent intent = new Intent(this, EditItemActivity.class);
             intent.putExtras(arguments);
@@ -78,4 +80,10 @@ public class ListActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onItemClick(Bundle arguments) {
+        Intent intent = new Intent(this, EditItemActivity.class);
+        intent.putExtras(arguments);
+        startActivity(intent);
+    }
 }

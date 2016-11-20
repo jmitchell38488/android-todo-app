@@ -1,6 +1,7 @@
 package com.github.jmitchell38488.todo.app.data.repository;
 
-import com.github.jmitchell38488.todo.app.annotation.PerApp;
+import android.content.ContentResolver;
+
 import com.squareup.sqlbrite.BriteContentResolver;
 
 import javax.inject.Singleton;
@@ -13,8 +14,8 @@ public final class RepositoryModule {
 
     @Provides
     @Singleton
-    public TodoItemRepository providesGenresRepository(BriteContentResolver contentResolver) {
-        return new TodoItemRepositoryImpl(contentResolver);
+    public TodoItemRepository provideTodoItemsRepository(ContentResolver contentResolver, BriteContentResolver briteContentResolver) {
+        return new TodoItemRepositoryImpl(contentResolver, briteContentResolver);
     }
 
 }

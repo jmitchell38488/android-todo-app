@@ -3,7 +3,6 @@ package com.github.jmitchell38488.todo.app.data.provider;
 import android.app.Application;
 import android.content.ContentResolver;
 
-import com.github.jmitchell38488.todo.app.annotation.PerApp;
 import com.squareup.sqlbrite.BriteContentResolver;
 import com.squareup.sqlbrite.SqlBrite;
 
