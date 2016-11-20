@@ -144,19 +144,17 @@ public class SortedListFragment extends ListFragment implements EndlessScrollLis
 
     private void subscribeToItems() {
         Observable<List<TodoItem>> source = mItemRepository.getItems(mCurrentPage > 0 ? mCurrentPage : 1, mSort, mFilter);
-        mPager = Pager.create(list -> {
-            return !mPagerInitialized ? null : mItemRepository.getItems(mCurrentPage + 1, mSort, mFilter);
-        });
+        mPager = Pager.create(list -> !mPagerInitialized ? null : mItemRepository.getItems(mCurrentPage + 1, mSort, mFilter));
 
         mPager.page(source)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
+                    mCurrentPage++;
+
                     if (items == null) {
                         return;
                     }
-
-                    mCurrentPage++;
 
                     if (mCurrentPage == 1) {
                         mAdapter.clear();
