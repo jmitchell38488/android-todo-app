@@ -23,7 +23,8 @@ public interface TodoItemMeta {
             TodoContract.TodoItem.TODO_DESCRIPTION,
             TodoContract.TodoItem.TODO_ORDER,
             TodoContract.TodoItem.TODO_PINNED,
-            TodoContract.TodoItem.TODO_COMPLETED
+            TodoContract.TodoItem.TODO_COMPLETED,
+            TodoContract.TodoItem.TODO_LOCKED
     };
 
     Func1<Cursor, List<TodoItem>> PROJECTION_MAP = cursor-> {
@@ -37,6 +38,7 @@ public interface TodoItemMeta {
                         .setOrder(DbUtils.getLong(cursor, TodoContract.TodoItem.TODO_ORDER))
                         .setPinned(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_PINNED))
                         .setCompleted(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_COMPLETED))
+                        .setLocked(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_LOCKED))
                 );
             }
 
@@ -99,13 +101,19 @@ public interface TodoItemMeta {
             return this;
         }
 
+        public Builder locked(boolean locked) {
+            values.put(TodoContract.TodoItem.TODO_LOCKED, locked);
+            return this;
+        }
+
         public Builder item(TodoItem item) {
             return id(item.getId())
                     .title(item.getTitle())
                     .description(item.getDescription())
                     .order(item.getOrder())
                     .pinned(item.isPinned())
-                    .completed(item.isCompleted());
+                    .completed(item.isCompleted())
+                    .locked(item.isLocked());
         }
 
         public ContentValues build() {

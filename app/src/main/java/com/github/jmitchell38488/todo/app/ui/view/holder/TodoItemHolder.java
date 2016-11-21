@@ -27,11 +27,11 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
 
     @BindView(R.id.list_fragment_title) TextView titleView;
     @BindView(R.id.list_fragment_description) TextView descView;
+    @BindView(R.id.list_item_move_handle) ImageView moveHandle;
     @BindView(R.id.list_item_notification_wrapper) LinearLayout notificationLayout;
     @BindView(R.id.list_item_notification_pinned) TextView iconPinned;
     @BindView(R.id.list_item_notification_reminder) TextView iconReminder;
-    @BindView(R.id.list_item_move_handle) ImageView moveHandle;
-
+    @BindView(R.id.list_item_notification_locked) TextView iconLocked;
     @BindView(R.id.list_item_pending_remove) View removePendingView;
     @BindView(R.id.list_item_pending_complete) View completePendingView;
     @BindView(R.id.list_item_container) View itemVisibleView;
@@ -64,6 +64,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         final boolean hasDesc = !TextUtils.isEmpty(desc);
         final boolean isPinned = item.isPinned();
         final boolean hasReminder = false;
+        final boolean isLocked = item.isLocked();
         
         if (!hasDesc) {
             descView.setVisibility(View.GONE);
@@ -78,6 +79,10 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
 
         if (!hasReminder) {
             iconReminder.setVisibility(View.GONE);
+        }
+
+        if (!isLocked) {
+            iconLocked.setVisibility(View.GONE);
         }
         
         // Set title
@@ -175,6 +180,14 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
 
         return false;
+    }
+
+    public boolean canSwipe(TodoItem source) {
+        if (source.isLocked()) {
+            return false;
+        }
+
+        return true;
     }
 
     public View getRemovePendingView() {

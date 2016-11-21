@@ -19,18 +19,18 @@
     </style>
 
     <style name="AppTheme.ListTextView.Icon" parent="@android:style/TextAppearance">
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">16dp</item>
         <item name="android:layout_gravity">top|center_horizontal</item>
-        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:gravity">top|center_horizontal</item>
         <item name="android:textColor">@color/actionbar_dark_50</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginBottom">@dimen/list_item_icon_spacing</item>
     </style>
 
     <style name="AppTheme.ListTextView.Icon.List" parent="@android:style/TextAppearance">
         <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">@dimen/list_item_notification_panel</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_width">20dp</item>
         <item name="android:gravity">top|center_horizontal</item>
         <item name="android:layout_gravity">top|center_horizontal</item>
     </style>

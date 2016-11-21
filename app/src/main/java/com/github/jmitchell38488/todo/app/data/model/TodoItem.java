@@ -28,6 +28,9 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
     @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_PINNED)
     boolean pinned;
 
+    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_LOCKED)
+    boolean locked;
+
     // We don't want to keep any of these public properties
     @Expose(serialize = false, deserialize = false)
     public int width;
@@ -44,15 +47,18 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
     public TodoItem() {
         completed = false;
         pinned = false;
+        locked = false;
     }
 
-    public TodoItem(long id, String title, String description, long order, boolean completed, boolean pinned) {
+    public TodoItem(long id, String title, String description, long order,
+                    boolean completed, boolean pinned, boolean locked) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.order = order;
         this.completed = completed;
         this.pinned = pinned;
+        this.locked = locked;
     }
 
     public long getId() {
@@ -109,9 +115,18 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
         return this;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public TodoItem setLocked(boolean locked) {
+        this.locked = locked;
+        return this;
+    }
+
     @Override
     public Object clone() {
-        TodoItem t = new TodoItem(id, title, description, order, completed, pinned);
+        TodoItem t = new TodoItem(id, title, description, order, completed, pinned, locked);
         t.height = height;
         t.width = width;
         t.sX = sX;
@@ -133,6 +148,7 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
         dest.writeLong(order);
         dest.writeByte(completed ? (byte) 1 : 0);
         dest.writeByte(pinned ? (byte) 1 : 0);
+        dest.writeByte(locked ? (byte) 1 : 0);
     }
 
     protected TodoItem(Parcel in) {
@@ -142,6 +158,7 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
         order = in.readLong();
         completed = in.readByte() != 0;
         pinned = in.readByte() != 0;
+        locked = in.readByte() != 0;
     }
 
     public static final Creator<TodoItem> CREATOR = new Creator<TodoItem>() {
@@ -159,8 +176,11 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
     };
 
     public String toString() {
-        return String.format("{id: %d, title: %s, description: %s, order: %d, pinned: %s, completed: %s}",
+        return String.format("{id: %d, title: %s, description: %s, order: %d, " +
+                "pinned: %s, completed: %s, locked: %s}",
                 getId(), getTitle(), getDescription(), getOrder(),
-                isPinned() ? "true" : "false", isCompleted() ? "true" : "false");
+                isPinned() ? "true" : "false",
+                isCompleted() ? "true" : "false",
+                isLocked() ? "true" : "false");
     }
 }

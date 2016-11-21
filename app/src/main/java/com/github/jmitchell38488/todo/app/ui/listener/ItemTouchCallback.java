@@ -31,7 +31,8 @@ public class ItemTouchCallback extends ItemTouchDecorator {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        TodoItemHolder holder = (TodoItemHolder) viewHolder;
+        final TodoItemHolder holder = (TodoItemHolder) viewHolder;
+        final TodoItem item = ((RecyclerListAdapter) recyclerView.getAdapter()).getItem(holder.getAdapterPosition());
 
         // Do nothing if this view holder is pending removal
         if (holder.isPendingRemoval() || holder.isPendingComplete()) {
@@ -45,7 +46,7 @@ public class ItemTouchCallback extends ItemTouchDecorator {
             return makeMovementFlags(dragFlags, swipeFlags);
         } else {
             final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+            final int swipeFlags = item.isLocked() ? ItemTouchHelper.START : ItemTouchHelper.START | ItemTouchHelper.END;
             return makeMovementFlags(dragFlags, swipeFlags);
         }
     }

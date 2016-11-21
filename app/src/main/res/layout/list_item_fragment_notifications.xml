@@ -48,23 +48,35 @@
 
         <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="20dp"
             android:orientation="vertical"
             android:id="@+id/list_item_notification_wrapper"
             style="@style/AppTheme.ListTextView.Icon.List">
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/list_item_icon_spacing"
                 android:text="@string/icon_flag"
+                android:textSize="@dimen/list_item_font_size"
                 android:id="@+id/list_item_notification_pinned"
                 style="@style/AppTheme.ListTextView.Icon" />
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/list_item_icon_spacing"
                 android:text="@string/icon_reminder"
+                android:textSize="@dimen/list_item_font_size"
                 android:id="@+id/list_item_notification_reminder"
+                style="@style/AppTheme.ListTextView.Icon" />
+
+            <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/list_item_icon_spacing"
+                android:text="@string/icon_locked"
+                android:textSize="@dimen/list_item_font_size"
+                android:id="@+id/list_item_notification_locked"
                 style="@style/AppTheme.ListTextView.Icon" />
 
         </LinearLayout>

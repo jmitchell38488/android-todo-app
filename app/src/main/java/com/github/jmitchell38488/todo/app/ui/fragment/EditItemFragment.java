@@ -60,6 +60,7 @@ public class EditItemFragment extends Fragment {
         mItem.setDescription(holder.descriptionView.getText().toString());
         mItem.setPinned(holder.pinnedSwitch.isChecked());
         mItem.setCompleted(holder.completedSwitch.isChecked());
+        mItem.setLocked(holder.lockedSwitch.isChecked());
 
         return mItem;
     }

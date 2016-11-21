@@ -7,6 +7,10 @@
     <dimen name="section_div_height">20dp</dimen>
     <dimen name="ic_clear_margin">16dp</dimen>
     <dimen name="list_divider">3dp</dimen>
+    <dimen name="toolbar_elevation">2dp</dimen>
 
-    <dimen name="toolbar_elevation">8dp</dimen>
+    <!-- list item notifications -->
+    <dimen name="list_item_notification_panel">25dp</dimen>
+    <dimen name="list_item_icon_spacing">6.5dp</dimen>
+    <dimen name="list_item_font_size">14dp</dimen>
 </resources>

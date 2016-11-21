@@ -13,6 +13,7 @@ public class TodoContract {
         String TODO_ORDER = "item_order";
         String TODO_COMPLETED = "completed";
         String TODO_PINNED = "pinned";
+        String TODO_LOCKED = "locked";
     }
 
     public static final String CONTENT_AUTHORITY = "com.github.jmitchell38488.todo.app.provider";

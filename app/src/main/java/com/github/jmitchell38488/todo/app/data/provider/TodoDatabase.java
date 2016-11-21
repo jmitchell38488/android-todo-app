@@ -31,7 +31,9 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 TodoItemColumns.TODO_DESCRIPTION + " TEXT, " +
                 TodoItemColumns.TODO_ORDER + " INTEGER NOT NULL DEFAULT 0, " +
                 TodoItemColumns.TODO_PINNED + " INTEGER NOT NULL DEFAULT 0, " +
-                TodoItemColumns.TODO_COMPLETED + " INTEGER NOT NULL DEFAULT 0);"
+                TodoItemColumns.TODO_COMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
+                TodoItemColumns.TODO_LOCKED + " INTEGER NOT NULL DEFAULT 0);"
+
         );
 
         insertTodos(db);
@@ -39,7 +41,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
 
     private void insertTodos(SQLiteDatabase db) {
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(1).order(1).completed(false).pinned(true)
+                .id(1).order(1).completed(false).pinned(true).locked(false)
                 .title("Pick up Airplane tickets")
                 .description("This is a high priority item that will always appear at the top of the" +
                         "list. You can reorder high priority items among other high priority items, but" +
@@ -47,7 +49,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 .build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(2).order(1).completed(false).pinned(false)
+                .id(2).order(1).completed(false).pinned(false).locked(false)
                 .title("Pick up milk at the market")
                 .description("This is a standard to do item that will appear beneath high priority" +
                         "items and above completed items. For all items, swiping left will mark" +
@@ -57,7 +59,14 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 .build());
 
         db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
-                .id(3).order(1).completed(true).pinned(false)
+                .id(3).order(2).completed(false).pinned(false).locked(true)
+                .title("Buy front door lock")
+                .description("This is an item that is locked and cannot be deleted." +
+                        "Locked items can be important items, standard items, or completed items.")
+                .build());
+
+        db.insert(Tables.TODO_ITEMS, null, new TodoItemMeta.Builder()
+                .id(4).order(1).completed(true).pinned(false).locked(false)
                 .title("Buy movie tickets")
                 .description("This is a completed to do item. You can make me active again by " +
                         "swiping to the left. Since I am complete, I will always be greyed out with" +

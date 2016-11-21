@@ -26,6 +26,7 @@ public class TodoItemEditHolder {
     @BindView(R.id.edit_dialog_description) public RobotoLightEditText descriptionView;
     @BindView(R.id.edit_dialog_pinned) public Switch pinnedSwitch;
     @BindView(R.id.edit_dialog_completed) public Switch completedSwitch;
+    @BindView(R.id.edit_dialog_locked) public Switch lockedSwitch;
     @BindView(R.id.edit_dialog_pinned_label) public TextView pinnedLabel;
 
     public TodoItemEditHolder(View view, Context context,@Nullable TodoItem item) {
@@ -53,6 +54,11 @@ public class TodoItemEditHolder {
         completedSwitch.setChecked(mItem.isCompleted());
         completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mItem.setCompleted(isChecked);
+        });
+
+        lockedSwitch.setChecked(mItem.isLocked());
+        lockedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mItem.setLocked(isChecked);
         });
 
         if (mItem.isPinned()) {

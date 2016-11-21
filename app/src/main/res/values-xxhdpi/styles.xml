@@ -1,5 +1,5 @@
 <resources>
-
+<!--
     <style name="AppTheme.ListTextView" parent="@android:style/TextAppearance">
         <item name="android:textColor">@drawable/list_selector_text</item>
         <item name="android:textSize">12dp</item>
@@ -84,5 +84,5 @@
         <item name="android:maxLines">10</item>
         <item name="android:lines">5</item>
     </style>
-
+-->
 </resources>

@@ -110,6 +110,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                         listItem.setDescription(item.getDescription());
                         listItem.setPinned(item.isPinned());
                         listItem.setCompleted(item.isCompleted());
+                        listItem.setLocked(item.isLocked());
 
                         mFragment.onItemChange(position);
                         Toast.makeText(this, getString(R.string.action_save_saved), Toast.LENGTH_SHORT).show();
