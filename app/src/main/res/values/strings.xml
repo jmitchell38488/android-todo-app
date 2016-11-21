@@ -30,8 +30,8 @@
     <string name="status_complete">Completed</string>
 
     <!-- Dialog stuff -->
-    <string name="dialog_edit_title_label">Title</string>
-    <string name="dialog_edit_description_label">Description</string>
+    <string name="dialog_edit_title_label">What is to be done</string>
+    <string name="dialog_edit_description_label">Add more details, notes etc.</string>
     <string name="dialog_edit_title_hint">The to do item</string>
     <string name="dialog_edit_description_hint">Additional details</string>
     <string name="dialog_edit_disabled">This item is already marked as complete. \nTo edit, you must re-enable it by unchecking it.</string>
@@ -50,8 +50,12 @@
     <string name="dialog_edit_pin_label">Flag as important</string>
     <string name="dialog_edit_pin_key">pinned</string>
     <string name="dialog_edit_pin_false"></string>
-    <string name="dialog_edit_pin_true">This is an important task, so set this as a reminder.\nThis item will appear at the top of the list.</string>
+    <string name="dialog_edit_pin_true">This is an important task and will appear at the top of the to do list.</string>
     <string name="dialog_edit_pin_default">false</string>
+
+    <string name="dialog_edit_completed_label">Item completed?</string>
+    <string name="dialog_edit_completed_false"></string>
+    <string name="dialog_edit_completed_true"></string>
 
     <string name="empty_list_top">Time to relax, kick your feet up\n you\'re all finished!</string>
     <string name="empty_list_bottom">Feel like getting busy?\nAdd a Todo using the button below.</string>

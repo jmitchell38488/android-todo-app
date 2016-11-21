@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
@@ -24,7 +25,8 @@ public class TodoItemEditHolder {
     @BindView(R.id.edit_dialog_title) RobotoLightEditText titleView;
     @BindView(R.id.edit_dialog_description) RobotoLightEditText descriptionView;
     @BindView(R.id.edit_dialog_pinned) Switch pinnedSwitch;
-    @BindView(R.id.edit_dialog_pinned_label) RobotoLightTextView pinnedLabel;
+    @BindView(R.id.edit_dialog_completed) Switch completedSwitch;
+    @BindView(R.id.edit_dialog_pinned_label) TextView pinnedLabel;
 
     public TodoItemEditHolder(View view, Context context,@Nullable TodoItem item) {
         mView = view;
@@ -37,21 +39,21 @@ public class TodoItemEditHolder {
     }
 
     public void updateView() {
-        pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_false));
-
-        pinnedSwitch.setChecked(false);
+        pinnedSwitch.setChecked(mItem.isPinned());
         pinnedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (mItem.isPinned()) {
+            mItem.setPinned(isChecked);
+
+            if (isChecked) {
                 pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_true));
             } else {
                 pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_false));
             }
         });
 
-        // Item can be set to null if this is a new record
-        if (mItem == null) {
-            return;
-        }
+        completedSwitch.setChecked(mItem.isCompleted());
+        completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mItem.setCompleted(isChecked);
+        });
 
         if (mItem.isPinned()) {
             pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_true));

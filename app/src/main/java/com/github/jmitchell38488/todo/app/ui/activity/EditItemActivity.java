@@ -9,6 +9,8 @@ import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
 
 public class EditItemActivity extends BaseActivity {
 
+    EditItemFragment mFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,11 +20,11 @@ public class EditItemActivity extends BaseActivity {
             Bundle arguments = new Bundle();
             arguments.putAll(getIntent().getExtras());
 
-            EditItemFragment fragment = new EditItemFragment();
-            fragment.setArguments(arguments);
+            mFragment = new EditItemFragment();
+            mFragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.activity_edit_item, fragment)
+                    .add(R.id.activity_list_container, mFragment)
                     .commit();
         }
     }
