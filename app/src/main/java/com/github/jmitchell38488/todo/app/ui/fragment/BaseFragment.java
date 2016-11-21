@@ -26,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
     }
 
     @CallSuper

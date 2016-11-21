@@ -9,6 +9,7 @@ import android.view.View;
 import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -132,6 +133,10 @@ public class SortedListFragment extends ListFragment {
 
         mAdapter.remove(position);
         mAdapter.addItem(nPosition, item);
+    }
+
+    public RecyclerListAdapter getAdapter() {
+        return mAdapter;
     }
 
 }

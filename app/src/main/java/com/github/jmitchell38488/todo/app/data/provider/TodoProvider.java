@@ -96,9 +96,9 @@ public class TodoProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case TODOITEMS:
-                db.insertOrThrow(TodoDatabase.Tables.TODO_ITEMS, null, values);
+                long id = db.insertOrThrow(TodoDatabase.Tables.TODO_ITEMS, null, values);
                 notifyChange(uri);
-                return TodoContract.TodoItem.buildTodoItemUri(values.getAsString(TodoContract.TodoItem._ID));
+                return TodoContract.TodoItem.buildTodoItemUri(Long.toString(id));
 
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);

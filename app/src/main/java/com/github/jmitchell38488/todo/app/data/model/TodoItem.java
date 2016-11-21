@@ -157,4 +157,10 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
         }
 
     };
+
+    public String toString() {
+        return String.format("{id: %d, title: %s, description: %s, order: %d, pinned: %s, completed: %s}",
+                getId(), getTitle(), getDescription(), getOrder(),
+                isPinned() ? "true" : "false", isCompleted() ? "true" : "false");
+    }
 }

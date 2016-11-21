@@ -408,6 +408,13 @@ public abstract class ListFragment extends BaseFragment
     public void onItemAdded(int position) {
         TodoItem item = mAdapter.getItem(position);
         mItemRepository.saveTodoItem(item);
+
+        // Run this after a 1 second delay, should be enough for the item insert to complete
+        long delay = 1000;
+        mRunnableHandler.postDelayed(() -> {
+            Log.d(LOG_TAG, "Triggering mAdapter.recalculateItemOrderValues()");
+            mAdapter.recalculateItemOrderValues();
+        }, delay);
     }
 
     @Override

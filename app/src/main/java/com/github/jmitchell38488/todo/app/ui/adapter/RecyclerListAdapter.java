@@ -127,8 +127,6 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
             mListChangeListener.onItemAdded(position);
             mListChangeListener.onDataChange();
         }
-
-        recalculateItemOrderValues();
     }
 
     /**
@@ -218,5 +216,30 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
 
     public interface ListClickListener {
         void onItemClick(View view);
+    }
+
+    public boolean containsItem(TodoItem item) {
+        return mItems.contains(item);
+    }
+
+    public boolean containsItemId(long id) {
+        for (TodoItem item : mItems) {
+            if (item.getId() == id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int getPositionOfItemId(long id) {
+        for (int i = 0; i < mItems.size(); i++) {
+            TodoItem item = mItems.get(i);
+            if (item.getId() == id) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

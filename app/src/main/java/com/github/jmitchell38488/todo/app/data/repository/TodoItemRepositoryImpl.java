@@ -4,16 +4,21 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
+import android.util.Log;
 
 import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
+import com.github.jmitchell38488.todo.app.data.provider.TodoDatabase;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 
 import java.util.List;
 
 public class TodoItemRepositoryImpl implements TodoItemRepository {
+
+    private static final String LOG_TAG = TodoItemRepositoryImpl.class.getSimpleName();
 
     private final ContentResolver mContentResolver;
 
@@ -120,24 +125,37 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
 
     @Override
     public void saveTodoItem(TodoItem item) {
-        AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {};
         ContentValues values = new TodoItemMeta.Builder().item(item).build();
 
-        // Update
-        if (item.getId() > 0) {
-            // Make sure that we strip the ID off
-            if (values.containsKey(TodoContract.TodoItem._ID)) {
-                values.remove(TodoContract.TodoItem._ID);
-            }
+        // Make sure that we strip the ID off
+        if (values.containsKey(TodoContract.TodoItem._ID)) {
+            values.remove(TodoContract.TodoItem._ID);
+        }
 
+        if (item.getId() > 0) {
             String selection = TodoContract.TodoItem._ID + "=?";
             String[] args = {Long.toString(item.getId())};
 
+            AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {};
             handler.startUpdate(-1, null, TodoContract.TodoItem.CONTENT_URI, values, selection, args);
 
         // Insert
         } else {
-            handler.startInsert(-1, null, TodoContract.TodoItem.CONTENT_URI, values);
+            AsyncQueryHandler handler = new AsyncQueryHandler(mContentResolver) {
+                @Override
+                protected void onInsertComplete(int token, Object cookie, Uri uri) {
+                    if (uri == null) {
+                        return;
+                    }
+
+                    String str = TodoContract.TodoItem.getTodoItemId(uri);
+                    long id = Long.parseLong(str);
+                    item.setId(id);
+                    Log.d(LOG_TAG, String.format("Setting item id %d after insert", id));
+                }
+            };
+
+            handler.startInsert(1, null, TodoContract.TodoItem.CONTENT_URI, values);
         }
     }
 

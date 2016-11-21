@@ -55,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setHomeButtonEnabled(false);
+        getSupportActionBar().setTitle(null);
     }
 
 }

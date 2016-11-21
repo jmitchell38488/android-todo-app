@@ -22,11 +22,11 @@ public class TodoItemEditHolder {
     Context mContext;
     TodoItem mItem;
 
-    @BindView(R.id.edit_dialog_title) RobotoLightEditText titleView;
-    @BindView(R.id.edit_dialog_description) RobotoLightEditText descriptionView;
-    @BindView(R.id.edit_dialog_pinned) Switch pinnedSwitch;
-    @BindView(R.id.edit_dialog_completed) Switch completedSwitch;
-    @BindView(R.id.edit_dialog_pinned_label) TextView pinnedLabel;
+    @BindView(R.id.edit_dialog_title) public RobotoLightEditText titleView;
+    @BindView(R.id.edit_dialog_description) public RobotoLightEditText descriptionView;
+    @BindView(R.id.edit_dialog_pinned) public Switch pinnedSwitch;
+    @BindView(R.id.edit_dialog_completed) public Switch completedSwitch;
+    @BindView(R.id.edit_dialog_pinned_label) public TextView pinnedLabel;
 
     public TodoItemEditHolder(View view, Context context,@Nullable TodoItem item) {
         mView = view;

@@ -11,12 +11,15 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
+import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import javax.inject.Inject;
 
 public class EditItemFragment extends Fragment {
 
-    @Inject TodoStorage todoStorage;
+    private View mView;
+    private TodoItem mItem;
+    private String mItemHash;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,18 +37,35 @@ public class EditItemFragment extends Fragment {
         Bundle arguments = getArguments();
         TodoItem item = null;
 
-        if (arguments != null && arguments.getParcelable("todoitem") != null) {
-            item = arguments.getParcelable("todoitem");
+        if (arguments != null && arguments.getParcelable(
+                ListFragment.ActivityListClickListener.ARG_TODOITEM) != null) {
+            item = arguments.getParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM);
         }
 
         if (item == null) {
             item = new TodoItem();
         }
 
-        View view = inflater.inflate(R.layout.fragment_edit_item, container, false);
-        TodoItemEditHolder viewHolder = new TodoItemEditHolder(view, getActivity(), item);
-        view.setTag(viewHolder);
-        return view;
+        mItem = item;
+        mItemHash = ItemUtility.md5(item.toString());
+        mView = inflater.inflate(R.layout.fragment_edit_item, container, false);
+        TodoItemEditHolder viewHolder = new TodoItemEditHolder(mView, getActivity(), item);
+        mView.setTag(viewHolder);
+        return mView;
+    }
+
+    public TodoItem getUpdatedTodoItem() {
+        TodoItemEditHolder holder = (TodoItemEditHolder) mView.getTag();
+        mItem.setTitle(holder.titleView.getText().toString());
+        mItem.setDescription(holder.descriptionView.getText().toString());
+        mItem.setPinned(holder.pinnedSwitch.isChecked());
+        mItem.setCompleted(holder.completedSwitch.isChecked());
+
+        return mItem;
+    }
+
+    public String getItemHash() {
+        return mItemHash;
     }
 
 }

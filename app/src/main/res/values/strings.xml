@@ -13,6 +13,12 @@
     <string name="action_create">Add New To Do Item</string>
     <string name="action_edit">Edit To Do Item</string>
 
+    <!-- Option titles -->
+    <string name="option_action_save">Save</string>
+    <string name="option_action_share">Share item</string>
+    <string name="option_action_delete">Delete item</string>
+    <string name="option_action_settings">Settings</string>
+
     <!-- string formats (non translatable) -->
     <string name="date_format" translatable="false">yyyy-MM-dd kk:mm:ssZ</string>
     <string name="date_format_dayname" translatable="false">EEEE</string>
@@ -70,4 +76,7 @@
     <string name="action_item_undo">UNDO</string>
     <string name="action_item_remove">REMOVE</string>
     <string name="action_item_complete">COMPLETED</string>
+
+    <string name="action_save_failed">Could not update or save item</string>
+    <string name="action_save_saved">Item saved</string>
 </resources>
