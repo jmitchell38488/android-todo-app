@@ -6,7 +6,7 @@
     <dimen name="item_min_height">55dp</dimen>
     <dimen name="section_div_height">20dp</dimen>
     <dimen name="ic_clear_margin">16dp</dimen>
-    <dimen name="list_divider">4.5dp</dimen>
+    <dimen name="list_divider">3dp</dimen>
 
     <dimen name="toolbar_elevation">8dp</dimen>
 </resources>
