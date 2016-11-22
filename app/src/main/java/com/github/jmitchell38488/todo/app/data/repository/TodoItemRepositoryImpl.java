@@ -14,6 +14,7 @@ import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
 import com.github.jmitchell38488.todo.app.data.provider.TodoDatabase;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TodoItemRepositoryImpl implements TodoItemRepository {
@@ -121,6 +122,44 @@ public class TodoItemRepositoryImpl implements TodoItemRepository {
         }
 
         return items.get(0);
+    }
+
+    @Override
+    public int getItemCount(Filter filter) {
+        String selection = "";
+        String[] args = {};
+
+        if (filter == null) {
+            filter = Filter.DEFAULT;
+        }
+
+        switch (filter) {
+            case COMPLETED:
+                selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
+                args = new String[]{"1"};
+                break;
+
+            case PINNED:
+                selection = TodoContract.TodoItem.TODO_PINNED + "=?";
+                args = new String[]{"1"};
+                break;
+
+            case DEFAULT:
+                selection = TodoContract.TodoItem.TODO_COMPLETED + "=?";
+                args = new String[]{"0"};
+                break;
+        }
+
+        Cursor cursor = mContentResolver.query(TodoContract.TodoItem.CONTENT_URI,
+                new String[] {"count(*) as count"},
+                selection,
+                args,
+                null);
+
+        cursor.moveToFirst();
+        int rowCount = cursor.getInt(0);
+
+        return rowCount;
     }
 
     @Override

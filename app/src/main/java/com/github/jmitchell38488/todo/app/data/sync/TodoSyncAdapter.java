@@ -4,8 +4,11 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.github.jmitchell38488.todo.app.R;
@@ -54,7 +57,32 @@ public class TodoSyncAdapter extends AbstractThreadedSyncAdapter {
              */
 
         }
+
         return newAccount;
+    }
+
+    private static void onAccountCreated(Account newAccount, Context context) {
+        int syncInterval = 12 * 3600;
+        int syncFlex = 3600 / 2;
+
+        TodoSyncAdapter.configurePeriodicSync(context, syncInterval, syncFlex);
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
+    }
+
+    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+        Account account = getSyncAccount(context);
+        String authority = context.getString(R.string.content_authority);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // we can enable inexact timers in our periodic sync
+            SyncRequest request = new SyncRequest.Builder().
+                    syncPeriodic(syncInterval, flexTime).
+                    setSyncAdapter(account, authority).
+                    setExtras(new Bundle()).build();
+            ContentResolver.requestSync(request);
+        } else {
+            ContentResolver.addPeriodicSync(account,
+                    authority, new Bundle(), syncInterval);
+        }
     }
 
 }

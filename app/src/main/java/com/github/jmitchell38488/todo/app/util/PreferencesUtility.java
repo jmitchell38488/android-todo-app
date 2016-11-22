@@ -5,4 +5,9 @@ package com.github.jmitchell38488.todo.app.util;
  */
 
 public class PreferencesUtility {
+
+    public static boolean userEnabledPeriodicNotifications() {
+        return true;
+    }
+
 }

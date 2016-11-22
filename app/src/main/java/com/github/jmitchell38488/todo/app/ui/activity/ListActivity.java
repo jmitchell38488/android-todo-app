@@ -3,7 +3,6 @@ package com.github.jmitchell38488.todo.app.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,9 +12,12 @@ import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
+import com.github.jmitchell38488.todo.app.data.service.PeriodicNotificationAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
+import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,12 +35,21 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
     private String mMode = null;
     private boolean mTwoPane = false;
 
+    @Inject
+    PeriodicNotificationAlarm mNotificationAlarm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
         TodoApp.getComponent(this).inject(this);
+
+        mNotificationAlarm.cancel();
+
+        if (PreferencesUtility.userEnabledPeriodicNotifications()) {
+            mNotificationAlarm.start();
+        }
 
         if (savedInstanceState == null) {
             mFragment = SortedListFragment.newInstance(Sort.DEFAULT, Filter.DEFAULT);

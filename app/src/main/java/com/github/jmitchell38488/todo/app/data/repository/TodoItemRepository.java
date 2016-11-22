@@ -20,6 +20,8 @@ public interface TodoItemRepository {
 
     TodoItem getItem(int id);
 
+    int getItemCount(Filter filter);
+
     void saveTodoItem(TodoItem item);
 
     void deleteTodoItem(TodoItem item);
