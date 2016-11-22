@@ -84,4 +84,12 @@
 
     <string name="action_save_failed">Could not update or save item</string>
     <string name="action_save_saved">Item saved</string>
+
+    <!-- notification -->
+    <string name="notification_periodic_1" translatable="false">You have only 1 pending item left in your to do list</string>
+    <string name="notification_periodic_2" translatable="false">You have <xliff:g id="pending">%d</xliff:g> pending items left in your to do list</string>
+    <string name="notification_periodic_i1" translatable="false">You have only 1 pending important item left in your to do list</string>
+    <string name="notification_periodic_i2" translatable="false">You have <xliff:g id="pending">%d</xliff:g> pending items left in your to do list, <xliff:g id="important">%d</xliff:g> of them are important</string>
+    <string name="notification_periodic_extra">You can change or disable this reminder in the app settings.</string>
+    <string name="notification_periodic_title">To Do Daily Report</string>
 </resources>

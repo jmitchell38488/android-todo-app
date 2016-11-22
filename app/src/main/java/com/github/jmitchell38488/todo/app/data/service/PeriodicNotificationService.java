@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
+import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 
@@ -46,6 +47,30 @@ public class PeriodicNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        int pendingCount = mTodoItemRepository.getItemCount(Filter.DEFAULT);
+
+        if (pendingCount < 0) {
+            Log.d(LOG_TAG, "There are no pending to do items, will not notify the user");
+            return;
+        }
+
+        int pendingImportantCount = mTodoItemRepository.getItemCount(Filter.PINNED);
+        String content = "";
+
+        if (pendingImportantCount < 1) {
+            if (pendingCount == 1) {
+                content = getString(R.string.notification_periodic_1);
+            } else {
+                content = getString(R.string.notification_periodic_2, pendingCount);
+            }
+        } else {
+            if (pendingCount == 1) {
+                content = getString(R.string.notification_periodic_i1);
+            } else {
+                content = getString(R.string.notification_periodic_i2, pendingCount, pendingImportantCount);
+            }
+        }
+
         Intent resultIntent = new Intent(getApplicationContext(), ListActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
@@ -54,16 +79,15 @@ public class PeriodicNotificationService extends IntentService {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
 
         int iconId = R.mipmap.ic_launcher;
-        String title = getString(R.string.app_name);
+        String title = getString(R.string.notification_periodic_title);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getApplicationContext())
                         .setSmallIcon(iconId)
                         .setContentTitle(title)
-                        .setContentText("You still have 99 pending to do items")
+                        .setContentText(content)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(
-                        "You still have 99 pending to do items in your list.\nblah blah extended" +
-                                "notification blah blah\nfrrpt frrpt \n nasldasd asd asd asd asd "))
+                                content + "\n\n" + getString(R.string.notification_periodic_extra)))
                         .setContentIntent(resultPendingIntent);
 
         Notification notification = mBuilder.build();

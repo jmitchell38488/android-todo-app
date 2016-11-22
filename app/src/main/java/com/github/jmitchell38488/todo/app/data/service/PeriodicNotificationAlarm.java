@@ -39,17 +39,28 @@ public class PeriodicNotificationAlarm {
     }
 
     public void start() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis() + (1000 * 60));
-        /*calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 8);*/
-
-        long startTime = calendar.getTimeInMillis();
-        long interval = 1000 * 60;
+        long interval = 24 * 60 * 60 * 1000;
+        long startTime = getStartTime();
 
         mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startTime, interval, mPendingItent);
         Log.d(LOG_TAG, String.format("Starting Pending Intent (start: %d, interval: %d)",
                 startTime, interval));
+    }
+
+    private long getStartTime() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTimeMillis);
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        // if 9am less than now, set the alarm to start tomorrow instead of today
+        if (calendar.getTimeInMillis() < currentTimeMillis) {
+            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
+        }
+
+        return calendar.getTimeInMillis();
     }
 
 }
