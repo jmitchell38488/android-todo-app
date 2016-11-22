@@ -6,9 +6,12 @@ import com.github.jmitchell38488.todo.app.data.provider.ProviderModule;
 import com.github.jmitchell38488.todo.app.data.repository.RepositoryModule;
 import com.github.jmitchell38488.todo.app.data.service.AutoStartReceiver;
 import com.github.jmitchell38488.todo.app.data.service.PeriodicNotificationService;
+import com.github.jmitchell38488.todo.app.data.service.ReminderAlarmService;
 import com.github.jmitchell38488.todo.app.data.service.ServiceModule;
+import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.activity.ListActivity;
 import com.github.jmitchell38488.todo.app.data.DataModule;
+import com.github.jmitchell38488.todo.app.ui.activity.TriggeredAlarmActivity;
 import com.github.jmitchell38488.todo.app.ui.fragment.BaseFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
@@ -43,6 +46,12 @@ public interface TodoAppComponent {
     void inject(PeriodicNotificationService periodicNotificationService);
 
     void inject(AutoStartReceiver autoStartReceiver);
+
+    void inject(ReminderAlarmService reminderAlarmService);
+
+    void inject(TriggeredAlarmActivity triggeredAlarmActivity);
+
+    void inject(EditItemActivity editItemActivity);
 
     Application application();
 

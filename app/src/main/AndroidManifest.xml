@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.jmitchell38488.todo.app">
 
-    <!-- Don't need these... yet.
+    <!--
+    Don't need these... yet.
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -27,6 +28,7 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,6 +37,12 @@
             android:name=".ui.activity.EditItemActivity"
             android:parentActivityName=".ui.activity.ListActivity"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".ui.activity.TriggeredAlarmActivity"
+            android:theme="@style/AlarmTheme"
+            android:parentActivityName=".ui.activity.ListActivity"
+            android:noHistory="true"></activity>
 
         <provider
             android:name=".data.provider.TodoProvider"
@@ -49,6 +57,7 @@
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
@@ -60,6 +69,7 @@
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
@@ -67,7 +77,11 @@
 
         <service
             android:name=".data.service.PeriodicNotificationService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <service
+            android:name=".data.service.ReminderAlarmService"
+            android:exported="false" />
 
         <receiver android:name=".data.service.AutoStartReceiver">
             <intent-filter>

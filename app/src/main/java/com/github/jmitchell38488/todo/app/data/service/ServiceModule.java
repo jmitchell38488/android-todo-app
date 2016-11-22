@@ -2,9 +2,6 @@ package com.github.jmitchell38488.todo.app.data.service;
 
 import android.content.Context;
 
-import com.github.jmitchell38488.todo.app.annotation.PerApp;
-
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -27,6 +24,16 @@ public class ServiceModule {
     @Provides @Singleton
     public PeriodicNotificationAlarm providePeriodicNotificationAlarm() {
         return new PeriodicNotificationAlarm(mContext);
+    }
+
+    @Provides @Singleton
+    public ReminderAlarmService provideReminderAlarmService() {
+        return new ReminderAlarmService();
+    }
+
+    @Provides @Singleton
+    public ReminderAlarm provideReminderAlarm() {
+        return new ReminderAlarm(mContext);
     }
 
 }

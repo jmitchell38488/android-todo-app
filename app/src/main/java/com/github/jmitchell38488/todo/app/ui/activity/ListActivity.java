@@ -10,9 +10,11 @@ import android.widget.Toast;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Filter;
+import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.service.PeriodicNotificationAlarm;
+import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
@@ -45,10 +47,18 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
         TodoApp.getComponent(this).inject(this);
 
-        mNotificationAlarm.cancel();
+        // The feature was disabled but it's still active
+        if (!PreferencesUtility.userEnabledPeriodicNotifications() &&
+                PreferencesUtility.isPeriodicNotificationsActive()) {
+            mNotificationAlarm.cancel();
+            PreferencesUtility.setPeriodicNotificationsActive(false);
+        }
 
-        if (PreferencesUtility.userEnabledPeriodicNotifications()) {
+        // The feature was enabled, but it isn't active
+        if (PreferencesUtility.userEnabledPeriodicNotifications() &&
+                PreferencesUtility.isPeriodicNotificationsActive()) {
             mNotificationAlarm.start();
+            PreferencesUtility.setPeriodicNotificationsActive(true);
         }
 
         if (savedInstanceState == null) {
@@ -66,7 +76,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
         fab.setOnClickListener(view -> {
             Bundle arguments = new Bundle();
-            arguments.putParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM, null);
+            arguments.putParcelable(Parcelable.KEY_TODOITEM, null);
 
             Intent intent = new Intent(this, EditItemActivity.class);
             intent.putExtras(arguments);
@@ -110,7 +120,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Bundle args = data.getExtras();
-                TodoItem item = args.getParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM);
+                TodoItem item = args.getParcelable(Parcelable.KEY_TODOITEM);
 
                 if (item.getId() > 0) {
                     // Find the matching item

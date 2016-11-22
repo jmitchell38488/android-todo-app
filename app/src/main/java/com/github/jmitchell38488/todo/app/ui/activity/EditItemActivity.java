@@ -10,12 +10,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
+import com.github.jmitchell38488.todo.app.TodoApp;
+import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
-import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
-import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
 
-import java.util.List;
+import javax.inject.Inject;
 
 public class EditItemActivity extends BaseActivity {
 
@@ -23,10 +24,15 @@ public class EditItemActivity extends BaseActivity {
 
     EditItemFragment mFragment;
 
+    @Inject
+    ReminderAlarm mReminderAlarm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
+
+        TodoApp.getComponent(getApplication()).inject(this);
 
         TodoItem item;
         Bundle args = getIntent().getExtras();
@@ -48,11 +54,13 @@ public class EditItemActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        item = args.getParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM);
+        item = args.getParcelable(Parcelable.KEY_TODOITEM);
 
         // Change text
         int stringId = item == null ? R.string.action_create : R.string.action_edit;
         ((TextView) mToolbar.findViewById(R.id.logo_main)).setText(getString(stringId));
+
+        mReminderAlarm.createAndStartAlarm(item, 1, System.currentTimeMillis() + 10000);
     }
 
     @Override
@@ -88,7 +96,7 @@ public class EditItemActivity extends BaseActivity {
 
                 TodoItem todoItem = mFragment.getUpdatedTodoItem();
                 Bundle args = new Bundle();
-                args.putParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM, todoItem);
+                args.putParcelable(Parcelable.KEY_TODOITEM, todoItem);
 
                 Intent intent = new Intent();
                 intent.putExtras(args);

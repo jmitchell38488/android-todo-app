@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.jmitchell38488.todo.app.R;
+import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
@@ -37,9 +38,8 @@ public class EditItemFragment extends Fragment {
         Bundle arguments = getArguments();
         TodoItem item = null;
 
-        if (arguments != null && arguments.getParcelable(
-                ListFragment.ActivityListClickListener.ARG_TODOITEM) != null) {
-            item = arguments.getParcelable(ListFragment.ActivityListClickListener.ARG_TODOITEM);
+        if (arguments != null && arguments.getParcelable(Parcelable.KEY_TODOITEM) != null) {
+            item = arguments.getParcelable(Parcelable.KEY_TODOITEM);
         }
 
         if (item == null) {

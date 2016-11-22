@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
+import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.repository.TodoItemRepository;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
@@ -73,7 +74,6 @@ public abstract class ListFragment extends BaseFragment
     protected HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
 
     public interface ActivityListClickListener {
-        public final String ARG_TODOITEM = "todoitem";
         public void onItemClick(Bundle arguments);
     }
 
@@ -84,7 +84,7 @@ public abstract class ListFragment extends BaseFragment
         TodoItem item = mAdapter.getItem(position);
 
         Bundle arguments = new Bundle();
-        arguments.putParcelable(ActivityListClickListener.ARG_TODOITEM, item);
+        arguments.putParcelable(Parcelable.KEY_TODOITEM, item);
 
         if (mActivityListClickListener != null) {
             mActivityListClickListener.onItemClick(arguments);

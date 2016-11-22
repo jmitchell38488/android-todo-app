@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/grey_f5f5f5_100</item>
+        <item name="colorPrimaryDark">@color/actionbar_dark</item>
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlActivated">@color/actionbar_dark</item>
+        <item name="colorControlHighlight">@color/actionbar_dark</item>
+    </style>
+
+    <style name="AlarmTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/actionbar_light</item>
+        <item name="colorPrimaryDark">@color/actionbar_dark</item>
+        <item name="android:background">@color/black</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Main activity theme. -->
+    <style name="ListTheme" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+</resources>

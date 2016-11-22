@@ -20,13 +20,13 @@ public class PeriodicNotificationAlarm {
 
     public PeriodicNotificationAlarm(Context context) {
         mContext = context;
+        mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
     }
 
     public void createPendingAlarm() {
         Log.d(LOG_TAG, "Creating periodic notification intent structure");
         mIntent = new Intent(mContext, PeriodicNotificationService.class);
         mPendingItent = PendingIntent.getService(mContext, 0, mIntent, 0);
-        mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
     }
 
     public void cancel() {
@@ -39,6 +39,10 @@ public class PeriodicNotificationAlarm {
     }
 
     public void start() {
+        if (mIntent == null) {
+            createPendingAlarm();
+        }
+
         long interval = 24 * 60 * 60 * 1000;
         long startTime = getStartTime();
 
