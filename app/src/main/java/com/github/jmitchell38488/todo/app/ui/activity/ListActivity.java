@@ -61,18 +61,21 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
         TodoApp.getComponent(this).inject(this);
 
+        PreferencesUtility.setInstallTime(this);
+        PreferencesUtility.incrementTimesRun(this);
+
         // The feature was disabled but it's still active
-        if (!PreferencesUtility.userEnabledPeriodicNotifications() &&
-                PreferencesUtility.isPeriodicNotificationsActive()) {
+        if (!PreferencesUtility.userEnabledPeriodicNotifications(getApplicationContext()) &&
+                PreferencesUtility.isPeriodicNotificationsActive(getApplicationContext())) {
             mNotificationAlarm.cancel();
-            PreferencesUtility.setPeriodicNotificationsActive(false);
+            PreferencesUtility.setPeriodicNotificationsActive(getApplicationContext(), false);
         }
 
         // The feature was enabled, but it isn't active
-        if (PreferencesUtility.userEnabledPeriodicNotifications() &&
-                PreferencesUtility.isPeriodicNotificationsActive()) {
+        if (PreferencesUtility.userEnabledPeriodicNotifications(getApplicationContext()) &&
+                PreferencesUtility.isPeriodicNotificationsActive(getApplicationContext())) {
             mNotificationAlarm.start();
-            PreferencesUtility.setPeriodicNotificationsActive(true);
+            PreferencesUtility.setPeriodicNotificationsActive(getApplicationContext(), true);
         }
 
         if (savedInstanceState == null) {

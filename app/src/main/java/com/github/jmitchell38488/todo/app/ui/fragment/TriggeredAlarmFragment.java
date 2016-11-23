@@ -18,6 +18,8 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
+import com.github.jmitchell38488.todo.app.data.repository.TodoReminderRepository;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.util.DateUtility;
 import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
@@ -30,8 +32,8 @@ public class TriggeredAlarmFragment extends BaseFragment {
 
     private static final String LOG_TAG = TriggeredAlarmFragment.class.getSimpleName();
 
-    @Inject
-    ReminderAlarm mReminderAlarm;
+    @Inject ReminderAlarm mReminderAlarm;
+    @Inject TodoReminderRepository mTodoReminderRepository;
 
     @BindView(R.id.alarm_title) TextView titleView;
     @BindView(R.id.alarm_time) TextView timeView;
@@ -40,6 +42,7 @@ public class TriggeredAlarmFragment extends BaseFragment {
     @BindView(R.id.alarm_button_dismiss) Button dismissButton;
 
     protected TodoItem mTodoItem;
+    protected TodoReminder mTodoReminder;
     protected int mAlarmId;
     protected BroadcastReceiver mBroadcastReceiver;
     protected Handler mRunnableHandler = new Handler();
@@ -62,9 +65,13 @@ public class TriggeredAlarmFragment extends BaseFragment {
 
         // Automatically snooze the alarm if its running time exceeds more than 1 minute
         mRunnableHandler.postDelayed(() -> {
+            // Make sure that we increment the no. of times snoozed
+            mTodoReminder.setTimesSnoozed(mTodoReminder.getTimesSnoozed() + 1);
+            mTodoReminderRepository.saveTodoReminder(mTodoReminder);
+
             mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
             getActivity().finish();
-        }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze());
+        }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze(getActivity()) * 1000);
     }
 
     @Override
@@ -89,6 +96,7 @@ public class TriggeredAlarmFragment extends BaseFragment {
         Bundle args = getArguments();
         mTodoItem = args.getParcelable(Parcelable.KEY_TODOITEM);
         mAlarmId = args.getInt(Parcelable.KEY_ALARM_ID);
+        mTodoReminder = mTodoReminderRepository.getReminderById(mAlarmId);
     }
 
     @Override
@@ -101,6 +109,8 @@ public class TriggeredAlarmFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        snoozeButton.setVisibility(View.GONE);
+
         titleView.setText(mTodoItem.getTitle());
         timeView.setText(DateUtility.getTimeForAlarm(getActivity()));
         dateView.setText(DateUtility.getFormattedDateForAlarm(getActivity()));
@@ -110,10 +120,18 @@ public class TriggeredAlarmFragment extends BaseFragment {
             getActivity().finish();
         });
 
-        snoozeButton.setOnClickListener(v -> {
-            mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
-            getActivity().finish();
-        });
+        // Snooze should only be available if we haven't hit the limit yet
+        if (mTodoReminder.getTimesSnoozed() < PreferencesUtility.getMaxAlarmSnoozeTimes(getActivity())) {
+            snoozeButton.setVisibility(View.VISIBLE);
+            snoozeButton.setOnClickListener(v -> {
+                // Make sure that we increment the no. of times snoozed
+                mTodoReminder.setTimesSnoozed(mTodoReminder.getTimesSnoozed() + 1);
+                mTodoReminderRepository.saveTodoReminder(mTodoReminder);
+
+                mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+                getActivity().finish();
+            });
+        }
     }
 
     public void handleOnBackPressed() {

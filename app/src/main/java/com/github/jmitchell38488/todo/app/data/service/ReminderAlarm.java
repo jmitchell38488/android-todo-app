@@ -75,7 +75,7 @@ public class ReminderAlarm {
     }
 
     public void snoozeAlarm(TodoItem item, int alarmId) {
-        int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime();
+        int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime(mContext);
         long snoozeTime = snoozeMinutes * 60 * 100;
         long startTime = System.currentTimeMillis() + snoozeTime;
 

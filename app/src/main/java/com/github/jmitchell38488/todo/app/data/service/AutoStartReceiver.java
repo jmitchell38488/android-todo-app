@@ -21,7 +21,7 @@ public class AutoStartReceiver extends BroadcastReceiver {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             mNotificationAlarm.cancel();
 
-            if (PreferencesUtility.userEnabledPeriodicNotifications()) {
+            if (PreferencesUtility.userEnabledPeriodicNotifications(context)) {
                 mNotificationAlarm.start();
             }
         }

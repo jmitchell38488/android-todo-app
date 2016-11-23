@@ -102,4 +102,20 @@
     <string name="alarm_button_dismiss">Dismiss</string>
     <string name="alarm_snooze_message">Alarm snoozed for <xliff:g id="time">%d</xliff:g> minute<xliff:g id="suffix">%s</xliff:g></string>
     <string name="alarm_set_message">Alarm set for <xliff:g id="time">%s</xliff:g></string>
+
+    <!-- Preferences -->
+    <string name="pref_times_run_key">times_run</string>
+    <string name="pref_times_run_default">0</string>
+    <string name="pref_install_time_key">install_time</string>
+    <string name="pref_install_time_default">0</string>
+    <string name="pref_periodic_notification_active_key">periodic_notification_active</string>
+    <string name="pref_periodic_notification_active_default">true</string>
+    <string name="pref_periodic_notification_enabled_key">periodic_notification_enabled</string>
+    <string name="pref_periodic_notification_enabled_default">true</string>
+    <string name="pref_alarm_snooze_maxtimes_key">alarm_snooze_maxtimes</string>
+    <string name="pref_alarm_snooze_maxtimes_default">5</string>
+    <string name="pref_alarm_snooze_time_key">alarm_snooze_time</string>
+    <string name="pref_alarm_snooze_time_default">5</string>
+    <string name="pref_alarm_snooze_timeout_key">alarm_snooze_timeout</string>
+    <string name="pref_alarm_snooze_timeout_default">60</string>
 </resources>
