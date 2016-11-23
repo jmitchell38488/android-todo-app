@@ -24,6 +24,8 @@
     <string name="date_format_dayname" translatable="false">EEEE</string>
     <string name="date_format_monthday" translatable="false">MMMM dd</string>
     <string name="date_format_daymonthday" translatable="false">EEE MMM dd</string>
+    <string name="date_format_time" translatable="false">kk:mm</string>
+    <string name="date_format_date_alarm" translatable="false">EEE, d MMMM</string>
 
     <!-- Output formats -->
     <string name="format_full_friendly_date" translatable="false"><xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g></string>
@@ -92,4 +94,10 @@
     <string name="notification_periodic_i2" translatable="false">You have <xliff:g id="pending">%d</xliff:g> pending items left in your to do list, <xliff:g id="important">%d</xliff:g> of them are important</string>
     <string name="notification_periodic_extra">You can change or disable this reminder in the app settings.</string>
     <string name="notification_periodic_title">To Do Daily Report</string>
+
+    <!-- alarm -->
+    <string name="alarm_title">To Do Reminder</string>
+    <string name="alarm_button_snooze">Snooze</string>
+    <string name="alarm_button_dismiss">Dismiss</string>
+    <string name="alarm_snooze_message">Alarm snoozed for <xliff:g id="time">%d</xliff:g> minute<xliff:g id="suffix">%s</xliff:g></string>
 </resources>

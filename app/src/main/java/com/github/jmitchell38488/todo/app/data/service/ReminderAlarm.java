@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
 
 public class ReminderAlarm {
 
@@ -67,15 +69,20 @@ public class ReminderAlarm {
     }
 
     public void snoozeAlarm(TodoItem item, int alarmId) {
-        long startTime = System.currentTimeMillis() + (60 * 1000);
+        int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime();
+        long snoozeTime = snoozeMinutes * 60 * 100;
+        long startTime = System.currentTimeMillis() + snoozeTime;
+
         PendingIntent pendingIntent = createAlarm(item, alarmId);
         mAlarmManager.cancel(pendingIntent);
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
 
-        Toast.makeText(mContext, "Alarm snoozed for 1 minute", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,
+                mContext.getString(R.string.alarm_snooze_message, snoozeMinutes, snoozeMinutes > 1 ? "s" : ""),
+                Toast.LENGTH_LONG).show();
 
-        Log.d(LOG_TAG, String.format("Snoozed alarm for todo item (%d) %s for 1 minute",
-                item.getId(), item.getTitle()));
+        Log.d(LOG_TAG, String.format("Snoozed alarm for todo item (%d) %s for (%d) minutes",
+                item.getId(), item.getTitle(), snoozeMinutes));
     }
 
 }

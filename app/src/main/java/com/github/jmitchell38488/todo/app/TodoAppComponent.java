@@ -15,6 +15,7 @@ import com.github.jmitchell38488.todo.app.ui.activity.TriggeredAlarmActivity;
 import com.github.jmitchell38488.todo.app.ui.fragment.BaseFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
+import com.github.jmitchell38488.todo.app.ui.fragment.TriggeredAlarmFragment;
 import com.github.jmitchell38488.todo.app.ui.module.TodoItemModule;
 import com.google.gson.Gson;
 
@@ -50,6 +51,8 @@ public interface TodoAppComponent {
     void inject(ReminderAlarmService reminderAlarmService);
 
     void inject(TriggeredAlarmActivity triggeredAlarmActivity);
+
+    void inject(TriggeredAlarmFragment triggeredAlarmFragment);
 
     void inject(EditItemActivity editItemActivity);
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top|center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="130dp"
+        android:layout_marginBottom="5dp">
+
+        <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_reminder"
+            android:tint="@color/white"
+            android:textColor="@color/white"
+            android:textSize="14dp"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
+            android:text="@string/alarm_title"
+            android:textSize="15dp"/>
+    </LinearLayout>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:id="@+id/alarm_title"
+        android:text="Pick up Airplane tickets"
+        android:textSize="22dp"
+        android:layout_marginBottom="20dp"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:id="@+id/alarm_time"
+        android:text="10:39"
+        android:textSize="64dp"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="center_horizontal"
+        android:id="@+id/alarm_date"
+        android:text="Wed, 23 November"
+        android:textSize="16dp"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_button_snooze"
+        android:id="@+id/alarm_button_snooze"
+        android:layout_marginBottom="35dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_button_dismiss"
+        android:id="@+id/alarm_button_dismiss"/>
+
+</LinearLayout>

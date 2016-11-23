@@ -54,4 +54,10 @@ public abstract class BaseFragment extends Fragment {
         mToast.show();
     }
 
+    protected void showLongToast(@StringRes int resId) {
+        if (mToast != null) mToast.cancel();
+        mToast = Toast.makeText(getActivity(), resId, Toast.LENGTH_LONG);
+        mToast.show();
+    }
+
 }

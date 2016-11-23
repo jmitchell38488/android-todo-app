@@ -37,17 +37,15 @@ public class EditItemActivity extends BaseActivity {
         TodoItem item;
         Bundle args = getIntent().getExtras();
 
-        //if (savedInstanceState == null) {
-            Bundle arguments = new Bundle();
-            arguments.putAll(args);
+        Bundle arguments = new Bundle();
+        arguments.putAll(args);
 
-            mFragment = new EditItemFragment();
-            mFragment.setArguments(arguments);
+        mFragment = new EditItemFragment();
+        mFragment.setArguments(arguments);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.activity_list_container, mFragment)
-                    .commit();
-        //}
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.activity_list_container, mFragment)
+                .commit();
 
         // Enable buttons
         ActionBar actionBar = getSupportActionBar();
@@ -60,7 +58,7 @@ public class EditItemActivity extends BaseActivity {
         int stringId = item == null ? R.string.action_create : R.string.action_edit;
         ((TextView) mToolbar.findViewById(R.id.logo_main)).setText(getString(stringId));
 
-        mReminderAlarm.createAndStartAlarm(item, 1, System.currentTimeMillis() + 10000);
+        //mReminderAlarm.createAndStartAlarm(item, 1, System.currentTimeMillis() + 10000);
     }
 
     @Override

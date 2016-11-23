@@ -168,4 +168,16 @@ public class DateUtility {
         return monthDayString;
     }
 
+    public static String getTimeForAlarm(Context context) {
+        long currentTime = System.currentTimeMillis();
+        SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_time));
+        return format.format(currentTime);
+    }
+
+    public static String getFormattedDateForAlarm(Context context) {
+        long currentTime = System.currentTimeMillis();
+        SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_date_alarm));
+        return format.format(currentTime);
+    }
+
 }

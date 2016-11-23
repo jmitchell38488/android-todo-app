@@ -16,4 +16,8 @@ public class PreferencesUtility {
         //
     }
 
+    public static int getAlarmSnoozeTime() {
+        return 5;
+    }
+
 }
