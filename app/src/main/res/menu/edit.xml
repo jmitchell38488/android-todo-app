@@ -23,11 +23,13 @@
         android:orderInCategory="300"
         app:showAsAction="never"
         android:title="@string/option_action_delete" />
--->
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="400"
         app:showAsAction="never"
         android:title="@string/option_action_settings" />
+
+-->
 
 </menu>

@@ -1,38 +1,59 @@
 package com.github.jmitchell38488.todo.app.ui.view.holder;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
-import com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView;
-import com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TodoItemEditHolder {
 
-    View mView;
-    Context mContext;
-    TodoItem mItem;
+    private View mView;
+    private Context mContext;
+    private TodoItem mItem;
+    private InputMethodManager mInputMethodManager;
 
-    @BindView(R.id.edit_dialog_title) public RobotoLightEditText titleView;
-    @BindView(R.id.edit_dialog_description) public RobotoLightEditText descriptionView;
-    @BindView(R.id.edit_dialog_pinned) public Switch pinnedSwitch;
-    @BindView(R.id.edit_dialog_completed) public Switch completedSwitch;
-    @BindView(R.id.edit_dialog_locked) public Switch lockedSwitch;
-    @BindView(R.id.edit_dialog_pinned_label) public TextView pinnedLabel;
+    public Calendar reminderDate;
+
+    public boolean hasReminderDate = false;
+    public boolean hasReminderTime = false;
+
+    @BindView(R.id.item_edit_title) public RobotoLightEditText titleView;
+    @BindView(R.id.item_edit_description) public RobotoLightEditText descriptionView;
+    @BindView(R.id.item_edit_pinned) public Switch pinnedSwitch;
+    @BindView(R.id.item_edit_completed) public Switch completedSwitch;
+    @BindView(R.id.item_edit_locked) public Switch lockedSwitch;
+    @BindView(R.id.item_edit_pinned_label) public TextView pinnedLabel;
+
+    @BindView(R.id.item_edit_date_field) TextView dateField;
+    @BindView(R.id.item_edit_date_icon) TextView dateIcon;
+    @BindView(R.id.item_edit_date_delete) TextView dateDelete;
+
+    @BindView(R.id.edit_item_time_selector) LinearLayout timeSelector;
+    @BindView(R.id.item_edit_time_field) TextView timeField;
+    @BindView(R.id.item_edit_time_icon) TextView timeIcon;
+    @BindView(R.id.item_edit_time_delete) TextView timeDelete;
 
     public TodoItemEditHolder(View view, Context context,@Nullable TodoItem item) {
         mView = view;
         mContext = context;
         mItem = item;
+        mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         ButterKnife.bind(this, mView);
 
@@ -40,14 +61,16 @@ public class TodoItemEditHolder {
     }
 
     public void updateView() {
+        timeSelector.setVisibility(View.GONE);
+
         pinnedSwitch.setChecked(mItem.isPinned());
         pinnedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mItem.setPinned(isChecked);
 
             if (isChecked) {
-                pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_true));
+                pinnedLabel.setText(mContext.getString(R.string.item_edit_pin_true));
             } else {
-                pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_false));
+                pinnedLabel.setText(mContext.getString(R.string.item_edit_pin_false));
             }
         });
 
@@ -62,7 +85,7 @@ public class TodoItemEditHolder {
         });
 
         if (mItem.isPinned()) {
-            pinnedLabel.setText(mContext.getString(R.string.dialog_edit_pin_true));
+            pinnedLabel.setText(mContext.getString(R.string.item_edit_pin_true));
         }
 
         if (!TextUtils.isEmpty(mItem.getTitle())) {
@@ -72,6 +95,80 @@ public class TodoItemEditHolder {
         if (!TextUtils.isEmpty(mItem.getDescription())) {
             descriptionView.setText(mItem.getDescription());
         }
+
+        reminderDate = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener dateCallback = (view, year, monthOfYear, dayOfMonth) -> {
+            reminderDate.set(Calendar.YEAR, year);
+            reminderDate.set(Calendar.YEAR, year);
+            reminderDate.set(Calendar.MONTH, monthOfYear);
+            reminderDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_date_alarm_field));
+            dateField.setText(format.format(reminderDate.getTime()));
+
+            hasReminderDate = true;
+            timeSelector.setVisibility(View.VISIBLE);
+        };
+
+        TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
+            reminderDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            reminderDate.set(Calendar.MINUTE, minute);
+
+            SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_time));
+            timeField.setText(format.format(reminderDate.getTime()));
+            hasReminderTime = true;
+        };
+
+        View.OnClickListener dateClick = (view) ->
+            new DatePickerDialog(mContext, dateCallback,
+                    reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
+                    reminderDate.get(Calendar.DAY_OF_MONTH)).show();
+
+        View.OnFocusChangeListener dateFocus = (view, focused) -> {
+            mInputMethodManager.hideSoftInputFromWindow(dateField.getWindowToken(), 0);
+            if (!focused) {
+                return;
+            }
+
+            new DatePickerDialog(mContext, dateCallback,
+                    reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
+                    reminderDate.get(Calendar.DAY_OF_MONTH)).show();
+        };
+
+        View.OnClickListener timeClick = (view) ->
+            new TimePickerDialog(mContext, timeCallback,
+                    reminderDate.get(Calendar.HOUR_OF_DAY),
+                    reminderDate.get(Calendar.MINUTE), true).show();
+
+        View.OnFocusChangeListener timeFocus = (view, focused) -> {
+            mInputMethodManager.hideSoftInputFromWindow(timeField.getWindowToken(), 0);
+            if (!focused) {
+                return;
+            }
+
+            new TimePickerDialog(mContext, timeCallback,
+                    reminderDate.get(Calendar.HOUR_OF_DAY),
+                    reminderDate.get(Calendar.MINUTE), true).show();
+        };
+
+        dateField.setOnFocusChangeListener(dateFocus);
+        dateField.setOnClickListener(dateClick);
+        dateIcon.setOnClickListener(dateClick);
+        dateDelete.setOnClickListener(view -> {
+            dateField.setText("");
+            hasReminderDate = false;
+            hasReminderTime = false;
+            timeSelector.setVisibility(View.GONE);
+        });
+
+        timeField.setOnFocusChangeListener(timeFocus);
+        timeField.setOnClickListener(timeClick);
+        timeIcon.setOnClickListener(timeClick);
+        timeDelete.setOnClickListener(view -> {
+            timeField.setText("");
+            hasReminderTime = false;
+        });
     }
 
 }

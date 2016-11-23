@@ -19,6 +19,7 @@
     <color name="grey_333333_100">#FF333333</color>
     <color name="grey_333333_50">#80333333</color>
     <color name="grey_333333_30">#33333333</color>
+    <color name="material_grey_50">#fffafafa</color>
 
     <color name="actionbar_dark">@color/theme_green</color>
     <color name="actionbar_dark_50">@color/theme_green_light</color>

@@ -5,38 +5,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/edit_dialog_container">
+    android:id="@+id/item_edit_container">
+
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
 
     <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_edit_title_label"
+        android:text="@string/item_edit_title_label"
         style="@style/EditThemeContainer.Label"/>
 
     <com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText
-        android:id="@+id/edit_dialog_title"
+        android:id="@+id/item_edit_title"
         android:inputType="textCapSentences|textAutoCorrect"
         android:minLines="1"
         android:maxLines="1"
         android:lines="1"
-        android:hint="@string/dialog_edit_title_hint"
+        android:hint="@string/item_edit_title_hint"
+        android:nextFocusUp="@id/item_edit_container"
+        android:nextFocusLeft="@id/item_edit_container"
         style="@style/EditThemeContainer.Input"/>
 
     <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_edit_description_label"
+        android:text="@string/item_edit_description_label"
         style="@style/EditThemeContainer.Label"/>
 
     <com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText
-        android:id="@+id/edit_dialog_description"
+        android:id="@+id/item_edit_description"
         android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
-        android:hint="@string/dialog_edit_description_hint"
+        android:hint="@string/item_edit_description_hint"
         style="@style/EditThemeContainer.Input.TextArea"/>
+
+    <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_edit_reminder_label"
+        style="@style/EditThemeContainer.Label"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="10dp"
+        android:layout_marginTop="10dp">
+
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/item_edit_date_field"
+            android:background="@drawable/edit_item_border_bottom_selector"
+            style="@style/EditThemeContainer.Input"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:id="@+id/item_edit_date_icon"
+            android:text="@string/icon_calendar"
+            android:textColor="@color/actionbar_dark"
+            android:textSize="20dp"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:id="@+id/item_edit_date_delete"
+            android:text="@string/icon_cancel"
+            android:textColor="@color/actionbar_dark"
+            android:textSize="26dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/edit_item_time_selector">
+
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/item_edit_time_field"
+            android:background="@drawable/edit_item_border_bottom_selector"
+            style="@style/EditThemeContainer.Input"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:id="@+id/item_edit_time_icon"
+            android:text="@string/icon_clock"
+            android:textColor="@color/actionbar_dark"
+            android:textSize="26dp"/>
+
+        <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:id="@+id/item_edit_time_delete"
+            android:text="@string/icon_cancel"
+            android:textColor="@color/actionbar_dark"
+            android:textSize="26dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,25 +142,25 @@
             <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dialog_edit_pin_label"
+                android:text="@string/item_edit_pin_label"
                 style="@style/EditThemeContainer.Label"/>
 
             <Switch
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_dialog_pinned"
+                android:id="@+id/item_edit_pinned"
                 style="@style/EditThemeContainer.Switch"/>
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dialog_edit_locked_label"
+                android:text="@string/item_edit_locked_label"
                 style="@style/EditThemeContainer.Label"/>
 
             <Switch
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_dialog_locked"
+                android:id="@+id/item_edit_locked"
                 style="@style/EditThemeContainer.Switch"/>
 
             </LinearLayout>
@@ -79,13 +174,13 @@
             <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dialog_edit_completed_label"
+                android:text="@string/item_edit_completed_label"
                 style="@style/EditThemeContainer.Label"/>
 
             <Switch
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_dialog_completed"
+                android:id="@+id/item_edit_completed"
                 style="@style/EditThemeContainer.Switch"/>
 
         </LinearLayout>
@@ -95,7 +190,7 @@
     <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_dialog_pinned_label"
+        android:id="@+id/item_edit_pinned_label"
         style="@style/EditThemeContainer.Label.Small"/>
 
 </LinearLayout>
