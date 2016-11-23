@@ -65,7 +65,13 @@ public class ReminderAlarm {
         }
 
         PendingIntent pendingIntent = createAlarm(item, alarmId);
-        mAlarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+
+        // Prior to API 19, alarmmanager.set was exact, but from 19, you need to use setExact
+        if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) < 19) {
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        } else {
+            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        }
     }
 
     public void snoozeAlarm(TodoItem item, int alarmId) {

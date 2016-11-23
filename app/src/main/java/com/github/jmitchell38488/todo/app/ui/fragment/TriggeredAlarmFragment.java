@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.CallSuper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,15 @@ import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.util.DateUtility;
+import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
 public class TriggeredAlarmFragment extends BaseFragment {
+
+    private static final String LOG_TAG = TriggeredAlarmFragment.class.getSimpleName();
 
     @Inject
     ReminderAlarm mReminderAlarm;
@@ -38,8 +42,8 @@ public class TriggeredAlarmFragment extends BaseFragment {
     protected TodoItem mTodoItem;
     protected int mAlarmId;
     protected BroadcastReceiver mBroadcastReceiver;
+    protected Handler mRunnableHandler = new Handler();
 
-    @CallSuper
     @Override
     public void onStart() {
         super.onStart();
@@ -55,6 +59,12 @@ public class TriggeredAlarmFragment extends BaseFragment {
         };
 
         getActivity().registerReceiver(mBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+
+        // Automatically snooze the alarm if its running time exceeds more than 1 minute
+        mRunnableHandler.postDelayed(() -> {
+            mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+            getActivity().finish();
+        }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze());
     }
 
     @Override

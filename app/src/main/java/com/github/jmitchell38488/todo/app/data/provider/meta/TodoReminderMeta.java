@@ -24,7 +24,8 @@ public interface TodoReminderMeta {
             TodoContract.TodoReminder.REMINDER_DAY,
             TodoContract.TodoReminder.REMINDER_HOUR,
             TodoContract.TodoReminder.REMINDER_MINUTE,
-            TodoContract.TodoReminder.REMINDER_ACTIVE
+            TodoContract.TodoReminder.REMINDER_ACTIVE,
+            TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED
     };
 
     Func1<Cursor, List<TodoReminder>> PROJECTION_MAP = cursor-> {
@@ -40,6 +41,7 @@ public interface TodoReminderMeta {
                         .setHour(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_HOUR))
                         .setMinute(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_MINUTE))
                         .setActive(DbUtils.getBoolean(cursor, TodoContract.TodoReminder.REMINDER_ACTIVE))
+                        .setTimesSnoozed(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED))
                 );
             }
 
@@ -111,6 +113,11 @@ public interface TodoReminderMeta {
             return this;
         }
 
+        public TodoReminderMeta.Builder timesSnoozed(int timesSnoozed) {
+            values.put(TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED, timesSnoozed);
+            return this;
+        }
+
         public Builder reminder(TodoReminder reminder) {
             return id(reminder.getId())
                     .itemId(reminder.getItemId())
@@ -119,7 +126,8 @@ public interface TodoReminderMeta {
                     .day(reminder.getDay())
                     .hour(reminder.getHour())
                     .minute(reminder.getMinute())
-                    .active(reminder.isActive());
+                    .active(reminder.isActive())
+                    .timesSnoozed(reminder.getTimesSnoozed());
         }
 
         public ContentValues build() {

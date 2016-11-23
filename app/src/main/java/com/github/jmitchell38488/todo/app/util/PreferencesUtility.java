@@ -20,4 +20,12 @@ public class PreferencesUtility {
         return 5;
     }
 
+    public static int getMaxAlarmSnoozeTimes() {
+        return 5;
+    }
+
+    public static long getMaxAllowedTimeBeforeAutoSnooze() {
+        return 60 * 1000;
+    }
+
 }

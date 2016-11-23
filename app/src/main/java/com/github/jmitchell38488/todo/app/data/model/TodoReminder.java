@@ -15,12 +15,14 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
     int hour;
     int minute;
     boolean active;
+    int timesSnoozed;
 
     public TodoReminder() {
         active = false;
     }
 
-    public TodoReminder(long id, long itemId, int year, int month, int day, int hour, int minute, boolean active) {
+    public TodoReminder(long id, long itemId, int year, int month, int day, int hour,
+                        int minute, boolean active, int timesSnoozed) {
         this.id = id;
         this.itemId = itemId;
         this.year = year;
@@ -29,6 +31,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         this.hour = hour;
         this.minute = minute;
         this.active = active;
+        this.timesSnoozed = timesSnoozed;
     }
 
     public long getId() {
@@ -103,9 +106,18 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         return this;
     }
 
+    public int getTimesSnoozed() {
+        return timesSnoozed;
+    }
+
+    public TodoReminder setTimesSnoozed(int timesSnoozed) {
+        this.timesSnoozed = timesSnoozed;
+        return this;
+    }
+
     @Override
     public Object clone() {
-        return new TodoReminder(id, itemId, year, month, day, hour, minute, active);
+        return new TodoReminder(id, itemId, year, month, day, hour, minute, active, timesSnoozed);
     }
 
     @Override
@@ -123,6 +135,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         dest.writeInt(hour);
         dest.writeInt(minute);
         dest.writeByte(active ? (byte) 1 : 0);
+        dest.writeInt(timesSnoozed);
     }
 
     protected TodoReminder(Parcel in) {
@@ -134,6 +147,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         hour = in.readInt();
         minute = in.readInt();
         active = in.readByte() != 0;
+        timesSnoozed = in.readInt();
     }
 
     public static Creator<TodoReminder> CREATOR = new Creator<TodoReminder>() {
@@ -151,8 +165,8 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
 
     public String toString() {
         return String.format("{id: %d, item_id: %d, year: %d, month: %d, day: %d, hour: %d, " +
-                "minute: %d, active: %s}",
-                id, itemId, year, month, day, hour, minute, active ? "true" : "false");
+                "minute: %d, active: %s, times_snoozed: %d}",
+                id, itemId, year, month, day, hour, minute, active ? "true" : "false", timesSnoozed);
     }
 
 }
