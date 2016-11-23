@@ -25,15 +25,21 @@ public class TodoProvider extends ContentProvider {
 
     private static final int TODOITEMS = 100;
     private static final int TODOITEM_ID = 101;
-    private static final int TODOITEM_PAGE = 102;
+
+    private static final int TODOREMINDERS = 200;
+    private static final int TODOREMINDERS_ID = 201;
+    private static final int TODOREMINDERS_ITEM_ID = 202;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = TodoContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, "todo", TODOITEMS);
-        matcher.addURI(authority, "todo/page/*", TODOITEM_PAGE);
-        matcher.addURI(authority, "todo/*", TODOITEM_ID);
+        matcher.addURI(authority, TodoContract.PATH_TODO, TODOITEMS);
+        matcher.addURI(authority, TodoContract.PATH_TODO + "/*", TODOITEM_ID);
+
+        matcher.addURI(authority, TodoContract.PATH_REMINDER, TODOREMINDERS);
+        matcher.addURI(authority, TodoContract.PATH_REMINDER + "/todo/*", TODOREMINDERS_ITEM_ID);
+        matcher.addURI(authority, TodoContract.PATH_REMINDER + "/*", TODOREMINDERS_ID);
 
         return matcher;
     }
@@ -58,10 +64,15 @@ public class TodoProvider extends ContentProvider {
         switch (match) {
             case TODOITEMS:
                 return TodoContract.TodoItem.CONTENT_TYPE;
-            case TODOITEM_PAGE:
-                return TodoContract.TodoItem.CONTENT_TYPE;
             case TODOITEM_ID:
                 return TodoContract.TodoItem.CONTENT_ITEM_TYPE;
+
+            case TODOREMINDERS:
+                return TodoContract.TodoReminder.CONTENT_TYPE;
+            case TODOREMINDERS_ID:
+            case TODOREMINDERS_ITEM_ID:
+                return TodoContract.TodoReminder.CONTENT_ITEM_TYPE;
+
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -95,10 +106,17 @@ public class TodoProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case TODOITEMS:
+            case TODOITEMS: {
                 long id = db.insertOrThrow(TodoDatabase.Tables.TODO_ITEMS, null, values);
                 notifyChange(uri);
                 return TodoContract.TodoItem.buildTodoItemUri(Long.toString(id));
+            }
+
+            case TODOREMINDERS: {
+                long id = db.insertOrThrow(TodoDatabase.Tables.TODO_REMINDERS, null, values);
+                notifyChange(uri);
+                return TodoContract.TodoReminder.buildTodoReminderUri(Long.toString(id));
+            }
 
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
@@ -150,15 +168,35 @@ public class TodoProvider extends ContentProvider {
         final SelectionBuilder builder = new SelectionBuilder();
         switch (match) {
             // get all items
-            case TODOITEMS:
-            case TODOITEM_PAGE:
+            case TODOITEMS: {
                 return builder.table(TodoDatabase.Tables.TODO_ITEMS);
+            }
 
             // get single item
-            case TODOITEM_ID:
+            case TODOITEM_ID: {
                 final String itemId = TodoContract.TodoItem.getTodoItemId(uri);
                 return builder.table(TodoDatabase.Tables.TODO_ITEMS)
                         .where(Qualified.TODOITEM_ID + "=?", itemId);
+            }
+
+            // get all reminders
+            case TODOREMINDERS: {
+                return builder.table(TodoDatabase.Tables.TODO_REMINDERS);
+            }
+
+            // get single item
+            case TODOREMINDERS_ID: {
+                final String itemId = TodoContract.TodoReminder.getTodoReminderId(uri);
+                return builder.table(TodoDatabase.Tables.TODO_REMINDERS)
+                        .where(Qualified.TODOREMINDER_ID + "=?", itemId);
+            }
+
+            // get single item
+            case TODOREMINDERS_ITEM_ID: {
+                final String itemId = TodoContract.TodoReminder.getTodoItemId(uri);
+                return builder.table(TodoDatabase.Tables.TODO_REMINDERS)
+                        .where(Qualified.TODOITEM_ID + "=?", itemId);
+            }
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -167,5 +205,6 @@ public class TodoProvider extends ContentProvider {
 
     private interface Qualified {
         String TODOITEM_ID = TodoDatabase.Tables.TODO_ITEMS + "." + TodoContract.TodoItem._ID;
+        String TODOREMINDER_ID = TodoDatabase.Tables.TODO_REMINDERS + "." + TodoContract.TodoReminder._ID;
     }
 }

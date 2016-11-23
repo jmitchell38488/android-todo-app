@@ -10,38 +10,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
 
-    @Expose @SerializedName(TodoContract.TodoItem._ID)
     long id;
-
-    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_TITLE)
     String title;
-
-    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_DESCRIPTION)
     String description;
-
-    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_ORDER)
     long order;
-
-    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_COMPLETED)
     boolean completed;
-
-    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_PINNED)
     boolean pinned;
-
-    @Expose @SerializedName(TodoContract.TodoItemColumns.TODO_LOCKED)
     boolean locked;
 
-    // We don't want to keep any of these public properties
-    @Expose(serialize = false, deserialize = false)
+    // We don't want to keep any of these public properties, these are used in the animations when
+    // the user is sliding them left or right. This would be better handled by decorators.
     public int width;
-
-    @Expose(serialize = false, deserialize = false)
     public int height;
-
-    @Expose(serialize = false, deserialize = false)
     public int sX;
-
-    @Expose(serialize = false, deserialize = false)
     public int sY;
 
     public TodoItem() {

@@ -22,4 +22,10 @@ public final class RepositoryModule {
         return new TodoItemRepositoryImpl(contentResolver);
     }
 
+    @Provides
+    @Singleton
+    public TodoReminderRepository provideTodoReminderRepository(@Nullable ContentResolver contentResolver) {
+        return new TodoReminderRepositoryImpl(contentResolver);
+    }
+
 }

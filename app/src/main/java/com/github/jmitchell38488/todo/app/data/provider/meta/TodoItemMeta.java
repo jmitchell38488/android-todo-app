@@ -52,8 +52,7 @@ public interface TodoItemMeta {
             TodoContract.TodoItem._ID
     };
 
-    Func1<SqlBrite.Query, Set<Long>> ID_PROJECTION_MAP = query -> {
-        Cursor cursor = query.run();
+    Func1<Cursor, Set<Long>> ID_PROJECTION_MAP = cursor -> {
         try {
             Set<Long> idSet = new HashSet<>(cursor.getCount());
 

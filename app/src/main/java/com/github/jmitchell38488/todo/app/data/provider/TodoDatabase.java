@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract.TodoItemColumns;
+import com.github.jmitchell38488.todo.app.data.provider.TodoContract.TodoReminderColumns;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 
 
@@ -17,6 +18,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
 
     interface Tables {
         String TODO_ITEMS = "items";
+        String TODO_REMINDERS = "reminders";
     }
 
     public TodoDatabase(Context context) {
@@ -33,7 +35,19 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 TodoItemColumns.TODO_PINNED + " INTEGER NOT NULL DEFAULT 0, " +
                 TodoItemColumns.TODO_COMPLETED + " INTEGER NOT NULL DEFAULT 0, " +
                 TodoItemColumns.TODO_LOCKED + " INTEGER NOT NULL DEFAULT 0);"
+        );
 
+        db.execSQL("CREATE TABLE " + Tables.TODO_REMINDERS + "(" +
+                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TodoReminderColumns.REMINDER_ITEM_ID + " INTEGER NOT NULL, " +
+                TodoReminderColumns.REMINDER_YEAR + " INTEGER NOT NULL, " +
+                TodoReminderColumns.REMINDER_MONTH + " INTEGER NOT NULL, " +
+                TodoReminderColumns.REMINDER_DAY + " INTEGER NOT NULL, " +
+                TodoReminderColumns.REMINDER_HOUR + " INTEGER NOT NULL DEFAULT 0, " +
+                TodoReminderColumns.REMINDER_MINUTE + " INTEGER NOT NULL DEFAULT 0, " +
+                TodoItemColumns.TODO_LOCKED + " INTEGER NOT NULL DEFAULT 0," +
+                " FOREIGN KEY (" + TodoReminderColumns.REMINDER_ITEM_ID + ") REFERENCES " +
+                Tables.TODO_ITEMS + " (" + BaseColumns._ID + "));"
         );
 
         insertTodos(db);
