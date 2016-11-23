@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ public class TodoItemEditHolder {
     private View mView;
     private Context mContext;
     private TodoItem mItem;
+    private TodoReminder mReminder;
     private InputMethodManager mInputMethodManager;
 
     public Calendar reminderDate;
@@ -49,11 +51,21 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_time_icon) TextView timeIcon;
     @BindView(R.id.item_edit_time_delete) TextView timeDelete;
 
-    public TodoItemEditHolder(View view, Context context,@Nullable TodoItem item) {
+    public TodoItemEditHolder(View view, Context context,
+                              @Nullable TodoItem item,
+                              @Nullable TodoReminder reminder) {
         mView = view;
         mContext = context;
         mItem = item;
+        mReminder = reminder;
         mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (mReminder.isActive()) {
+            hasReminderDate = true;
+            if (reminder.getHour() > 0 || reminder.getMinute() > 0) {
+                hasReminderTime = true;
+            }
+        }
 
         ButterKnife.bind(this, mView);
 
@@ -61,7 +73,9 @@ public class TodoItemEditHolder {
     }
 
     public void updateView() {
-        timeSelector.setVisibility(View.GONE);
+        if (!hasReminderTime) {
+            timeSelector.setVisibility(View.GONE);
+        }
 
         pinnedSwitch.setChecked(mItem.isPinned());
         pinnedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -97,9 +111,25 @@ public class TodoItemEditHolder {
         }
 
         reminderDate = Calendar.getInstance();
+        if (mReminder.isActive()) {
+            reminderDate.set(Calendar.YEAR, mReminder.getYear());
+            reminderDate.set(Calendar.MONTH, mReminder.getMonth());
+            reminderDate.set(Calendar.DAY_OF_MONTH, mReminder.getDay());
+            reminderDate.set(Calendar.HOUR_OF_DAY, mReminder.getHour());
+            reminderDate.set(Calendar.MINUTE, mReminder.getMinute());
+
+            if (hasReminderDate) {
+                SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_date_alarm_field));
+                dateField.setText(format.format(reminderDate.getTime()));
+            }
+
+            if (hasReminderTime) {
+                SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_time));
+                timeField.setText(format.format(reminderDate.getTime()));
+            }
+        }
 
         DatePickerDialog.OnDateSetListener dateCallback = (view, year, monthOfYear, dayOfMonth) -> {
-            reminderDate.set(Calendar.YEAR, year);
             reminderDate.set(Calendar.YEAR, year);
             reminderDate.set(Calendar.MONTH, monthOfYear);
             reminderDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);

@@ -151,7 +151,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
 
     public String toString() {
         return String.format("{id: %d, item_id: %d, year: %d, month: %d, day: %d, hour: %d, " +
-                "minute: %d, active: %s",
+                "minute: %d, active: %s}",
                 id, itemId, year, month, day, hour, minute, active ? "true" : "false");
     }
 

@@ -195,7 +195,7 @@ public class TodoProvider extends ContentProvider {
             case TODOREMINDERS_ITEM_ID: {
                 final String itemId = TodoContract.TodoReminder.getTodoItemId(uri);
                 return builder.table(TodoDatabase.Tables.TODO_REMINDERS)
-                        .where(Qualified.TODOITEM_ID + "=?", itemId);
+                        .where(TodoContract.TodoReminder.REMINDER_ITEM_ID + "=?", itemId);
             }
 
             default:

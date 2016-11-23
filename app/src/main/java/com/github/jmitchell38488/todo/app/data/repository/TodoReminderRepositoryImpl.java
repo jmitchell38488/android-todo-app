@@ -28,9 +28,9 @@ public class TodoReminderRepositoryImpl implements TodoReminderRepository {
         Cursor cursor = mContentResolver.query(
                 TodoContract.TodoReminder.buildTodoItemUri(Long.toString(itemId)),
                 TodoReminderMeta.PROJECTION,
-                TodoContract.TodoReminder.REMINDER_ITEM_ID + "=?",
-                new String[] {Long.toString(itemId)},
-                TodoContract.TodoItem.DEFAULT_SORT
+                null,
+                null,
+                TodoContract.TodoReminder.DEFAULT_SORT
         );
 
         List<TodoReminder> items = TodoReminderMeta.PROJECTION_MAP.call(cursor);

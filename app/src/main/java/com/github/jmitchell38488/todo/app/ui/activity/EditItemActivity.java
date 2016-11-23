@@ -13,6 +13,8 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
+import com.github.jmitchell38488.todo.app.data.repository.TodoReminderRepository;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
 
@@ -24,8 +26,7 @@ public class EditItemActivity extends BaseActivity {
 
     EditItemFragment mFragment;
 
-    @Inject
-    ReminderAlarm mReminderAlarm;
+    @Inject ReminderAlarm mReminderAlarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +58,6 @@ public class EditItemActivity extends BaseActivity {
         // Change text
         int stringId = item == null ? R.string.action_create : R.string.action_edit;
         ((TextView) mToolbar.findViewById(R.id.logo_main)).setText(getString(stringId));
-
-        //mReminderAlarm.createAndStartAlarm(item, 1, System.currentTimeMillis() + 10000);
     }
 
     @Override
@@ -93,8 +92,11 @@ public class EditItemActivity extends BaseActivity {
                 Log.d(LOG_TAG, "Saving item");
 
                 TodoItem todoItem = mFragment.getUpdatedTodoItem();
+                TodoReminder todoReminder = mFragment.getUpdatedTodoReminder();
+
                 Bundle args = new Bundle();
                 args.putParcelable(Parcelable.KEY_TODOITEM, todoItem);
+                args.putParcelable(Parcelable.KEY_TODOREMINDER, todoReminder);
 
                 Intent intent = new Intent();
                 intent.putExtras(args);
