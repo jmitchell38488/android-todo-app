@@ -63,7 +63,7 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         String desc = item.getDescription();
         final boolean hasDesc = !TextUtils.isEmpty(desc);
         final boolean isPinned = item.isPinned();
-        final boolean hasReminder = false;
+        final boolean hasReminder = item.hasReminder;
         final boolean isLocked = item.isLocked();
         
         if (!hasDesc) {

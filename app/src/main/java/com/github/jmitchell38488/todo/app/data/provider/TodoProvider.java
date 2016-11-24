@@ -85,7 +85,7 @@ public class TodoProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         final int match = sUriMatcher.match(uri);
 
-        final SelectionBuilder builder = buildExpandedSelection(uri, match);
+        final SelectionBuilder builder = buildExpandedSelection(uri, match, true);
 
         Cursor cursor = builder
                 .where(selection, selectionArgs)
@@ -156,7 +156,7 @@ public class TodoProvider extends ContentProvider {
         final SelectionBuilder builder = new SelectionBuilder();
         final int match = sUriMatcher.match(uri);
 
-        return this.buildExpandedSelection(uri, match);
+        return this.buildExpandedSelection(uri, match, false);
     }
 
     /**
@@ -164,12 +164,20 @@ public class TodoProvider extends ContentProvider {
      * {@link Uri}. This is usually only used by {@link #query}, since it
      * performs table joins useful for {@link Cursor} data.
      */
-    private SelectionBuilder buildExpandedSelection(Uri uri, int match) {
+    private SelectionBuilder buildExpandedSelection(Uri uri, int match, boolean query) {
         final SelectionBuilder builder = new SelectionBuilder();
         switch (match) {
             // get all items
             case TODOITEMS: {
-                return builder.table(TodoDatabase.Tables.TODO_ITEMS);
+                if (query) {
+                    return builder.table("? LEFT JOIN ? ON ?._id = ?._id",
+                            TodoDatabase.Tables.TODO_ITEMS,
+                            TodoDatabase.Tables.TODO_REMINDERS,
+                            TodoDatabase.Tables.TODO_ITEMS,
+                            TodoDatabase.Tables.TODO_REMINDERS);
+                } else {
+                    return builder.table(TodoDatabase.Tables.TODO_ITEMS);
+                }
             }
 
             // get single item

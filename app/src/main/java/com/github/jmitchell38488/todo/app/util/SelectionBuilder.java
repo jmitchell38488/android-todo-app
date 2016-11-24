@@ -103,8 +103,7 @@ public final class SelectionBuilder {
             String[] parts = table.split("[?]", tableParams.length + 1);
             StringBuilder sb = new StringBuilder(parts[0]);
             for (int i = 1; i < parts.length; i++) {
-                sb.append('"').append(tableParams[i - 1]).append('"')
-                        .append(parts[i]);
+                sb.append(tableParams[i - 1]).append(parts[i]);
             }
             mTable = sb.toString();
         } else {

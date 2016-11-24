@@ -11,10 +11,8 @@ import com.github.jmitchell38488.todo.app.data.Filter;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
-import com.github.jmitchell38488.todo.app.data.provider.TodoDatabase;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TodoItemRepositoryImpl implements TodoItemRepository {

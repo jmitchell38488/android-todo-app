@@ -16,7 +16,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
 
     private final Context mContext;
 
-    interface Tables {
+    public interface Tables {
         String TODO_ITEMS = "items";
         String TODO_REMINDERS = "reminders";
     }

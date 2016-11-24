@@ -20,6 +20,7 @@ public class TodoItem implements Cloneable, Parcelable, TodoItemMeta {
 
     // We don't want to keep any of these public properties, these are used in the animations when
     // the user is sliding them left or right. This would be better handled by decorators.
+    public boolean hasReminder;
     public int width;
     public int height;
     public int sX;

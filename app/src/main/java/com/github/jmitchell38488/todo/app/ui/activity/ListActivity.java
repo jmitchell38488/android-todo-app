@@ -1,5 +1,6 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -63,6 +64,8 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
         PreferencesUtility.setInstallTime(this);
         PreferencesUtility.incrementTimesRun(this);
+
+        DialogFragment d;
 
         // The feature was disabled but it's still active
         if (!PreferencesUtility.userEnabledPeriodicNotifications(getApplicationContext()) &&
@@ -160,21 +163,24 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                         listItem.setCompleted(item.isCompleted());
                         listItem.setLocked(item.isLocked());
 
-                        mFragment.onItemChange(position);
-                        Toast.makeText(this, getString(R.string.action_save_saved), Toast.LENGTH_SHORT).show();
-
                         // Delete if this is set to inactive
                         if (reminder.getId() > 0 && !reminder.isActive()) {
                             cancelAlarm(listItem, reminder);
                             mTodoReminderRepository.deleteTodoReminder(reminder);
+                            listItem.hasReminder = false;
                         }
+
+                        mFragment.onItemChange(position);
+                        Toast.makeText(this, getString(R.string.action_save_saved), Toast.LENGTH_SHORT).show();
 
                         // Who knows, could be new, just set the id anyway for sanity sake
                         if (reminder.isActive()) {
                             reminder.setItemId(listItem.getId());
+                            listItem.hasReminder = true;
 
                             // Since this uses async saving, we can't guarantee that the ID will be
                             // updated immediately
+                            reminder.setTimesSnoozed(0);
                             mTodoReminderRepository.saveTodoReminder(reminder);
                             mRunnableHandler.postDelayed(() -> setAlarm(listItem, reminder), POST_DELAYED_TIME);
                         }
@@ -193,10 +199,13 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                         position = mFragment.getFirstUnpinnedPosition();
                     }
 
+                    item.hasReminder = reminder.isActive();
                     mFragment.getAdapter().addItem(position, item);
 
                     // Insert the reminder as well
                     if (reminder.isActive()) {
+                        reminder.setTimesSnoozed(0);
+
                         // Since this uses async saving, we can't guarantee that the ID will be
                         // updated immediately from either the reminder or the item, so the alarm
                         // will be set approximately 2s after the initial save action
@@ -219,6 +228,9 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
     }
 
     protected void setAlarm(TodoItem item, TodoReminder reminder) {
+        // Make sure that we cancel any existing alarms first
+        cancelAlarm(item, reminder);
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, reminder.getYear());
         calendar.set(Calendar.MONTH, reminder.getMonth());

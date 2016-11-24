@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
+import com.github.jmitchell38488.todo.app.data.provider.TodoDatabase;
 import com.github.jmitchell38488.todo.app.util.DbUtils;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -18,28 +19,32 @@ import rx.functions.Func1;
 public interface TodoItemMeta {
 
     String[] PROJECTION = {
-            TodoContract.TodoItem._ID,
+            TodoDatabase.Tables.TODO_ITEMS + "." + TodoContract.TodoItem._ID + " as _id",
             TodoContract.TodoItem.TODO_TITLE,
             TodoContract.TodoItem.TODO_DESCRIPTION,
             TodoContract.TodoItem.TODO_ORDER,
             TodoContract.TodoItem.TODO_PINNED,
             TodoContract.TodoItem.TODO_COMPLETED,
-            TodoContract.TodoItem.TODO_LOCKED
+            TodoContract.TodoItem.TODO_LOCKED,
+            TodoDatabase.Tables.TODO_REMINDERS + "." + TodoContract.TodoReminder._ID + " as reminder_id"
     };
 
     Func1<Cursor, List<TodoItem>> PROJECTION_MAP = cursor-> {
         try {
             List<TodoItem> values = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                values.add(new TodoItem()
-                        .setId(DbUtils.getLong(cursor, TodoContract.TodoItem._ID))
-                        .setTitle(DbUtils.getString(cursor, TodoContract.TodoItem.TODO_TITLE))
-                        .setDescription(DbUtils.getString(cursor, TodoContract.TodoItem.TODO_DESCRIPTION))
-                        .setOrder(DbUtils.getLong(cursor, TodoContract.TodoItem.TODO_ORDER))
-                        .setPinned(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_PINNED))
-                        .setCompleted(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_COMPLETED))
-                        .setLocked(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_LOCKED))
-                );
+                TodoItem item = new TodoItem()
+                                .setId(DbUtils.getLong(cursor, TodoContract.TodoItem._ID))
+                                .setTitle(DbUtils.getString(cursor, TodoContract.TodoItem.TODO_TITLE))
+                                .setDescription(DbUtils.getString(cursor, TodoContract.TodoItem.TODO_DESCRIPTION))
+                                .setOrder(DbUtils.getLong(cursor, TodoContract.TodoItem.TODO_ORDER))
+                                .setPinned(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_PINNED))
+                                .setCompleted(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_COMPLETED))
+                                .setLocked(DbUtils.getBoolean(cursor, TodoContract.TodoItem.TODO_LOCKED));
+
+                // This is transient only, we don't want to store this in the database
+                item.hasReminder = DbUtils.getLong(cursor, "reminder_id") > 0;
+                values.add(item);
             }
 
             return values;
