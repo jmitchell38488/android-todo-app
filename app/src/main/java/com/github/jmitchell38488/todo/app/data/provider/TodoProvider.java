@@ -170,11 +170,13 @@ public class TodoProvider extends ContentProvider {
             // get all items
             case TODOITEMS: {
                 if (query) {
-                    return builder.table("? LEFT JOIN ? ON ?._id = ?._id",
+                    return builder.table("? LEFT JOIN ? ON ?.? = ?.?",
                             TodoDatabase.Tables.TODO_ITEMS,
                             TodoDatabase.Tables.TODO_REMINDERS,
                             TodoDatabase.Tables.TODO_ITEMS,
-                            TodoDatabase.Tables.TODO_REMINDERS);
+                            TodoContract.TodoItem._ID,
+                            TodoDatabase.Tables.TODO_REMINDERS,
+                            TodoContract.TodoReminder.REMINDER_ITEM_ID);
                 } else {
                     return builder.table(TodoDatabase.Tables.TODO_ITEMS);
                 }
