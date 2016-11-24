@@ -58,7 +58,9 @@ public class ReminderAlarmService extends IntentService {
 
         Intent nIntent = new Intent(this, TriggeredAlarmActivity.class);
         nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS |
-                Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+                Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_TASK_ON_HOME |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+        );
         nIntent.putExtras(arguments);
         startActivity(nIntent);
     }
