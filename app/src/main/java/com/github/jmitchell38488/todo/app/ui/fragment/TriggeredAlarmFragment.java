@@ -65,11 +65,16 @@ public class TriggeredAlarmFragment extends BaseFragment {
 
         // Automatically snooze the alarm if its running time exceeds more than 1 minute
         mRunnableHandler.postDelayed(() -> {
-            // Make sure that we increment the no. of times snoozed
-            mTodoReminder.setTimesSnoozed(mTodoReminder.getTimesSnoozed() + 1);
-            mTodoReminderRepository.saveTodoReminder(mTodoReminder);
+            int times = mTodoReminder.getTimesSnoozed();
+            if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(getActivity())) {
+                mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
+                mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
+            } else {
+                mTodoReminder.setTimesSnoozed(times + 1);
+                mTodoReminderRepository.saveTodoReminder(mTodoReminder);
+                mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+            }
 
-            mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
             getActivity().finish();
         }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze(getActivity()) * 1000);
     }
@@ -117,6 +122,7 @@ public class TriggeredAlarmFragment extends BaseFragment {
 
         dismissButton.setOnClickListener(v -> {
             mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
+            mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
             getActivity().finish();
         });
 
@@ -135,7 +141,18 @@ public class TriggeredAlarmFragment extends BaseFragment {
     }
 
     public void handleOnBackPressed() {
-        mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+        int times = mTodoReminder.getTimesSnoozed();
+
+        // We don't want to snooze the alarm if it's hit the snooze limit
+        if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(getActivity())) {
+            mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
+            mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
+        } else {
+            mTodoReminder.setTimesSnoozed(times + 1);
+            mTodoReminderRepository.saveTodoReminder(mTodoReminder);
+            mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+        }
+
         getActivity().finish();
     }
 
