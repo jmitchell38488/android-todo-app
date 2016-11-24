@@ -115,7 +115,7 @@
     <string name="pref_alarm_snooze_maxtimes_key">alarm_snooze_maxtimes</string>
     <string name="pref_alarm_snooze_maxtimes_default">5</string>
     <string name="pref_alarm_snooze_time_key">alarm_snooze_time</string>
-    <string name="pref_alarm_snooze_time_default">5</string>
+    <string name="pref_alarm_snooze_time_default">1</string>
     <string name="pref_alarm_snooze_timeout_key">alarm_snooze_timeout</string>
     <string name="pref_alarm_snooze_timeout_default">60</string>
 </resources>

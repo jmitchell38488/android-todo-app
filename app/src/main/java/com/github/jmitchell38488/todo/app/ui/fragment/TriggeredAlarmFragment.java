@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.CallSuper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +44,7 @@ public class TriggeredAlarmFragment extends BaseFragment {
     protected int mAlarmId;
     protected BroadcastReceiver mBroadcastReceiver;
     protected Handler mRunnableHandler = new Handler();
+    protected boolean stopped = false;
 
     @Override
     public void onStart() {
@@ -66,7 +65,7 @@ public class TriggeredAlarmFragment extends BaseFragment {
         // Automatically snooze the alarm if its running time exceeds more than 1 minute
         mRunnableHandler.postDelayed(() -> {
             int times = mTodoReminder.getTimesSnoozed();
-            if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(getActivity())) {
+            if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(mActivity)) {
                 mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
                 mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
             } else {
@@ -75,21 +74,9 @@ public class TriggeredAlarmFragment extends BaseFragment {
                 mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
             }
 
-            getActivity().finish();
-        }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze(getActivity()) * 1000);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mBroadcastReceiver != null) {
-            getActivity().unregisterReceiver(mBroadcastReceiver);
-        }
+            stopped = true;
+            mActivity.finish();
+        }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze(mActivity) * 1000);
     }
 
     @Override
@@ -123,11 +110,11 @@ public class TriggeredAlarmFragment extends BaseFragment {
         dismissButton.setOnClickListener(v -> {
             mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
             mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
-            getActivity().finish();
+            mActivity.finish();
         });
 
         // Snooze should only be available if we haven't hit the limit yet
-        if (mTodoReminder.getTimesSnoozed() < PreferencesUtility.getMaxAlarmSnoozeTimes(getActivity())) {
+        if (mTodoReminder.getTimesSnoozed() < PreferencesUtility.getMaxAlarmSnoozeTimes(mActivity)) {
             snoozeButton.setVisibility(View.VISIBLE);
             snoozeButton.setOnClickListener(v -> {
                 // Make sure that we increment the no. of times snoozed
@@ -135,16 +122,17 @@ public class TriggeredAlarmFragment extends BaseFragment {
                 mTodoReminderRepository.saveTodoReminder(mTodoReminder);
 
                 mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
-                getActivity().finish();
+                mActivity.finish();
             });
         }
     }
 
-    public void handleOnBackPressed() {
+    public void handleApplicationStop() {
+        stopped = true;
         int times = mTodoReminder.getTimesSnoozed();
 
         // We don't want to snooze the alarm if it's hit the snooze limit
-        if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(getActivity())) {
+        if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(mActivity)) {
             mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
             mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
         } else {
@@ -153,7 +141,33 @@ public class TriggeredAlarmFragment extends BaseFragment {
             mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
         }
 
-        getActivity().finish();
+        mActivity.finish();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mBroadcastReceiver != null) {
+            mActivity.unregisterReceiver(mBroadcastReceiver);
+        }
+
+        if (!stopped) {
+            handleApplicationStop();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (!stopped) {
+            handleApplicationStop();
+        }
     }
 
 }

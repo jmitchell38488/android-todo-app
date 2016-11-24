@@ -98,9 +98,8 @@ public class EditItemFragment extends Fragment {
             mReminder.setMinute(0);
         }
 
-        if (holder.hasReminderDate || holder.hasReminderTime) {
-            mReminder.setActive(true);
-        }
+        // Set active state
+        mReminder.setActive(holder.hasReminderDate || holder.hasReminderTime);
 
         return mReminder;
     }

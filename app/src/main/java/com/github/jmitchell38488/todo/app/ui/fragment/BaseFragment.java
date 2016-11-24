@@ -15,11 +15,13 @@ public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
     private Toast mToast;
+    protected Activity mActivity;
 
     @CallSuper
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        mActivity = activity;
     }
 
     @CallSuper

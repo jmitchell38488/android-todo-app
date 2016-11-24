@@ -43,7 +43,8 @@
             android:name=".ui.activity.TriggeredAlarmActivity"
             android:theme="@style/AlarmTheme"
             android:parentActivityName=".ui.activity.ListActivity"
-            android:noHistory="true"></activity>
+            android:noHistory="true"
+            android:screenOrientation="portrait"></activity>
 
         <provider
             android:name=".data.provider.TodoProvider"

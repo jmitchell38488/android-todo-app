@@ -1,11 +1,6 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
-import android.support.annotation.CallSuper;
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +8,6 @@ import android.view.Window;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.ui.fragment.TriggeredAlarmFragment;
-import com.github.jmitchell38488.todo.app.util.DateUtility;
 
 public class TriggeredAlarmActivity extends AppCompatActivity {
 
@@ -23,6 +17,8 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         setContentView(R.layout.activity_triggered_alarm);
 
         mFragment = new TriggeredAlarmFragment();
@@ -35,8 +31,19 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        ((TriggeredAlarmFragment) mFragment).handleOnBackPressed();
+        ((TriggeredAlarmFragment) mFragment).handleApplicationStop();
         super.onBackPressed();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
 }
