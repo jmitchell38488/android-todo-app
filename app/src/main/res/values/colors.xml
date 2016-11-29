@@ -17,7 +17,7 @@
     <color name="colorPrimary">@color/theme_blue_light</color>
     <color name="colorPrimaryDark">@color/theme_blue_dark</color>
     <color name="colorAccent">@color/theme_blue_dark</color>
-    <color name="logo">@color/theme_blue_dark</color>
+    <color name="logo">@color/white</color>
     <color name="actionbar_dark">@color/theme_blue_dark</color>
     <color name="actionbar_dark_50">@color/theme_blue_light</color>
     <color name="actionbar_light">@color/theme_blue_light</color>
