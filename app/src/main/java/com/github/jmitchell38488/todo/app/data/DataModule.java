@@ -39,4 +39,10 @@ public class DataModule {
         return new Gson();
     }
 
+    @Provides
+    @Singleton
+    TodoStorage provideTodoStorage(Gson gson, SharedPreferences sharedPreferences) {
+        return new TodoStorage(gson, sharedPreferences);
+    }
+
 }

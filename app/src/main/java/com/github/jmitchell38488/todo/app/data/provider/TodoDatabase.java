@@ -1,15 +1,26 @@
 package com.github.jmitchell38488.todo.app.data.provider;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+
+import com.github.jmitchell38488.todo.app.TodoApp;
+import com.github.jmitchell38488.todo.app.data.TodoStorage;
+import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract.TodoItemColumns;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract.TodoReminderColumns;
 import com.github.jmitchell38488.todo.app.data.provider.meta.TodoItemMeta;
 
+import java.util.List;
+
+import javax.inject.Inject;
 
 final public class TodoDatabase extends SQLiteOpenHelper {
+
+    @Inject
+    TodoStorage todoStorage;
 
     private static final String DB_NAME = "todos.db";
     private static final int DB_VERSION = 1;
@@ -27,6 +38,8 @@ final public class TodoDatabase extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
+        ((TodoApp) mContext.getApplicationContext()).getComponent(mContext).inject(this);
+
         db.execSQL("CREATE TABLE " + Tables.TODO_ITEMS + "(" +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TodoItemColumns.TODO_TITLE + " TEXT NOT NULL, " +
@@ -51,7 +64,43 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 Tables.TODO_ITEMS + " (" + BaseColumns._ID + "));"
         );
 
-        insertTodos(db);
+        // No todos, just add default ones
+        if (todoStorage.getTodos().isEmpty()) {
+            insertTodos(db);
+
+        // If there are todos, convert them
+        } else {
+            convertTodos(db);
+        }
+    }
+
+    private void convertTodos(SQLiteDatabase db) {
+        List<TodoItem> todoItemList = todoStorage.getTodos();
+
+        int orderPinned = 0;
+        int orderCompleted = 0;
+        int orderOther = 0;
+
+        for (TodoItem item : todoItemList) {
+            if (item.isPinned()) {
+                orderPinned++;
+                item.setOrder(orderPinned);
+            } else if (item.isCompleted()) {
+                orderCompleted++;
+                item.setOrder(orderCompleted);
+            } else {
+                orderOther++;
+                item.setOrder(orderOther);
+            }
+
+            ContentValues values = new TodoItemMeta.Builder().item(item).build();
+
+            // Always remove ID or we will get a clash
+            values.remove(TodoContract.TodoItem._ID);
+
+            // Add record
+            db.insert(Tables.TODO_ITEMS, null, values);
+        }
     }
 
     private void insertTodos(SQLiteDatabase db) {

@@ -3,6 +3,7 @@ package com.github.jmitchell38488.todo.app;
 import android.app.Application;
 
 import com.github.jmitchell38488.todo.app.data.provider.ProviderModule;
+import com.github.jmitchell38488.todo.app.data.provider.TodoDatabase;
 import com.github.jmitchell38488.todo.app.data.repository.RepositoryModule;
 import com.github.jmitchell38488.todo.app.data.service.AutoStartReceiver;
 import com.github.jmitchell38488.todo.app.data.service.PeriodicNotificationService;
@@ -55,6 +56,8 @@ public interface TodoAppComponent {
     void inject(TriggeredAlarmFragment triggeredAlarmFragment);
 
     void inject(EditItemActivity editItemActivity);
+
+    void inject(TodoDatabase todoDatabase);
 
     Application application();
 
