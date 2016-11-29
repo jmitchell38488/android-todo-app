@@ -3,6 +3,8 @@ package com.github.jmitchell38488.todo.app.ui.view.holder;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -42,14 +44,18 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_locked) public Switch lockedSwitch;
     @BindView(R.id.item_edit_pinned_label) public TextView pinnedLabel;
 
+    @BindView(R.id.edit_item_time_selector) LinearLayout timeSelector;
+    @BindView(R.id.edit_item_sound_selector) LinearLayout soundSelector;
+
     @BindView(R.id.item_edit_date_field) TextView dateField;
     @BindView(R.id.item_edit_date_icon) TextView dateIcon;
     @BindView(R.id.item_edit_date_delete) TextView dateDelete;
 
-    @BindView(R.id.edit_item_time_selector) LinearLayout timeSelector;
     @BindView(R.id.item_edit_time_field) TextView timeField;
     @BindView(R.id.item_edit_time_icon) TextView timeIcon;
     @BindView(R.id.item_edit_time_delete) TextView timeDelete;
+
+    @BindView(R.id.item_edit_sound_field) TextView soundField;
 
     public TodoItemEditHolder(View view, Context context,
                               @Nullable TodoItem item,
@@ -75,6 +81,7 @@ public class TodoItemEditHolder {
     public void updateView() {
         if (!hasReminderTime) {
             timeSelector.setVisibility(View.GONE);
+            soundSelector.setVisibility(View.GONE);
         }
 
         pinnedSwitch.setChecked(mItem.isPinned());
@@ -139,6 +146,7 @@ public class TodoItemEditHolder {
 
             hasReminderDate = true;
             timeSelector.setVisibility(View.VISIBLE);
+            soundSelector.setVisibility(View.VISIBLE);
         };
 
         TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
@@ -199,6 +207,14 @@ public class TodoItemEditHolder {
             timeField.setText("");
             hasReminderTime = false;
         });
+    }
+
+    public void setSoundClickListener(View.OnClickListener listener) {
+        soundField.setOnClickListener(listener);
+    }
+
+    public void setSoundFieldTitle(String title) {
+        soundField.setText(title);
     }
 
 }

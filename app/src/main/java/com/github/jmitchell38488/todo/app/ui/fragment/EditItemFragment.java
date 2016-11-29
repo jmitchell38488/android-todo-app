@@ -1,5 +1,9 @@
 package com.github.jmitchell38488.todo.app.ui.fragment;
 
+import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +16,7 @@ import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
+import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
 import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
@@ -65,6 +70,15 @@ public class EditItemFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_edit_item, container, false);
         TodoItemEditHolder viewHolder = new TodoItemEditHolder(mView, getActivity(), mItem, mReminder);
         mView.setTag(viewHolder);
+
+        viewHolder.setSoundClickListener(view -> {
+            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, mReminder.getSound());
+            getActivity().startActivityForResult(intent, EditItemActivity.REQUEST_CODE_SOUND);
+        });
+
         return mView;
     }
 
@@ -102,6 +116,13 @@ public class EditItemFragment extends Fragment {
         mReminder.setActive(holder.hasReminderDate || holder.hasReminderTime);
 
         return mReminder;
+    }
+
+    public void setTodoReminderAlarmSound(Uri sound) {
+        mReminder.setSound(sound);
+        Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), sound);
+        String title = ringtone.getTitle(getActivity());
+        ((TodoItemEditHolder) mView.getTag()).setSoundFieldTitle(title);
     }
 
     public String getItemHash() {

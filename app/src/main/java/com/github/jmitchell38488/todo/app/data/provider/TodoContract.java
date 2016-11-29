@@ -25,6 +25,7 @@ public class TodoContract {
         String REMINDER_MINUTE = "minute";
         String REMINDER_ACTIVE = "active";
         String REMINDER_TIMES_SNOOZED = "times_snoozed";
+        String REMINDER_SOUND = "sound";
     }
 
     public static final String CONTENT_AUTHORITY = "com.github.jmitchell38488.todo.app.provider";

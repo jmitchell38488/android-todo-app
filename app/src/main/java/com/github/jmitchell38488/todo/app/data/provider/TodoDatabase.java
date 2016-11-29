@@ -60,6 +60,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
                 TodoReminderColumns.REMINDER_MINUTE + " INTEGER NOT NULL DEFAULT 0, " +
                 TodoReminderColumns.REMINDER_ACTIVE + " INTEGER NOT NULL DEFAULT 0," +
                 TodoReminderColumns.REMINDER_TIMES_SNOOZED + " INTEGER NOT NULL DEFAULT 0," +
+                TodoReminderColumns.REMINDER_SOUND + " TEXT," +
                 " FOREIGN KEY (" + TodoReminderColumns.REMINDER_ITEM_ID + ") REFERENCES " +
                 Tables.TODO_ITEMS + " (" + BaseColumns._ID + "));"
         );

@@ -1,5 +1,6 @@
 package com.github.jmitchell38488.todo.app.data.model;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,13 +17,14 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
     int minute;
     boolean active;
     int timesSnoozed;
+    Uri sound;
 
     public TodoReminder() {
         active = false;
     }
 
     public TodoReminder(long id, long itemId, int year, int month, int day, int hour,
-                        int minute, boolean active, int timesSnoozed) {
+                        int minute, boolean active, int timesSnoozed, Uri sound) {
         this.id = id;
         this.itemId = itemId;
         this.year = year;
@@ -32,6 +34,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         this.minute = minute;
         this.active = active;
         this.timesSnoozed = timesSnoozed;
+        this.sound = sound;
     }
 
     public long getId() {
@@ -115,9 +118,18 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         return this;
     }
 
+    public Uri getSound() {
+        return sound;
+    }
+
+    public TodoReminder setSound(Uri sound) {
+        this.sound = sound;
+        return this;
+    }
+
     @Override
     public Object clone() {
-        return new TodoReminder(id, itemId, year, month, day, hour, minute, active, timesSnoozed);
+        return new TodoReminder(id, itemId, year, month, day, hour, minute, active, timesSnoozed, sound);
     }
 
     @Override
@@ -136,6 +148,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         dest.writeInt(minute);
         dest.writeByte(active ? (byte) 1 : 0);
         dest.writeInt(timesSnoozed);
+        dest.writeString(sound.toString());
     }
 
     protected TodoReminder(Parcel in) {
@@ -148,6 +161,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         minute = in.readInt();
         active = in.readByte() != 0;
         timesSnoozed = in.readInt();
+        sound = Uri.parse(in.readString());
     }
 
     public static Creator<TodoReminder> CREATOR = new Creator<TodoReminder>() {
@@ -165,8 +179,8 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
 
     public String toString() {
         return String.format("{id: %d, item_id: %d, year: %d, month: %d, day: %d, hour: %d, " +
-                "minute: %d, active: %s, times_snoozed: %d}",
-                id, itemId, year, month, day, hour, minute, active ? "true" : "false", timesSnoozed);
+                "minute: %d, active: %s, times_snoozed: %d, sound: %s}",
+                id, itemId, year, month, day, hour, minute, active ? "true" : "false", timesSnoozed, sound.toString());
     }
 
 }

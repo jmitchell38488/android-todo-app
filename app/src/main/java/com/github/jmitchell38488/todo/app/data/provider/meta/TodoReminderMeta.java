@@ -2,6 +2,7 @@ package com.github.jmitchell38488.todo.app.data.provider.meta;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
@@ -25,14 +26,15 @@ public interface TodoReminderMeta {
             TodoContract.TodoReminder.REMINDER_HOUR,
             TodoContract.TodoReminder.REMINDER_MINUTE,
             TodoContract.TodoReminder.REMINDER_ACTIVE,
-            TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED
+            TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED,
+            TodoContract.TodoReminder.REMINDER_SOUND
     };
 
     Func1<Cursor, List<TodoReminder>> PROJECTION_MAP = cursor-> {
         try {
             List<TodoReminder> values = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                values.add(new TodoReminder()
+                TodoReminder t = new TodoReminder()
                         .setId(DbUtils.getLong(cursor, TodoContract.TodoReminder._ID))
                         .setItemId(DbUtils.getLong(cursor, TodoContract.TodoReminder.REMINDER_ITEM_ID))
                         .setYear(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_YEAR))
@@ -41,8 +43,15 @@ public interface TodoReminderMeta {
                         .setHour(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_HOUR))
                         .setMinute(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_MINUTE))
                         .setActive(DbUtils.getBoolean(cursor, TodoContract.TodoReminder.REMINDER_ACTIVE))
-                        .setTimesSnoozed(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED))
-                );
+                        .setTimesSnoozed(DbUtils.getInt(cursor, TodoContract.TodoReminder.REMINDER_TIMES_SNOOZED));
+
+                // Sound could be null, parse will throw an exception
+                String sound = DbUtils.getString(cursor, TodoContract.TodoReminder.REMINDER_SOUND);
+                if (sound != null && sound.length() > 0) {
+                    t.setSound(Uri.parse(sound));
+                }
+
+                values.add(t);
             }
 
             return values;
@@ -118,6 +127,11 @@ public interface TodoReminderMeta {
             return this;
         }
 
+        public TodoReminderMeta.Builder sound(Uri sound) {
+            values.put(TodoContract.TodoReminder.REMINDER_SOUND, sound.toString());
+            return this;
+        }
+
         public Builder reminder(TodoReminder reminder) {
             return id(reminder.getId())
                     .itemId(reminder.getItemId())
@@ -127,7 +141,8 @@ public interface TodoReminderMeta {
                     .hour(reminder.getHour())
                     .minute(reminder.getMinute())
                     .active(reminder.isActive())
-                    .timesSnoozed(reminder.getTimesSnoozed());
+                    .timesSnoozed(reminder.getTimesSnoozed())
+                    .sound(reminder.getSound());
         }
 
         public ContentValues build() {

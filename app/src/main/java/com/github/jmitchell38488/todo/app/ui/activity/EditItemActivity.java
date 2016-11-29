@@ -2,6 +2,8 @@ package com.github.jmitchell38488.todo.app.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -23,6 +25,8 @@ import javax.inject.Inject;
 public class EditItemActivity extends BaseActivity {
 
     private static final String LOG_TAG = EditItemActivity.class.getSimpleName();
+
+    public static final int REQUEST_CODE_SOUND = 5;
 
     EditItemFragment mFragment;
 
@@ -108,4 +112,15 @@ public class EditItemActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SOUND) {
+            if (resultCode == RESULT_OK) {
+                Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                mFragment.setTodoReminderAlarmSound(uri != null ? uri : null);
+            }
+        }
+    }
+
 }
