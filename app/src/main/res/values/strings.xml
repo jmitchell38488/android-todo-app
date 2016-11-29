@@ -102,6 +102,8 @@
     <string name="alarm_button_dismiss">Dismiss</string>
     <string name="alarm_snooze_message">Alarm snoozed for <xliff:g id="time">%d</xliff:g> minute<xliff:g id="suffix">%s</xliff:g></string>
     <string name="alarm_set_message">Alarm set for <xliff:g id="time">%s</xliff:g></string>
+    <string name="alarm_notification_message">Alarm for <xliff:g id="title">%d</xliff:g> as <xliff:g id="time">%d</xliff:g></string>
+    <string name="alarm_snooze_notification_message">Alarm for <xliff:g id="title">%s</xliff:g> snoozed <xliff:g id="time">%d</xliff:g> minute<xliff:g id="suffix">%s</xliff:g></string>
 
     <!-- Preferences -->
     <string name="pref_times_run_key">times_run</string>

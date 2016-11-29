@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <!-- Theme: Green
     <color name="colorPrimary">@color/theme_green_light</color>
-    <color name="colorPrimaryDark">@color/theme_green</color>
-    <color name="colorAccent">@color/theme_green</color>
-
-    <color name="logo">@color/theme_green</color>
+    <color name="colorPrimaryDark">@color/theme_green_dark</color>
+    <color name="colorAccent">@color/theme_green_dark</color>
+    <color name="logo">@color/theme_green_dark</color>
+    <color name="actionbar_dark">@color/theme_green_dark</color>
+    <color name="actionbar_dark_50">@color/theme_green_light</color>
+    <color name="actionbar_light">@color/theme_green_light</color>
+    <color name="list_item_background_delete">@color/theme_green_delete</color>
+    <color name="list_item_background_complete">@color/theme_green_complete</color>
+    -->
+    
+    <!-- Theme: Blue -->
+    <color name="colorPrimary">@color/theme_blue_light</color>
+    <color name="colorPrimaryDark">@color/theme_blue_dark</color>
+    <color name="colorAccent">@color/theme_blue_dark</color>
+    <color name="logo">@color/theme_blue_dark</color>
+    <color name="actionbar_dark">@color/theme_blue_dark</color>
+    <color name="actionbar_dark_50">@color/theme_blue_light</color>
+    <color name="actionbar_light">@color/theme_blue_light</color>
+    <color name="list_item_background_delete">@color/theme_blue_delete</color>
+    <color name="list_item_background_complete">@color/theme_blue_complete</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-
     <color name="grey_f5f5f5_100">#FFF5F5F5</color>
     <color name="grey_efefef_100">#FFEFEFEF</color>
     <color name="grey_cccccc_100">#FFCCCCCC</color>
@@ -21,21 +38,19 @@
     <color name="grey_333333_30">#33333333</color>
     <color name="material_grey_50">#fffafafa</color>
 
-    <color name="actionbar_dark">@color/theme_green</color>
-    <color name="actionbar_dark_50">@color/theme_green_light</color>
-    <color name="actionbar_light">@color/theme_green_light</color>
-
     <color name="listitem_highlight">#FF3F86F6</color>
-
-    <color name="list_item_background_delete">@color/theme_green_delete</color>
-    <color name="list_item_background_complete">@color/theme_green_complete</color>
 
     <color name="theme_pink">#D2AAAA</color>
     <color name="theme_pink_50">#80D2AAAA</color>
     <color name="theme_pink_light">#59AF2F2F</color>
 
-    <color name="theme_green">#68a01b</color>
-    <color name="theme_green_light">#8bc44a</color>
+    <color name="theme_green_dark">#11B098</color>
+    <color name="theme_green_light">#13C4A9</color>
     <color name="theme_green_complete">#0081e8</color>
     <color name="theme_green_delete">#f5b600</color>
+
+    <color name="theme_blue_dark">#2165E0</color>
+    <color name="theme_blue_light">#2570F9</color>
+    <color name="theme_blue_complete">#11B098</color>
+    <color name="theme_blue_delete">#F98E25</color>
 </resources>

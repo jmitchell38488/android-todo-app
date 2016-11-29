@@ -64,17 +64,7 @@ public class TriggeredAlarmFragment extends BaseFragment {
 
         // Automatically snooze the alarm if its running time exceeds more than 1 minute
         mRunnableHandler.postDelayed(() -> {
-            int times = mTodoReminder.getTimesSnoozed();
-            if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(mActivity)) {
-                mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
-                mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
-            } else {
-                mTodoReminder.setTimesSnoozed(times + 1);
-                mTodoReminderRepository.saveTodoReminder(mTodoReminder);
-                mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
-            }
-
-            stopped = true;
+            stopped = false;
             mActivity.finish();
         }, PreferencesUtility.getMaxAllowedTimeBeforeAutoSnooze(mActivity) * 1000);
     }
@@ -110,6 +100,9 @@ public class TriggeredAlarmFragment extends BaseFragment {
         dismissButton.setOnClickListener(v -> {
             mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
             mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
+
+            // Make sure we flag this as stopped so that it isn't restarted
+            stopped = true;
             mActivity.finish();
         });
 
@@ -117,16 +110,16 @@ public class TriggeredAlarmFragment extends BaseFragment {
         if (mTodoReminder.getTimesSnoozed() < PreferencesUtility.getMaxAlarmSnoozeTimes(mActivity)) {
             snoozeButton.setVisibility(View.VISIBLE);
             snoozeButton.setOnClickListener(v -> {
-                // Make sure that we increment the no. of times snoozed
-                mTodoReminder.setTimesSnoozed(mTodoReminder.getTimesSnoozed() + 1);
-                mTodoReminderRepository.saveTodoReminder(mTodoReminder);
-
-                mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+                stopped = false;
                 mActivity.finish();
             });
         }
     }
 
+    /**
+     * Helper method that handles resetting the alarm when the user snoozes it, hits the back/home
+     * button, or the alarm times out. If the limit is reached, it will be automatically disabled.e
+     */
     public void handleApplicationStop() {
         stopped = true;
         int times = mTodoReminder.getTimesSnoozed();
