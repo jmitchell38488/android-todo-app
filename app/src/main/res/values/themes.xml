@@ -37,7 +37,6 @@
         <item name="android:padding">0dp</item>
     </style>
 
-
     <style name="AppTheme.Green" parent="AppTheme">
         <item name="colorPrimary">@color/theme_green_light</item>
         <item name="colorPrimaryDark">@color/theme_green_dark</item>
