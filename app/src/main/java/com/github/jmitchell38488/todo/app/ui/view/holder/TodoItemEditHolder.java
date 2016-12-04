@@ -17,6 +17,7 @@ import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
+import com.github.jmitchell38488.todo.app.util.AlarmUtility;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,6 +56,7 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_time_icon) TextView timeIcon;
     @BindView(R.id.item_edit_time_delete) TextView timeDelete;
 
+    @BindView(R.id.item_edit_sound_icon) TextView soundIcon;
     @BindView(R.id.item_edit_sound_field) TextView soundField;
 
     public TodoItemEditHolder(View view, Context context,
@@ -207,10 +209,15 @@ public class TodoItemEditHolder {
             timeField.setText("");
             hasReminderTime = false;
         });
+
+        if (mReminder.getSound() != null) {
+            soundField.setText(AlarmUtility.getAlarmSoundTitle(mContext, mReminder.getSound()));
+        }
     }
 
     public void setSoundClickListener(View.OnClickListener listener) {
         soundField.setOnClickListener(listener);
+        soundIcon.setOnClickListener(listener);
     }
 
     public void setSoundFieldTitle(String title) {

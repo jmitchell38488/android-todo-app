@@ -2,8 +2,11 @@ package com.github.jmitchell38488.todo.app.util;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+
+import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,5 +30,12 @@ public class AlarmUtility {
         }
 
         return map;
+    }
+
+    public static String getAlarmSoundTitle(Context context, Uri sound) {
+        Ringtone ringtone = RingtoneManager.getRingtone(context, sound);
+        String title = ringtone.getTitle(context);
+
+        return title;
     }
 }

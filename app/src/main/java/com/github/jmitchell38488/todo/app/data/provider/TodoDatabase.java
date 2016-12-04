@@ -23,7 +23,7 @@ final public class TodoDatabase extends SQLiteOpenHelper {
     TodoStorage todoStorage;
 
     private static final String DB_NAME = "todos.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private final Context mContext;
 
@@ -141,7 +141,28 @@ final public class TodoDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Nothing yet
+        if (newVersion == 2) {
+            upgradeDbVersionTo2(db);
+        }
+
+        if (newVersion == 3) {
+
+        }
+
+        if (newVersion == 4) {
+
+        }
+    }
+
+    private void upgradeDbVersionTo2(SQLiteDatabase db) {
+        String sql = String.format(
+                "ALTER TABLE %s ADD COLUMN %s %s",
+                Tables.TODO_REMINDERS,
+                TodoReminderColumns.REMINDER_SOUND,
+                "TEXT"
+        );
+
+        db.execSQL(sql);
     }
 
     public static void deleteDatabase(Context context) {

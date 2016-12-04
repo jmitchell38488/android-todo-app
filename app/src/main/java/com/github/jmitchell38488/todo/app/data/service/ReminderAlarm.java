@@ -79,6 +79,10 @@ public class ReminderAlarm {
         long snoozeTime = snoozeMinutes * 60 * 1000;
         long startTime = System.currentTimeMillis() + snoozeTime;
 
+        Log.d(LOG_TAG, String.format(
+                "Snoozing alarm for todo item (%s) for %d minutes",
+                item.getTitle(), snoozeMinutes));
+
         PendingIntent pendingIntent = createAlarm(item, alarmId);
         mAlarmManager.cancel(pendingIntent);
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);

@@ -138,6 +138,7 @@
         android:id="@+id/edit_item_sound_selector">
 
         <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
+            android:id="@+id/item_edit_sound_icon"
             android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"

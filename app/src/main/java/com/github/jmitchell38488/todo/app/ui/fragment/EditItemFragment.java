@@ -22,8 +22,6 @@ import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
 import java.util.Calendar;
 
-import javax.inject.Inject;
-
 public class EditItemFragment extends Fragment {
 
     private View mView;
@@ -73,7 +71,7 @@ public class EditItemFragment extends Fragment {
 
         viewHolder.setSoundClickListener(view -> {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, mReminder.getSound());
             getActivity().startActivityForResult(intent, EditItemActivity.REQUEST_CODE_SOUND);
