@@ -28,6 +28,8 @@
     <string name="date_format_date_alarm" translatable="false">EEE, d MMMM</string>
     <string name="date_format_date_alarm_field" translatable="false">EEE, d MMM yyyy</string>
     <string name="date_format_date_alarm_toast" translatable="false">EEE, d MMM yyyy kk:mm</string>
+    <string name="date_format_alarm_notification_12" translatable="false">EEE hh:mm a</string>
+    <string name="date_format_alarm_notification_24" translatable="false">EEE kk:mm</string>
 
     <!-- Output formats -->
     <string name="format_full_friendly_date" translatable="false"><xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g></string>
@@ -95,6 +97,12 @@
     <string name="notification_periodic_i2" translatable="false">You have <xliff:g id="pending">%d</xliff:g> pending items left in your to do list, <xliff:g id="important">%d</xliff:g> of them are important</string>
     <string name="notification_periodic_extra">You can change or disable this reminder in the app settings.</string>
     <string name="notification_periodic_title">To Do Daily Report</string>
+    <string name="notification_current_title">Todo reminder</string>
+    <string name="notification_current_description"><xliff:g id="date">%s</xliff:g></string>
+    <string name="notification_pending_title">Upcoming todo reminder</string>
+    <string name="notification_pending_description">Alarm for <xliff:g id="title">%s</xliff:g></string>
+    <string name="notification_snoozed_title">Todo reminder snoozed</string>
+    <string name="notification_snoozed_description">Alarm for <xliff:g id="title">%s</xliff:g> snoozing until <xliff:g id="date">%s</xliff:g></string>
 
     <!-- alarm -->
     <string name="alarm_title">To Do Reminder</string>
