@@ -78,16 +78,12 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
                 .commit();
 
         mFragment.setSnoozeClickListener(v -> {
-            stopped = false;
             finish();
         });
 
         mFragment.setDismissClickListener(v -> {
-            mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
-            mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
-
-            // Make sure we flag this as stopped so that it isn't restarted
-            stopped = true;
+            // Set the times snoozed sufficiently high so that it won't be snoozed again
+            mTodoReminder.setTimesSnoozed(999);
             finish();
         });
 
@@ -114,6 +110,28 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
 
         // Create a current alarm notification
         NotificationUtility.createCurrentAlarmNotification(getApplicationContext(), mTodoItem, mTodoReminder, mAlarmId);
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(LOG_TAG, "Received Intent: " + intent.getAction());
+
+                // When time ticks over, we want to update the clock
+                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
+                    mFragment.updateTimeTick();
+                }
+
+                // When the user interacts with the notification for the alarm
+                if (intent.getAction().compareTo(com.github.jmitchell38488.todo.app.data.Intent.ACTION_STOP_ALARM) == 0) {
+                    TriggeredAlarmActivity.this.finish();
+                }
+            }
+        };
+
+        this.registerReceiver(mBroadcastReceiver,
+                new IntentFilter(Intent.ACTION_TIME_TICK));
+        this.registerReceiver(mBroadcastReceiver,
+                new IntentFilter(com.github.jmitchell38488.todo.app.data.Intent.ACTION_STOP_ALARM));
     }
 
     protected void initializeWindow() {
@@ -133,17 +151,6 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Lifecycle: onStart");
 
         super.onStart();
-
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0) {
-                    mFragment.updateTimeTick();
-                }
-            }
-        };
-
-        this.registerReceiver(mBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
 
         // Automatically snooze the alarm if its running time exceeds more than 1 minute
         mRunnableHandler.postDelayed(() -> {
@@ -219,22 +226,30 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
         // Cancel any existing current alarm notifications
         NotificationUtility.cancelCurrentAlarmNotification(getApplicationContext(), mAlarmId);
 
+        boolean dismiss = false;
         int times = mTodoReminder.getTimesSnoozed();
+        if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(getApplicationContext())) {
+            dismiss = true;
+        }
 
-        // We don't want to snooze the alarm if it's hit the snooze limit
-        if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(this)) {
-            mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
-            mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
-        } else {
+        // If snoozed
+        if (!dismiss) {
             mTodoReminder.setTimesSnoozed(times + 1);
             mTodoReminderRepository.saveTodoReminder(mTodoReminder);
             mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
 
-            // Create a snoozed notification
             int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime(getApplicationContext());
             long snoozeTime = snoozeMinutes * DateUtility.TIME_1_MINUTE;
             long startTime = System.currentTimeMillis() + snoozeTime;
-            NotificationUtility.createSnoozedAlarmNotification(getApplicationContext(), mTodoItem, mTodoReminder, mAlarmId, startTime);
+
+            NotificationUtility.createSnoozedAlarmNotification(getApplicationContext(),
+                    mTodoItem, mTodoReminder, mAlarmId, startTime);
+
+        // If dismissed
+        } else {
+            NotificationUtility.cancelSnoozedAlarmNotification(getApplicationContext(), mAlarmId);
+            mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
+            mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
         }
     }
 

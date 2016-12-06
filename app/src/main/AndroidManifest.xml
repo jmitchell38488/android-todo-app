@@ -45,7 +45,12 @@
             android:theme="@style/AlarmTheme"
             android:parentActivityName=".ui.activity.ListActivity"
             android:noHistory="true"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="com.github.jmitchell38488.todo.app.intent.action.STOP_ALARM" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name=".data.provider.TodoProvider"
@@ -89,6 +94,13 @@
         <receiver android:name=".data.service.AutoStartReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".data.service.ReminderAlarmButtonReceiver">
+            <intent-filter>
+                <action android:name="com.github.jmitchell38488.todo.app.intent.action.SNOOZE_ALARM" />
+                <action android:name="com.github.jmitchell38488.todo.app.intent.action.DISMISS_ALARM" />
             </intent-filter>
         </receiver>
 

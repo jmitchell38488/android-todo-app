@@ -64,6 +64,7 @@ public class NotificationUtility {
         argsDismiss.putBoolean(Parcelable.KEY_DISMISS_ALARM, true);
 
         Intent dismissIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
+        dismissIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_DISMISS_ALARM);
         dismissIntent.putExtras(argsDismiss);
 
         PendingIntent dismissPending = PendingIntent.getBroadcast(context, 0, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -73,7 +74,8 @@ public class NotificationUtility {
                         .setContentTitle(title)
                         .setContentText(description)
                         .setContentIntent(dismissPending)
-                        .addAction(iconIdDismiss, context.getString(R.string.alarm_button_dismiss), dismissPending);
+                        .addAction(iconIdDismiss, context.getString(R.string.alarm_button_dismiss), dismissPending)
+                        .setOngoing(true);
 
         Notification notification = mBuilder.build();
         notification.flags |= Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_AUTO_CANCEL |
@@ -103,9 +105,11 @@ public class NotificationUtility {
         argsDismiss.putBoolean(Parcelable.KEY_DISMISS_ALARM, true);
 
         Intent snoozeIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
+        snoozeIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_SNOOZE_ALARM);
         snoozeIntent.putExtras(argsSnooze);
 
         Intent dismissIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
+        dismissIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_DISMISS_ALARM);
         dismissIntent.putExtras(argsDismiss);
 
         PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -118,7 +122,8 @@ public class NotificationUtility {
                         .setContentText(description)
                         .setContentIntent(snoozePending)
                         .addAction(iconIdSnooze, context.getString(R.string.alarm_button_snooze), snoozePending)
-                        .addAction(iconIdDismiss, context.getString(R.string.alarm_button_dismiss), dismissPending);
+                        .addAction(iconIdDismiss, context.getString(R.string.alarm_button_dismiss), dismissPending)
+                        .setOngoing(true);
 
         Notification notification = mBuilder.build();
         notification.flags |= Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_AUTO_CANCEL |
