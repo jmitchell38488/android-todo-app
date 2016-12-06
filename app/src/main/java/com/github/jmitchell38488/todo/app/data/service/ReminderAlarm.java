@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
+import com.github.jmitchell38488.todo.app.util.DateUtility;
+import com.github.jmitchell38488.todo.app.util.NotificationUtility;
 import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
 
 public class ReminderAlarm {
@@ -76,7 +78,7 @@ public class ReminderAlarm {
 
     public void snoozeAlarm(TodoItem item, int alarmId) {
         int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime(mContext);
-        long snoozeTime = snoozeMinutes * 60 * 1000;
+        long snoozeTime = snoozeMinutes * DateUtility.TIME_1_MINUTE;
         long startTime = System.currentTimeMillis() + snoozeTime;
 
         Log.d(LOG_TAG, String.format(

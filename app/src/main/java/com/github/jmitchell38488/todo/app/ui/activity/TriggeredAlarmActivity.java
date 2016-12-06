@@ -24,6 +24,8 @@ import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 import com.github.jmitchell38488.todo.app.data.repository.TodoReminderRepository;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.TriggeredAlarmFragment;
+import com.github.jmitchell38488.todo.app.util.DateUtility;
+import com.github.jmitchell38488.todo.app.util.NotificationUtility;
 import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
 
 import javax.inject.Inject;
@@ -105,16 +107,21 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
         } catch (Exception ex) {
             Log.d(LOG_TAG, "Exception from media player: " + ex.getMessage());
         }
+
+        // Cancel pending notifications
+        NotificationUtility.cancelPendingAlarmNotification(getApplicationContext(), mAlarmId);
+        NotificationUtility.cancelSnoozedAlarmNotification(getApplicationContext(), mAlarmId);
+
+        // Create a current alarm notification
+        NotificationUtility.createCurrentAlarmNotification(getApplicationContext(), mTodoItem, mTodoReminder, mAlarmId);
     }
 
     protected void initializeWindow() {
         // Set flags so we can wake the phone without requiring lock
         getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN |
                         WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                         WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN |
                         WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
                         WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                         WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
@@ -209,6 +216,9 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
             return;
         }
 
+        // Cancel any existing current alarm notifications
+        NotificationUtility.cancelCurrentAlarmNotification(getApplicationContext(), mAlarmId);
+
         int times = mTodoReminder.getTimesSnoozed();
 
         // We don't want to snooze the alarm if it's hit the snooze limit
@@ -219,6 +229,12 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
             mTodoReminder.setTimesSnoozed(times + 1);
             mTodoReminderRepository.saveTodoReminder(mTodoReminder);
             mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
+
+            // Create a snoozed notification
+            int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime(getApplicationContext());
+            long snoozeTime = snoozeMinutes * DateUtility.TIME_1_MINUTE;
+            long startTime = System.currentTimeMillis() + snoozeTime;
+            NotificationUtility.createSnoozedAlarmNotification(getApplicationContext(), mTodoItem, mTodoReminder, mAlarmId, startTime);
         }
     }
 

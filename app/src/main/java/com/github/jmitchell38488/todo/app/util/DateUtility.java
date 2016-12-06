@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.text.format.Time;
 
 import com.github.jmitchell38488.todo.app.R;
+import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 
 import org.w3c.dom.Text;
 
@@ -22,6 +23,11 @@ import java.util.TimeZone;
  */
 
 public class DateUtility {
+
+    public static final long TIME_1_MINUTE = 60 * 1000;
+    public static final long TIME_1_HOUR = TIME_1_MINUTE * 60;
+    public static final long TIME_24_HOURS = 24 * TIME_1_HOUR;
+    public static final long TIME_1_WEEK = TIME_24_HOURS * 7;
 
     public static long getMidnightUTCTimeToday() {
         Calendar date = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -178,6 +184,17 @@ public class DateUtility {
         long currentTime = System.currentTimeMillis();
         SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_date_alarm));
         return format.format(currentTime);
+    }
+
+    public static long getTimeInMillisFromTodoReminder(TodoReminder reminder) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, reminder.getYear());
+        calendar.set(Calendar.MONTH, reminder.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, reminder.getDay());
+        calendar.set(Calendar.HOUR_OF_DAY, reminder.getHour());
+        calendar.set(Calendar.MINUTE, reminder.getMinute());
+
+        return calendar.getTimeInMillis();
     }
 
 }

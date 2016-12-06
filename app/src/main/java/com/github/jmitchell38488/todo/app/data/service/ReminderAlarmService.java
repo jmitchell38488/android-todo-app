@@ -41,15 +41,16 @@ public class ReminderAlarmService extends IntentService {
         Log.d(LOG_TAG, "Received alarm signal inside ReminderAlarmService");
         Bundle arguments = intent.getExtras();
         TodoItem item = arguments.getParcelable(Parcelable.KEY_TODOITEM);
+        int alarmId = arguments.getInt(Parcelable.KEY_ALARM_ID);
 
-        NotificationUtility.cancelAlarmNotification(getApplicationContext());
-        NotificationUtility.createAlarmNotification(getApplicationContext(), item);
+
 
         Intent nIntent = new Intent(this, TriggeredAlarmActivity.class);
         nIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS |
                 Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_TASK_ON_HOME |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK
         );
+
         nIntent.putExtras(arguments);
         startActivity(nIntent);
     }

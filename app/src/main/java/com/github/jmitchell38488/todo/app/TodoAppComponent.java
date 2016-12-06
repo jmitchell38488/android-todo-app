@@ -7,6 +7,7 @@ import com.github.jmitchell38488.todo.app.data.provider.TodoDatabase;
 import com.github.jmitchell38488.todo.app.data.repository.RepositoryModule;
 import com.github.jmitchell38488.todo.app.data.service.AutoStartReceiver;
 import com.github.jmitchell38488.todo.app.data.service.PeriodicNotificationService;
+import com.github.jmitchell38488.todo.app.data.service.ReminderAlarmButtonReceiver;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarmService;
 import com.github.jmitchell38488.todo.app.data.service.ServiceModule;
 import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
@@ -58,6 +59,8 @@ public interface TodoAppComponent {
     void inject(EditItemActivity editItemActivity);
 
     void inject(TodoDatabase todoDatabase);
+
+    void inject(ReminderAlarmButtonReceiver reminderAlarmButtonReceiver);
 
     Application application();
 
