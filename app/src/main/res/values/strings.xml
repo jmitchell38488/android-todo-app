@@ -43,7 +43,7 @@
 
     <!-- Dialog stuff -->
     <string name="item_edit_title_label">What is to be done</string>
-    <string name="item_edit_description_label">Add more details, notes etc.</string>
+    <string name="item_edit_description_label">Notes</string>
     <string name="item_edit_title_hint">The to do item</string>
     <string name="item_edit_description_hint">Additional details</string>
     <string name="item_edit_disabled">This item is already marked as complete. \nTo edit, you must re-enable it by unchecking it.</string>

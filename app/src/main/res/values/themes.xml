@@ -38,6 +38,17 @@
         <item name="android:padding">@dimen/ListTheme.padding</item>
     </style>
 
+    <style name="EditItemTheme" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:padding">@dimen/EditItemTheme.padding</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="AppTheme.Green" parent="AppTheme">
         <item name="colorPrimary">@color/theme_green_light</item>
         <item name="colorPrimaryDark">@color/theme_green_dark</item>

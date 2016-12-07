@@ -77,7 +77,22 @@
     <dimen name="EditThemeContainer.Input.layout_marginBottom">4dp</dimen>
     <dimen name="EditThemeContainer.Input.layout_marginLeft">12dp</dimen>
     <dimen name="EditThemeContainer.Input.layout_marginRight">12dp</dimen>
+    <dimen name="EditThemeContainer.Input.paddingBottom">10dp</dimen>
+    <dimen name="EditThemeContainer.Input.paddingLeft">4dp</dimen>
     <dimen name="EditThemeContainer.Input.textSize">15dp</dimen>
+    <dimen name="EditThemeContainer.Input.Selector.paddingBottom">4dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.layout_marginTop">0dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.paddingTop">16dp</dimen>
     <dimen name="ListTheme.padding">0dp</dimen>
+    <dimen name="EditItemTheme.padding">0dp</dimen>
+    <dimen name="EditItemScrollView.paddingBottom">0dp</dimen>
+    <dimen name="EditItemScrollView.paddingLeft">0dp</dimen>
+    <dimen name="EditItemScrollView.paddingRight">0dp</dimen>
+    <dimen name="EditItemScrollView.paddingTop">0dp</dimen>
+    <dimen name="EditThemeContainer.OptionsContainer.paddingBottom">16dp</dimen>
+    <dimen name="EditThemeContainer.OptionsContainer.paddingLeft">16dp</dimen>
+    <dimen name="EditThemeContainer.OptionsContainer.paddingRight">16dp</dimen>
+    <dimen name="EditThemeContainer.OptionsContainer.paddingTop">16dp</dimen>
+    <dimen name="EditThemeContainer.OptionsContainer.layout_marginTop">0dp</dimen>
 
 </resources>

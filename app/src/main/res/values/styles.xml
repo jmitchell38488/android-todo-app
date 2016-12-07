@@ -153,9 +153,30 @@
         <item name="android:layout_height">@dimen/ListItemCategoryContainer.layout_height</item>
     </style>
 
+    <style name="EditItemScrollView" parent="AppTheme">
+        <item name="android:paddingBottom">@dimen/EditItemScrollView.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/EditItemScrollView.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/EditItemScrollView.paddingRight</item>
+        <item name="android:paddingTop">@dimen/EditItemScrollView.paddingTop</item>
+    </style>
+
     <style name="EditThemeContainer" parent="AppTheme">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_marginTop">@dimen/EditThemeContainer.layout_marginTop</item>
+    </style>
+
+    <style name="EditThemeContainer.TextContainer" parent="EditThemeContainer">
+        <item name="android:background">@drawable/edit_item_text_border_top</item>
+        <item name="android:layout_marginTop">@dimen/EditThemeContainer.TextContainer.layout_marginTop</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.TextContainer.paddingTop</item>
+    </style>
+
+    <style name="EditThemeContainer.OptionsContainer" parent="EditThemeContainer">
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.OptionsContainer.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.OptionsContainer.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/EditThemeContainer.OptionsContainer.paddingRight</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.OptionsContainer.paddingTop</item>
+        <item name="android:layout_marginTop">@dimen/EditThemeContainer.OptionsContainer.layout_marginTop</item>
     </style>
 
     <style name="EditThemeContainer.Logo" parent="ListThemeLogo">
@@ -202,14 +223,56 @@
         <item name="android:layout_marginBottom">@dimen/EditThemeContainer.Input.layout_marginBottom</item>
         <item name="android:layout_marginLeft">@dimen/EditThemeContainer.Input.layout_marginLeft</item>
         <item name="android:layout_marginRight">@dimen/EditThemeContainer.Input.layout_marginRight</item>
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.Input.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.Input.paddingLeft</item>
         <item name="android:textSize">@dimen/EditThemeContainer.Input.textSize</item>
         <item name="android:textColor">@color/grey_555555_100</item>
+    </style>
+
+    <style name="EditThemeContainer.Input.Selector" parent="EditThemeContainer.Input">
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.Input.Selector.paddingBottom</item>
+    </style>
+
+    <style name="EditThemeContainer.DateField" parent="EditThemeContainer">
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="EditThemeContainer.TimeField" parent="EditThemeContainer">
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="EditThemeContainer.SoundField" parent="EditThemeContainer">
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="EditThemeContainer.Switches" parent="EditThemeContainer">
+        <item name="android:layout_marginTop">25dp</item>
     </style>
 
     <style name="EditThemeContainer.Input.TextArea" parent="EditThemeContainer.Input">
         <item name="android:minLines">5</item>
         <item name="android:maxLines">12</item>
         <item name="android:lines">5</item>
+    </style>
+
+    <style name="EditThemeContainer.Input.Invert" parent="EditThemeContainer.Input">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="EditThemeContainer.Label.Invert" parent="EditThemeContainer.Label">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="EditThemeContainer.Input.TextArea.Invert" parent="EditThemeContainer.Input">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

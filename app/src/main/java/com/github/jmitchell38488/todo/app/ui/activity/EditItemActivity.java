@@ -58,6 +58,7 @@ public class EditItemActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        actionBar.setElevation(0.1f);
 
         item = args.getParcelable(Parcelable.KEY_TODOITEM);
 
