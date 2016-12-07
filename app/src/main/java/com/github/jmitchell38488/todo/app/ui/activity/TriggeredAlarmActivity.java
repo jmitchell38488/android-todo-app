@@ -24,7 +24,7 @@ import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 import com.github.jmitchell38488.todo.app.data.repository.TodoReminderRepository;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.TriggeredAlarmFragment;
-import com.github.jmitchell38488.todo.app.util.DateUtility;
+import com.github.jmitchell38488.todo.app.util.AlarmUtility;
 import com.github.jmitchell38488.todo.app.util.NotificationUtility;
 import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
 
@@ -33,6 +33,7 @@ import javax.inject.Inject;
 public class TriggeredAlarmActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = TriggeredAlarmActivity.class.getSimpleName();
+    public static boolean isRunning = false;
 
     @Inject TodoReminderRepository mTodoReminderRepository;
     @Inject ReminderAlarm mReminderAlarm;
@@ -45,12 +46,14 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
     protected BroadcastReceiver mBroadcastReceiver;
     protected Handler mRunnableHandler = new Handler();
     protected boolean stopped = false;
+    protected boolean dismiss = false;
 
     protected MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOG_TAG, "Lifecycle: onResume");
+        isRunning = true;
 
         super.onCreate(savedInstanceState);
         TodoApp.getComponent(this).inject(this);
@@ -82,8 +85,7 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
         });
 
         mFragment.setDismissClickListener(v -> {
-            // Set the times snoozed sufficiently high so that it won't be snoozed again
-            mTodoReminder.setTimesSnoozed(999);
+            dismiss = true;
             finish();
         });
 
@@ -123,6 +125,13 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
 
                 // When the user interacts with the notification for the alarm
                 if (intent.getAction().compareTo(com.github.jmitchell38488.todo.app.data.Intent.ACTION_STOP_ALARM) == 0) {
+                    Bundle bundle = intent.getExtras();
+                    boolean tdismiss = bundle.getBoolean(Parcelable.KEY_DISMISS_ALARM);
+
+                    if (tdismiss) {
+                        dismiss = true;
+                    }
+
                     TriggeredAlarmActivity.this.finish();
                 }
             }
@@ -194,6 +203,7 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
     public void onStop() {
         Log.d(LOG_TAG, "Lifecycle: onStop");
 
+        isRunning = false;
         super.onStop();
     }
 
@@ -223,34 +233,14 @@ public class TriggeredAlarmActivity extends AppCompatActivity {
             return;
         }
 
-        // Cancel any existing current alarm notifications
-        NotificationUtility.cancelCurrentAlarmNotification(getApplicationContext(), mAlarmId);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Parcelable.KEY_TODOITEM, mTodoItem);
+        bundle.putParcelable(Parcelable.KEY_TODOREMINDER, mTodoReminder);
+        bundle.putInt(Parcelable.KEY_ALARM_ID, mAlarmId);
+        bundle.putBoolean(Parcelable.KEY_DISMISS_ALARM, dismiss);
 
-        boolean dismiss = false;
-        int times = mTodoReminder.getTimesSnoozed();
-        if (times >= PreferencesUtility.getMaxAlarmSnoozeTimes(getApplicationContext())) {
-            dismiss = true;
-        }
-
-        // If snoozed
-        if (!dismiss) {
-            mTodoReminder.setTimesSnoozed(times + 1);
-            mTodoReminderRepository.saveTodoReminder(mTodoReminder);
-            mReminderAlarm.snoozeAlarm(mTodoItem, mAlarmId);
-
-            int snoozeMinutes = PreferencesUtility.getAlarmSnoozeTime(getApplicationContext());
-            long snoozeTime = snoozeMinutes * DateUtility.TIME_1_MINUTE;
-            long startTime = System.currentTimeMillis() + snoozeTime;
-
-            NotificationUtility.createSnoozedAlarmNotification(getApplicationContext(),
-                    mTodoItem, mTodoReminder, mAlarmId, startTime);
-
-        // If dismissed
-        } else {
-            NotificationUtility.cancelSnoozedAlarmNotification(getApplicationContext(), mAlarmId);
-            mReminderAlarm.cancelAlarm(mTodoItem, mAlarmId);
-            mTodoReminderRepository.deleteTodoReminder(mTodoReminder);
-        }
+        AlarmUtility.handleAlarmSnoozeDismiss(getApplicationContext(), bundle,
+                mTodoReminderRepository, mReminderAlarm);
     }
 
 }

@@ -18,7 +18,13 @@ import java.text.SimpleDateFormat;
 
 public class NotificationUtility {
 
+    public static final int REQUEST_CODE_SNOOZE = 9999991;
+    public static final int REQUEST_CODE_DISMISS = 9999992;
+    public static final int REQUEST_CODE_STOP = 9999993;
+
+    private static final String LOG_TAG = NotificationUtility.class.getSimpleName();
     private static final String NOTIFICATION_TAG = NotificationUtility.class.getSimpleName();
+
     private static NotificationManager mNotificationManager;
 
     public static void cancelPendingAlarmNotification(Context context, int notificationId) {
@@ -35,18 +41,61 @@ public class NotificationUtility {
 
     protected static void cancelAlarmNotification(Context context, int notificationId) {
         if (mNotificationManager == null) {
-            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager = (NotificationManager) context.getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
         }
 
-        mNotificationManager.cancel(notificationId);
+        mNotificationManager.cancel(NOTIFICATION_TAG, notificationId);
+    }
+
+    public static PendingIntent getSnoozeIntent(Context context, TodoItem item,
+                                                TodoReminder reminder, int notificationId,
+                                                int requestCode) {
+        Bundle argsSnooze = new Bundle();
+        argsSnooze.putParcelable(Parcelable.KEY_TODOITEM, item);
+        argsSnooze.putParcelable(Parcelable.KEY_TODOREMINDER, reminder);
+        argsSnooze.putInt(Parcelable.KEY_ALARM_ID, notificationId);
+        argsSnooze.putBoolean(Parcelable.KEY_DISMISS_ALARM, false);
+
+        Intent snoozeIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
+        snoozeIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_SNOOZE_ALARM);
+        snoozeIntent.putExtras(argsSnooze);
+
+        PendingIntent snoozePending = PendingIntent.getBroadcast(context, requestCode, snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        return snoozePending;
+    }
+
+    public static PendingIntent getDismissIntent(Context context, TodoItem item,
+                                                 TodoReminder reminder, int notificationId,
+                                                 int requestCode) {
+        Bundle argsDismiss = new Bundle();
+        argsDismiss.putParcelable(Parcelable.KEY_TODOITEM, item);
+        argsDismiss.putParcelable(Parcelable.KEY_TODOREMINDER, reminder);
+        argsDismiss.putInt(Parcelable.KEY_ALARM_ID, notificationId);
+        argsDismiss.putBoolean(Parcelable.KEY_DISMISS_ALARM, true);
+
+        Intent dismissIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
+        dismissIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_DISMISS_ALARM);
+        dismissIntent.putExtras(argsDismiss);
+        PendingIntent dismissPending = PendingIntent.getBroadcast(context, requestCode, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        return dismissPending;
     }
 
     public static void createPendingAlarmNotification(Context context, TodoItem item, TodoReminder reminder, int notificationId) {
-
+        if (mNotificationManager == null) {
+            mNotificationManager = (NotificationManager) context.getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+        }
     }
 
     public static void createSnoozedAlarmNotification(Context context, TodoItem item,
                                   TodoReminder reminder, int notificationId, long timeInMillis) {
+        if (mNotificationManager == null) {
+            mNotificationManager = (NotificationManager) context.getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+        }
 
         SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_alarm_notification_12));
 
@@ -57,23 +106,15 @@ public class NotificationUtility {
         int iconId = R.mipmap.icon_alarm;
         int iconIdDismiss = R.mipmap.icon_alarm_dismiss;
 
-        Bundle argsDismiss = new Bundle();
-        argsDismiss.putParcelable(Parcelable.KEY_TODOITEM, item);
-        argsDismiss.putParcelable(Parcelable.KEY_TODOREMINDER, reminder);
-        argsDismiss.putInt(Parcelable.KEY_ALARM_ID, notificationId);
-        argsDismiss.putBoolean(Parcelable.KEY_DISMISS_ALARM, true);
+        PendingIntent dismissPending = getDismissIntent(context, item, reminder, notificationId, REQUEST_CODE_DISMISS);
+        PendingIntent dismissContent = getDismissIntent(context, item, reminder, notificationId, REQUEST_CODE_STOP);
 
-        Intent dismissIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
-        dismissIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_DISMISS_ALARM);
-        dismissIntent.putExtras(argsDismiss);
-
-        PendingIntent dismissPending = PendingIntent.getBroadcast(context, 0, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(iconId)
                         .setContentTitle(title)
                         .setContentText(description)
-                        .setContentIntent(dismissPending)
+                        .setContentIntent(dismissContent)
                         .addAction(iconIdDismiss, context.getString(R.string.alarm_button_dismiss), dismissPending)
                         .setOngoing(true);
 
@@ -85,6 +126,11 @@ public class NotificationUtility {
     }
 
     public static void createCurrentAlarmNotification(Context context, TodoItem item, TodoReminder reminder, int notificationId) {
+        if (mNotificationManager == null) {
+            mNotificationManager = (NotificationManager) context.getApplicationContext()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+
         SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_alarm_notification_12));
 
         String date = format.format(DateUtility.getTimeInMillisFromTodoReminder(reminder));
@@ -95,32 +141,16 @@ public class NotificationUtility {
         int iconIdSnooze = R.mipmap.icon_alarm_snooze;
         int iconIdDismiss = R.mipmap.icon_alarm_dismiss;
 
-        Bundle argsSnooze = new Bundle();
-        argsSnooze.putParcelable(Parcelable.KEY_TODOITEM, item);
-        argsSnooze.putParcelable(Parcelable.KEY_TODOREMINDER, reminder);
-        argsSnooze.putInt(Parcelable.KEY_ALARM_ID, notificationId);
-        argsSnooze.putBoolean(Parcelable.KEY_DISMISS_ALARM, false);
-
-        Bundle argsDismiss = (Bundle) argsSnooze.clone();
-        argsDismiss.putBoolean(Parcelable.KEY_DISMISS_ALARM, true);
-
-        Intent snoozeIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
-        snoozeIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_SNOOZE_ALARM);
-        snoozeIntent.putExtras(argsSnooze);
-
-        Intent dismissIntent = new Intent(context, ReminderAlarmButtonReceiver.class);
-        dismissIntent.setAction(com.github.jmitchell38488.todo.app.data.Intent.ACTION_DISMISS_ALARM);
-        dismissIntent.putExtras(argsDismiss);
-
-        PendingIntent snoozePending = PendingIntent.getBroadcast(context, 0, snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
-        PendingIntent dismissPending = PendingIntent.getBroadcast(context, 0, dismissIntent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent snoozePending = getSnoozeIntent(context, item, reminder, notificationId, REQUEST_CODE_SNOOZE);
+        PendingIntent dismissContent = getSnoozeIntent(context, item, reminder, notificationId, REQUEST_CODE_STOP);
+        PendingIntent dismissPending = getDismissIntent(context, item, reminder, notificationId, REQUEST_CODE_DISMISS);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(iconId)
                         .setContentTitle(title)
                         .setContentText(description)
-                        .setContentIntent(snoozePending)
+                        .setContentIntent(dismissContent)
                         .addAction(iconIdSnooze, context.getString(R.string.alarm_button_snooze), snoozePending)
                         .addAction(iconIdDismiss, context.getString(R.string.alarm_button_dismiss), dismissPending)
                         .setOngoing(true);
