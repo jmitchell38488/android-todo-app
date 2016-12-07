@@ -148,7 +148,7 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         dest.writeInt(minute);
         dest.writeByte(active ? (byte) 1 : 0);
         dest.writeInt(timesSnoozed);
-        dest.writeString(sound.toString());
+        dest.writeString(sound != null ? sound.toString() : "");
     }
 
     protected TodoReminder(Parcel in) {
@@ -161,7 +161,13 @@ public class TodoReminder implements Cloneable, Parcelable, TodoReminderMeta {
         minute = in.readInt();
         active = in.readByte() != 0;
         timesSnoozed = in.readInt();
-        sound = Uri.parse(in.readString());
+
+        String uri = in.readString();
+        if (uri != null || uri.length() > 0) {
+            sound = Uri.parse(uri);
+        } else {
+            sound = null;
+        }
     }
 
     public static Creator<TodoReminder> CREATOR = new Creator<TodoReminder>() {
