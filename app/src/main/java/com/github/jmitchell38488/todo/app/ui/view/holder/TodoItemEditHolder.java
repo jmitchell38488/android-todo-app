@@ -38,6 +38,7 @@ public class TodoItemEditHolder {
 
     public boolean hasReminderDate = false;
     public boolean hasReminderTime = false;
+    public boolean isNew = false;
 
     @BindView(R.id.item_edit_title) public RobotoLightEditText titleView;
     @BindView(R.id.item_edit_description) public RobotoLightEditText descriptionView;
@@ -47,6 +48,7 @@ public class TodoItemEditHolder {
 
     @BindView(R.id.edit_item_time_selector) RelativeLayout timeSelector;
     @BindView(R.id.edit_item_sound_selector) RelativeLayout soundSelector;
+    @BindView(R.id.item_edit_completed_container) RelativeLayout completedSelector;
 
     @BindView(R.id.item_edit_date_field) TextView dateField;
     @BindView(R.id.item_edit_date_icon) TextView dateIcon;
@@ -217,6 +219,10 @@ public class TodoItemEditHolder {
             soundField.setText(AlarmUtility.getAlarmSoundTitle(mContext, mReminder.getSound()));
             soundDelete.setVisibility(View.VISIBLE);
         }
+
+        if (isNew) {
+            completedSelector.setVisibility(View.GONE);
+        }
     }
 
     public void setSoundClickListener(View.OnClickListener listener) {
@@ -230,6 +236,15 @@ public class TodoItemEditHolder {
 
     public void setSoundFieldTitle(String title) {
         soundField.setText(title);
+    }
+
+    /**
+     * Helper function to return a hash of all the values combined to detect whether or not there
+     * have been value changes. This is required for detecting back button/return to home actions
+     * when the user is still editing
+     */
+    public void getHolderValueHash() {
+
     }
 
 }

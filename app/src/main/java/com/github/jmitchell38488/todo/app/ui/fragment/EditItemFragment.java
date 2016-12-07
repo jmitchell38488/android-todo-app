@@ -45,6 +45,7 @@ public class EditItemFragment extends Fragment {
         Bundle arguments = getArguments();
         TodoItem item = null;
         TodoReminder reminder = null;
+        boolean isNew = false;
 
         if (arguments != null && arguments.getParcelable(Parcelable.KEY_TODOITEM) != null) {
             item = arguments.getParcelable(Parcelable.KEY_TODOITEM);
@@ -54,7 +55,9 @@ public class EditItemFragment extends Fragment {
             reminder = arguments.getParcelable(Parcelable.KEY_TODOREMINDER);
         }
 
+        // new
         if (item == null) {
+            isNew = true;
             item = new TodoItem();
         }
 
@@ -67,6 +70,7 @@ public class EditItemFragment extends Fragment {
         mItemHash = ItemUtility.md5(item.toString());
         mView = inflater.inflate(R.layout.fragment_edit_item, container, false);
         TodoItemEditHolder viewHolder = new TodoItemEditHolder(mView, getActivity(), mItem, mReminder);
+        viewHolder.isNew = isNew;
         mView.setTag(viewHolder);
 
         viewHolder.setSoundClickListener(view -> {
