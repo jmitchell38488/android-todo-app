@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -43,10 +44,9 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_pinned) public Switch pinnedSwitch;
     @BindView(R.id.item_edit_completed) public Switch completedSwitch;
     @BindView(R.id.item_edit_locked) public Switch lockedSwitch;
-    @BindView(R.id.item_edit_pinned_label) public TextView pinnedLabel;
 
-    @BindView(R.id.edit_item_time_selector) LinearLayout timeSelector;
-    @BindView(R.id.edit_item_sound_selector) LinearLayout soundSelector;
+    @BindView(R.id.edit_item_time_selector) RelativeLayout timeSelector;
+    @BindView(R.id.edit_item_sound_selector) RelativeLayout soundSelector;
 
     @BindView(R.id.item_edit_date_field) TextView dateField;
     @BindView(R.id.item_edit_date_icon) TextView dateIcon;
@@ -56,8 +56,9 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_time_icon) TextView timeIcon;
     @BindView(R.id.item_edit_time_delete) TextView timeDelete;
 
-    @BindView(R.id.item_edit_sound_icon) TextView soundIcon;
-    @BindView(R.id.item_edit_sound_field) TextView soundField;
+    @BindView(R.id.item_edit_sound_icon) public TextView soundIcon;
+    @BindView(R.id.item_edit_sound_field) public TextView soundField;
+    @BindView(R.id.item_edit_sound_delete) public TextView soundDelete;
 
     public TodoItemEditHolder(View view, Context context,
                               @Nullable TodoItem item,
@@ -89,12 +90,6 @@ public class TodoItemEditHolder {
         pinnedSwitch.setChecked(mItem.isPinned());
         pinnedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mItem.setPinned(isChecked);
-
-            if (isChecked) {
-                pinnedLabel.setText(mContext.getString(R.string.item_edit_pin_true));
-            } else {
-                pinnedLabel.setText(mContext.getString(R.string.item_edit_pin_false));
-            }
         });
 
         completedSwitch.setChecked(mItem.isCompleted());
@@ -107,10 +102,6 @@ public class TodoItemEditHolder {
             mItem.setLocked(isChecked);
         });
 
-        if (mItem.isPinned()) {
-            pinnedLabel.setText(mContext.getString(R.string.item_edit_pin_true));
-        }
-
         if (!TextUtils.isEmpty(mItem.getTitle())) {
             titleView.setText(mItem.getTitle());
         }
@@ -118,6 +109,10 @@ public class TodoItemEditHolder {
         if (!TextUtils.isEmpty(mItem.getDescription())) {
             descriptionView.setText(mItem.getDescription());
         }
+
+        dateDelete.setVisibility(View.GONE);
+        timeDelete.setVisibility(View.GONE);
+        soundDelete.setVisibility(View.GONE);
 
         reminderDate = Calendar.getInstance();
         if (mReminder.isActive()) {
@@ -130,11 +125,13 @@ public class TodoItemEditHolder {
             if (hasReminderDate) {
                 SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_date_alarm_field));
                 dateField.setText(format.format(reminderDate.getTime()));
+                dateDelete.setVisibility(View.VISIBLE);
             }
 
             if (hasReminderTime) {
                 SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_time));
                 timeField.setText(format.format(reminderDate.getTime()));
+                timeDelete.setVisibility(View.VISIBLE);
             }
         }
 
@@ -149,15 +146,18 @@ public class TodoItemEditHolder {
             hasReminderDate = true;
             timeSelector.setVisibility(View.VISIBLE);
             soundSelector.setVisibility(View.VISIBLE);
+            dateDelete.setVisibility(View.VISIBLE);
         };
 
         TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
-            reminderDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            reminderDate.set(Calendar.HOUR, hourOfDay >= 12 && hourOfDay < 25 ? hourOfDay - 12 : hourOfDay);
             reminderDate.set(Calendar.MINUTE, minute);
+            reminderDate.set(Calendar.AM_PM, hourOfDay >= 12 && hourOfDay < 24 ? Calendar.PM : Calendar.AM);
 
             SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_time));
             timeField.setText(format.format(reminderDate.getTime()));
             hasReminderTime = true;
+            timeDelete.setVisibility(View.VISIBLE);
         };
 
         View.OnClickListener dateClick = (view) ->
@@ -178,8 +178,8 @@ public class TodoItemEditHolder {
 
         View.OnClickListener timeClick = (view) ->
             new TimePickerDialog(mContext, timeCallback,
-                    reminderDate.get(Calendar.HOUR_OF_DAY),
-                    reminderDate.get(Calendar.MINUTE), true).show();
+                    reminderDate.get(Calendar.HOUR),
+                    reminderDate.get(Calendar.MINUTE), false).show();
 
         View.OnFocusChangeListener timeFocus = (view, focused) -> {
             mInputMethodManager.hideSoftInputFromWindow(timeField.getWindowToken(), 0);
@@ -188,8 +188,8 @@ public class TodoItemEditHolder {
             }
 
             new TimePickerDialog(mContext, timeCallback,
-                    reminderDate.get(Calendar.HOUR_OF_DAY),
-                    reminderDate.get(Calendar.MINUTE), true).show();
+                    reminderDate.get(Calendar.HOUR),
+                    reminderDate.get(Calendar.MINUTE), false).show();
         };
 
         dateField.setOnFocusChangeListener(dateFocus);
@@ -200,6 +200,8 @@ public class TodoItemEditHolder {
             hasReminderDate = false;
             hasReminderTime = false;
             timeSelector.setVisibility(View.GONE);
+            soundSelector.setVisibility(View.GONE);
+            dateDelete.setVisibility(View.GONE);
         });
 
         timeField.setOnFocusChangeListener(timeFocus);
@@ -208,16 +210,22 @@ public class TodoItemEditHolder {
         timeDelete.setOnClickListener(view -> {
             timeField.setText("");
             hasReminderTime = false;
+            timeDelete.setVisibility(View.GONE);
         });
 
         if (mReminder.getSound() != null) {
             soundField.setText(AlarmUtility.getAlarmSoundTitle(mContext, mReminder.getSound()));
+            soundDelete.setVisibility(View.VISIBLE);
         }
     }
 
     public void setSoundClickListener(View.OnClickListener listener) {
         soundField.setOnClickListener(listener);
         soundIcon.setOnClickListener(listener);
+    }
+
+    public void setSoundDeleteClickListener(View.OnClickListener listener) {
+        soundDelete.setOnClickListener(listener);
     }
 
     public void setSoundFieldTitle(String title) {

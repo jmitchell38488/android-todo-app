@@ -90,6 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:gravity="top|start"
+                android:ellipsize="end"
+                android:maxLines="2"
                 style="@style/AppTheme.ListTextView.Large" />
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
@@ -98,6 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:gravity="center_vertical|start"
+                android:ellipsize="end"
+                android:maxLines="3"
                 style="@style/AppTheme.ListTextView.Description"/>
         </LinearLayout>
 

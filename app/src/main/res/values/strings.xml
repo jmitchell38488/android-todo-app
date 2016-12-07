@@ -24,7 +24,7 @@
     <string name="date_format_dayname" translatable="false">EEEE</string>
     <string name="date_format_monthday" translatable="false">MMMM dd</string>
     <string name="date_format_daymonthday" translatable="false">EEE MMM dd</string>
-    <string name="date_format_time" translatable="false">kk:mm</string>
+    <string name="date_format_time" translatable="false">h:mm a</string>
     <string name="date_format_date_alarm" translatable="false">EEE, d MMMM</string>
     <string name="date_format_date_alarm_field" translatable="false">EEE, d MMM yyyy</string>
     <string name="date_format_date_alarm_toast" translatable="false">EEE, d MMM yyyy kk:mm</string>
@@ -50,6 +50,7 @@
     <string name="item_edit_reminder_label">Set a reminder</string>
     <string name="item_edit_reminder_date_hint">Select a date</string>
     <string name="item_edit_reminder_time_hint">Select a time</string>
+    <string name="item_edit_reminder_alarm_hint">Select an alarm tone</string>
 
     <string name="item_edit_button_positive">Save</string>
     <string name="item_edit_button_negative">Cancel</string>
@@ -74,12 +75,15 @@
 
     <string name="empty_title">A title for the to do is required</string>
 
-    <string name="icon_flag">\uf024</string>
-    <string name="icon_reminder">\uf0f3</string>
-    <string name="icon_locked">\uf023</string>
-    <string name="icon_calendar">\uf073</string>
-    <string name="icon_cancel">\uf05c</string>
-    <string name="icon_clock">\uf017</string>
+    <string name="icon_flag" translatable="false">\uf024</string>
+    <string name="icon_reminder" translatable="false">\uf0f3</string>
+    <string name="icon_locked" translatable="false">\uf023</string>
+    <string name="icon_calendar" translatable="false">\uf073</string>
+    <string name="icon_cancel" translatable="false">\uf05c</string>
+    <string name="icon_clock" translatable="false">\uf017</string>
+    <string name="icon_description" translatable="false">\uf044</string>
+    <string name="icon_title" translatable="false">\uf040</string>
+    <string name="icon_tick" translatable="false">\uf00c</string>
 
     <string name="invalid_list_position">Sorry, I could not update the item for you.\nIf this keeps happening,\nplease reload me</string>
 

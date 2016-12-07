@@ -166,9 +166,32 @@
     </style>
 
     <style name="EditThemeContainer.TextContainer" parent="EditThemeContainer">
-        <item name="android:background">@drawable/edit_item_text_border_top</item>
+        <item name="android:background">@color/white</item>
         <item name="android:layout_marginTop">@dimen/EditThemeContainer.TextContainer.layout_marginTop</item>
         <item name="android:paddingTop">@dimen/EditThemeContainer.TextContainer.paddingTop</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.TextContainer.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/EditThemeContainer.TextContainer.paddingRight</item>
+    </style>
+
+    <style name="EditThemeContainer.TextContainer.Icon" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">@dimen/EditThemeContainer.TextContainer.Icon.layout_width</item>
+        <item name="android:layout_weight">6</item>
+        <item name="android:textColor">@color/grey_333333_50</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.TextContainer.Icon.textSize</item>
+        <item name="android:layout_gravity">center_horizontal|top</item>
+        <item name="android:gravity">center_horizontal|top</item>
+        <item name="android:layout_marginTop">@dimen/EditThemeContainer.TextContainer.Icon.layout_marginTop</item>
+    </style>
+
+    <style name="EditThemeContainer.TextContainer.Row" parent="EditThemeContainer.TextContainer">
+        <item name="android:background">@drawable/edit_item_border_bottom_grey</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.TextContainer.Row.paddingTop</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.TextContainer.Row.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/EditThemeContainer.TextContainer.Row.paddingRight</item>
+    </style>
+
+    <style name="EditThemeContainer.TextContainer.Row.Reminder" parent="EditThemeContainer.TextContainer.Row">
+        <item name="android:paddingTop">@dimen/EditThemeContainer.TextContainer.Row.Reminder.paddingTop</item>
     </style>
 
     <style name="EditThemeContainer.OptionsContainer" parent="EditThemeContainer">
@@ -205,20 +228,17 @@
     </style>
 
     <style name="EditThemeContainer.Switch" parent="@android:style/TextAppearance">
-        <item name="android:textSize">@dimen/EditThemeContainer.Switch.textSize</item>
-        <item name="android:textColor">@color/grey_333333_100</item>
-        <item name="android:paddingTop">@dimen/EditThemeContainer.Switch.paddingTop</item>
-        <item name="android:paddingBottom">@dimen/EditThemeContainer.Switch.paddingBottom</item>
-        <item name="android:paddingLeft">@dimen/EditThemeContainer.Switch.paddingLeft</item>
-        <item name="android:thumbTextPadding">@dimen/EditThemeContainer.Switch.thumbTextPadding</item>
-        <item name="android:switchMinWidth">@dimen/EditThemeContainer.Switch.switchMinWidth</item>
-        <item name="android:layout_marginLeft">@dimen/EditThemeContainer.Switch.layout_marginLeft</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:gravity">end</item>
     </style>
 
     <style name="EditThemeContainer.Input" parent="@android:style/TextAppearance">
         <item name="android:gravity">top|left</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">20</item>
         <item name="android:layout_marginTop">@dimen/EditThemeContainer.Input.layout_marginTop</item>
         <item name="android:layout_marginBottom">@dimen/EditThemeContainer.Input.layout_marginBottom</item>
         <item name="android:layout_marginLeft">@dimen/EditThemeContainer.Input.layout_marginLeft</item>
@@ -227,10 +247,17 @@
         <item name="android:paddingLeft">@dimen/EditThemeContainer.Input.paddingLeft</item>
         <item name="android:textSize">@dimen/EditThemeContainer.Input.textSize</item>
         <item name="android:textColor">@color/grey_555555_100</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
     </style>
 
     <style name="EditThemeContainer.Input.Selector" parent="EditThemeContainer.Input">
         <item name="android:paddingBottom">@dimen/EditThemeContainer.Input.Selector.paddingBottom</item>
+    </style>
+
+    <style name="EditThemeContainer.Input.Large" parent="EditThemeContainer.Input">
+        <item name="android:textSize">@dimen/EditThemeContainer.Input.Large.textSize</item>
     </style>
 
     <style name="EditThemeContainer.DateField" parent="EditThemeContainer">
@@ -255,9 +282,8 @@
     </style>
 
     <style name="EditThemeContainer.Input.TextArea" parent="EditThemeContainer.Input">
-        <item name="android:minLines">5</item>
-        <item name="android:maxLines">12</item>
-        <item name="android:lines">5</item>
+        <item name="android:minLines">4</item>
+        <item name="android:maxLines">9</item>
     </style>
 
     <style name="EditThemeContainer.Input.Invert" parent="EditThemeContainer.Input">

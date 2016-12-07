@@ -77,6 +77,12 @@ public class EditItemFragment extends Fragment {
             getActivity().startActivityForResult(intent, EditItemActivity.REQUEST_CODE_SOUND);
         });
 
+        viewHolder.setSoundDeleteClickListener(view -> {
+            ((TodoItemEditHolder) mView.getTag()).soundField.setText("");
+            ((TodoItemEditHolder) mView.getTag()).soundDelete.setVisibility(View.GONE);
+            mReminder.setSound(null);
+        });
+
         return mView;
     }
 
@@ -121,6 +127,7 @@ public class EditItemFragment extends Fragment {
         Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), sound);
         String title = ringtone.getTitle(getActivity());
         ((TodoItemEditHolder) mView.getTag()).setSoundFieldTitle(title);
+        ((TodoItemEditHolder) mView.getTag()).soundDelete.setVisibility(View.VISIBLE);
     }
 
     public String getItemHash() {

@@ -32,7 +32,7 @@
     <dimen name="ListThemeListContainer.layout_marginTop">56dp</dimen>
     <dimen name="ListThemeLogo.paddingTop">8dp</dimen>
     <dimen name="ListThemeLogo.paddingBottom">8dp</dimen>
-    <dimen name="ListThemeLogo.textSize">23dp</dimen>
+    <dimen name="ListThemeLogo.textSize">20dp</dimen>
     <dimen name="ListThemeListItemContainer.paddingTop">0dp</dimen>
     <dimen name="ListThemeListItemContainer.paddingBottom">0dp</dimen>
     <dimen name="ListThemeListItemContainer.paddingLeft">0dp</dimen>
@@ -67,10 +67,11 @@
     <dimen name="EditThemeContainer.Label.Small.paddingBottom">2dp</dimen>
     <dimen name="EditThemeContainer.Label.Small.paddingLeft">15dp</dimen>
     <dimen name="EditThemeContainer.Switch.textSize">16.5dp</dimen>
+    <dimen name="EditThemeContainer.Switch.layout_width">60dp</dimen>
     <dimen name="EditThemeContainer.Switch.paddingTop">8dp</dimen>
     <dimen name="EditThemeContainer.Switch.paddingBottom">2dp</dimen>
     <dimen name="EditThemeContainer.Switch.paddingLeft">15dp</dimen>
-    <dimen name="EditThemeContainer.Switch.thumbTextPadding">10dp</dimen>
+    <dimen name="EditThemeContainer.Switch.thumbTextPadding">4dp</dimen>
     <dimen name="EditThemeContainer.Switch.switchMinWidth">100dp</dimen>
     <dimen name="EditThemeContainer.Switch.layout_marginLeft">10dp</dimen>
     <dimen name="EditThemeContainer.Input.layout_marginTop">4dp</dimen>
@@ -81,8 +82,15 @@
     <dimen name="EditThemeContainer.Input.paddingLeft">4dp</dimen>
     <dimen name="EditThemeContainer.Input.textSize">15dp</dimen>
     <dimen name="EditThemeContainer.Input.Selector.paddingBottom">4dp</dimen>
+    <dimen name="EditThemeContainer.Input.Large.textSize">16dp</dimen>
     <dimen name="EditThemeContainer.TextContainer.layout_marginTop">0dp</dimen>
     <dimen name="EditThemeContainer.TextContainer.paddingTop">16dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.paddingLeft">16dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.paddingRight">16dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Row.paddingTop">0dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Row.paddingLeft">0dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Row.paddingRight">0dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Row.Reminder.paddingTop">6dp</dimen>
     <dimen name="ListTheme.padding">0dp</dimen>
     <dimen name="EditItemTheme.padding">0dp</dimen>
     <dimen name="EditItemScrollView.paddingBottom">0dp</dimen>
@@ -94,5 +102,8 @@
     <dimen name="EditThemeContainer.OptionsContainer.paddingRight">16dp</dimen>
     <dimen name="EditThemeContainer.OptionsContainer.paddingTop">16dp</dimen>
     <dimen name="EditThemeContainer.OptionsContainer.layout_marginTop">0dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Icon.layout_width">15dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Icon.textSize">12dp</dimen>
+    <dimen name="EditThemeContainer.TextContainer.Icon.layout_marginTop">7dp</dimen>
 
 </resources>

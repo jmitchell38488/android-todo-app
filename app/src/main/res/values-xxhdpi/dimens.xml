@@ -27,4 +27,5 @@
     <dimen name="EditThemeContainer.OptionsContainer.paddingLeft">6dp</dimen>
     <dimen name="EditThemeContainer.OptionsContainer.paddingRight">6dp</dimen>
     <dimen name="EditThemeContainer.OptionsContainer.paddingTop">10dp</dimen>
+    <dimen name="EditThemeContainer.Input.Large.textSize">14dp</dimen>
 </resources>
