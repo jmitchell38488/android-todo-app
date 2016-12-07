@@ -86,10 +86,12 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
         }
         
         // Set title
-        titleView.setText(item.getTitle());
+        String title = item.getTitle().replace("\n", " ").replace("\r", " ");
+        titleView.setText(title);
 
         // Set description
         if (hasDesc && descView != null) {
+            desc = desc.replace("\n", " ").replace("\r", " ");
             descView.setText(desc);
         }
 
@@ -153,11 +155,11 @@ public class TodoItemHolder extends RecyclerView.ViewHolder implements ItemTouch
 
         } else {
             titleView.setPaintFlags(titleView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            titleView.setTextColor(Color.LTGRAY);
+            titleView.setTextColor(mContext.getResources().getColor(R.color.grey_aaaaaa_100));
 
             if (descView != null) {
                 descView.setPaintFlags(descView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                descView.setTextColor(Color.LTGRAY);
+                descView.setTextColor(mContext.getResources().getColor(R.color.grey_aaaaaa_100));
             }
         }
 

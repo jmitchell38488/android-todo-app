@@ -2,10 +2,10 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:color="@color/actionbar_dark" android:state_focused="true" android:state_pressed="false"/>
+    <item android:color="@color/colorPrimaryDark" android:state_focused="true" android:state_pressed="false"/>
     <item android:color="@color/white" android:state_pressed="true"/>
     <item android:color="@color/white" android:state_drag_hovered="true" android:state_pressed="true"/>
     <item android:color="@color/white" android:state_selected="true" android:state_pressed="true"/>
-    <item android:color="@color/grey_555555_100"/>
+    <item android:color="@color/colorPrimary"/>
 
 </selector>

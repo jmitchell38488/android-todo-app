@@ -28,24 +28,28 @@
 
     <style name="AppTheme.ListTextView.Icon" parent="@android:style/TextAppearance">
         <item name="android:textSize">@dimen/AppTheme.ListTextView.Icon.textSize</item>
-        <item name="android:layout_gravity">top|center_horizontal</item>
+        <item name="android:layout_gravity">top|start</item>
         <item name="android:gravity">top|center_horizontal</item>
-        <item name="android:textColor">@color/actionbar_dark_50</item>
-        <item name="android:layout_marginBottom">@dimen/list_item_icon_spacing</item>
+        <item name="android:textColor">@drawable/list_selector_text_icon</item>
+        <item name="android:layout_marginRight">@dimen/list_item_icon_spacing</item>
     </style>
 
     <style name="AppTheme.ListTextView.Icon.List" parent="@android:style/TextAppearance">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">@dimen/list_item_notification_panel</item>
-        <item name="android:layout_marginTop">@dimen/AppTheme.ListTextView.Icon.List.marginTop</item>
-        <item name="android:layout_marginBottom">@dimen/AppTheme.ListTextView.Icon.List.marginBottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">@dimen/AppTheme.ListTextView.Icon.List.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/AppTheme.ListTextView.Icon.List.paddingBottom</item>
         <item name="android:paddingRight">@dimen/AppTheme.ListTextView.Icon.List.paddingRight</item>
         <item name="android:gravity">top|center_horizontal</item>
-        <item name="android:layout_gravity">top|center_horizontal</item>
+        <item name="android:layout_gravity">top|start</item>
     </style>
 
     <style name="AppTheme.ListTextView.TextContainer" parent="@android:style/TextAppearance">
         <item name="android:minHeight">@dimen/item_text_container_min_height</item>
+        <item name="android:paddingLeft">@dimen/AppTheme.ListTextView.TextContainer.paddingLeft</item>
+        <item name="android:paddingTop">@dimen/AppTheme.ListTextView.TextContainer.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/AppTheme.ListTextView.TextContainer.paddingBottom</item>
+
     </style>
 
     <style name="AppTheme.ListTextView.Large" parent="AppTheme.ListTextView">

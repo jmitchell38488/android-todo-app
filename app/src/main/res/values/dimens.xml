@@ -12,16 +12,16 @@
 
     <!-- list item notifications -->
     <dimen name="list_item_notification_panel">25dp</dimen>
-    <dimen name="list_item_icon_spacing">6.5dp</dimen>
+    <dimen name="list_item_icon_spacing">8dp</dimen>
     <dimen name="list_item_font_size">14dp</dimen>
 
     <!-- styles -->
     <dimen name="AppTheme.ListTextView.textSize">13dp</dimen>
-    <dimen name="AppTheme.ListTextView.Description.paddingTop">5dp</dimen>
+    <dimen name="AppTheme.ListTextView.Description.paddingTop">3dp</dimen>
     <dimen name="AppTheme.ListTextView.DragHandle.layout_width">66dp</dimen>
     <dimen name="AppTheme.ListTextView.Icon.textSize">14dp</dimen>
-    <dimen name="AppTheme.ListTextView.Icon.List.marginTop">8dp</dimen>
-    <dimen name="AppTheme.ListTextView.Icon.List.marginBottom">4dp</dimen>
+    <dimen name="AppTheme.ListTextView.Icon.List.paddingTop">8dp</dimen>
+    <dimen name="AppTheme.ListTextView.Icon.List.paddingBottom">4dp</dimen>
     <dimen name="AppTheme.ListTextView.Icon.List.paddingRight">0dp</dimen>
     <dimen name="AppTheme.ListTextView.Large.textSize">16.5dp</dimen>
     <dimen name="AppTheme.ListTextView.Large.Section.textSize">22dp</dimen>
@@ -32,7 +32,7 @@
     <dimen name="ListThemeListContainer.layout_marginTop">56dp</dimen>
     <dimen name="ListThemeLogo.paddingTop">8dp</dimen>
     <dimen name="ListThemeLogo.paddingBottom">8dp</dimen>
-    <dimen name="ListThemeLogo.textSize">20dp</dimen>
+    <dimen name="ListThemeLogo.textSize">18dp</dimen>
     <dimen name="ListThemeListItemContainer.paddingTop">0dp</dimen>
     <dimen name="ListThemeListItemContainer.paddingBottom">0dp</dimen>
     <dimen name="ListThemeListItemContainer.paddingLeft">0dp</dimen>
@@ -105,5 +105,8 @@
     <dimen name="EditThemeContainer.TextContainer.Icon.layout_width">15dp</dimen>
     <dimen name="EditThemeContainer.TextContainer.Icon.textSize">12dp</dimen>
     <dimen name="EditThemeContainer.TextContainer.Icon.layout_marginTop">7dp</dimen>
+    <dimen name="AppTheme.ListTextView.TextContainer.paddingLeft">12dp</dimen>
+    <dimen name="AppTheme.ListTextView.TextContainer.paddingTop">3dp</dimen>
+    <dimen name="AppTheme.ListTextView.TextContainer.paddingBottom">3dp</dimen>
 
 </resources>

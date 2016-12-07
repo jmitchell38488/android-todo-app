@@ -13,7 +13,6 @@
     <include layout="@layout/list_toolbar" />
 
     <!-- main content -->
-    <include layout="@layout/content_list" />
 
     <!-- floating action button -->
     <android.support.design.widget.FloatingActionButton
@@ -22,5 +21,7 @@
         app:elevation="6dp"
         app:backgroundTint="@color/actionbar_dark"
         style="@style/FloatingActionButton"/>
+
+    <include layout="@layout/content_list" />
 
 </android.support.design.widget.CoordinatorLayout>
