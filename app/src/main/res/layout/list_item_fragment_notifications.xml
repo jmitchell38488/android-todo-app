@@ -41,13 +41,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:id="@+id/list_item_container"
         style="@style/ListItemTheme">
 
         <LinearLayout
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:id="@+id/list_item_notification_wrapper"
             style="@style/AppTheme.ListTextView.Icon.List">
@@ -55,27 +56,21 @@
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/list_item_icon_spacing"
                 android:text="@string/icon_flag"
-                android:textSize="@dimen/list_item_font_size"
                 android:id="@+id/list_item_notification_pinned"
                 style="@style/AppTheme.ListTextView.Icon" />
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/list_item_icon_spacing"
                 android:text="@string/icon_reminder"
-                android:textSize="@dimen/list_item_font_size"
                 android:id="@+id/list_item_notification_reminder"
                 style="@style/AppTheme.ListTextView.Icon" />
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/list_item_icon_spacing"
                 android:text="@string/icon_locked"
-                android:textSize="@dimen/list_item_font_size"
                 android:id="@+id/list_item_notification_locked"
                 style="@style/AppTheme.ListTextView.Icon" />
 
@@ -85,36 +80,36 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:layout_weight="10">
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="10"
+            style="@style/AppTheme.ListTextView.TextContainer">
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoRegularTextView
                 android:id="@+id/list_fragment_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|left"
-                android:gravity="center_vertical|left"
+                android:layout_gravity="top|start"
+                android:gravity="top|start"
                 style="@style/AppTheme.ListTextView.Large" />
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:id="@+id/list_fragment_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|left"
-                android:gravity="center_vertical|left"
-                style="@style/AppTheme.ListTextView"
-                android:paddingTop="5dp" />
+                android:layout_gravity="center_vertical|start"
+                android:gravity="center_vertical|start"
+                style="@style/AppTheme.ListTextView.Description"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/list_item_move_handle"
-            android:layout_width="66dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|right"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical|end"
             android:scaleType="center"
             android:src="@drawable/ic_reorder_grey_500_24dp"
             android:tint="@color/actionbar_dark"
-            style="@android:style/TextAppearance"/>
+            style="@style/AppTheme.ListTextView.DragHandle"/>
     </LinearLayout>
 
 </FrameLayout>

@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/actionbar_dark</item>
         <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="android:displayOptions">disableHome|none</item>
         <item name="android:color">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
@@ -34,7 +35,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:padding">0dp</item>
+        <item name="android:padding">@dimen/ListTheme.padding</item>
     </style>
 
     <style name="AppTheme.Green" parent="AppTheme">

@@ -1,10 +1,10 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +17,11 @@ import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.Sort;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
-import com.github.jmitchell38488.todo.app.data.provider.TodoContract;
 import com.github.jmitchell38488.todo.app.data.repository.TodoReminderRepository;
 import com.github.jmitchell38488.todo.app.data.service.PeriodicNotificationAlarm;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.ListFragment;
 import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
-import com.github.jmitchell38488.todo.app.util.DateUtility;
 import com.github.jmitchell38488.todo.app.util.PreferencesUtility;
 
 import java.text.SimpleDateFormat;
@@ -64,8 +62,6 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
         PreferencesUtility.setInstallTime(this);
         PreferencesUtility.incrementTimesRun(this);
-
-        DialogFragment d;
 
         // The feature was disabled but it's still active
         if (!PreferencesUtility.userEnabledPeriodicNotifications(getApplicationContext()) &&
@@ -112,6 +108,16 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDefaultDisplayHomeAsUpEnabled(false);
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setHomeAsUpIndicator(null);
+        }
+
         return true;
     }
 

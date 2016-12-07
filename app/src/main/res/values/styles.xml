@@ -15,11 +15,19 @@
 
     <style name="AppTheme.ListTextView" parent="@android:style/TextAppearance">
         <item name="android:textColor">@drawable/list_selector_text</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">@dimen/AppTheme.ListTextView.textSize</item>
+    </style>
+
+    <style name="AppTheme.ListTextView.Description" parent="AppTheme.ListTextView">
+        <item name="android:paddingTop">@dimen/AppTheme.ListTextView.Description.paddingTop</item>
+    </style>
+
+    <style name="AppTheme.ListTextView.DragHandle" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">@dimen/AppTheme.ListTextView.DragHandle.layout_width</item>
     </style>
 
     <style name="AppTheme.ListTextView.Icon" parent="@android:style/TextAppearance">
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">@dimen/AppTheme.ListTextView.Icon.textSize</item>
         <item name="android:layout_gravity">top|center_horizontal</item>
         <item name="android:gravity">top|center_horizontal</item>
         <item name="android:textColor">@color/actionbar_dark_50</item>
@@ -29,30 +37,35 @@
     <style name="AppTheme.ListTextView.Icon.List" parent="@android:style/TextAppearance">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">@dimen/list_item_notification_panel</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginTop">@dimen/AppTheme.ListTextView.Icon.List.marginTop</item>
+        <item name="android:layout_marginBottom">@dimen/AppTheme.ListTextView.Icon.List.marginBottom</item>
+        <item name="android:paddingRight">@dimen/AppTheme.ListTextView.Icon.List.paddingRight</item>
         <item name="android:gravity">top|center_horizontal</item>
         <item name="android:layout_gravity">top|center_horizontal</item>
     </style>
 
+    <style name="AppTheme.ListTextView.TextContainer" parent="@android:style/TextAppearance">
+        <item name="android:minHeight">@dimen/item_text_container_min_height</item>
+    </style>
+
     <style name="AppTheme.ListTextView.Large" parent="AppTheme.ListTextView">
-        <item name="android:textSize">16.5dp</item>
+        <item name="android:textSize">@dimen/AppTheme.ListTextView.Large.textSize</item>
         <item name="android:textColor">@drawable/list_selector_text</item>
     </style>
 
     <style name="AppTheme.ListTextView.Large.Section" parent="AppTheme.ListTextView">
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">@dimen/AppTheme.ListTextView.Large.Section.textSize</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/grey_757575_100</item>
     </style>
 
     <style name="ListThemeListContainer" parent="AppTheme">
         <item name="android:background">@color/grey_efefef_100</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">3dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:layout_marginTop">56dp</item>
+        <item name="android:paddingTop">@dimen/ListThemeListContainer.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/ListThemeListContainer.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/ListThemeListContainer.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/ListThemeListContainer.paddingRight</item>
+        <item name="android:layout_marginTop">@dimen/ListThemeListContainer.layout_marginTop</item>
     </style>
 
     <style name="ListThemeList" parent="AppTheme">
@@ -60,59 +73,62 @@
     </style>
 
     <style name="ListThemeLogo" parent="@android:style/TextAppearance">
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingTop">@dimen/ListThemeLogo.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/ListThemeLogo.paddingBottom</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">@color/logo</item>
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">@dimen/ListThemeLogo.textSize</item>
     </style>
 
     <style name="ListThemeListItemContainer" parent="AppTheme">
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">@dimen/ListThemeListItemContainer.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/ListThemeListItemContainer.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/ListThemeListItemContainer.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/ListThemeListItemContainer.paddingRight</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="ListThemeListTitleContainer" parent="AppTheme">
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">@dimen/ListThemeListItemContainer.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/ListThemeListItemContainer.paddingBottom</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="ListItemCategory" parent="AppTheme">
         <item name="android:background">@drawable/list_item_category_selector</item>
-        <item name="android:padding">15dp</item>
-        <item name="android:layout_width">25dp</item>
-        <item name="android:layout_height">25dp</item>
+        <item name="android:padding">@dimen/ListItemCategory.padding</item>
+        <item name="android:layout_width">@dimen/ListItemCategory.layout_width</item>
+        <item name="android:layout_height">@dimen/ListItemCategory.layout_height</item>
         <item name="android:layout_gravity">center_vertical|center_horizontal</item>
     </style>
 
     <style name="ListItemTheme" parent="AppTheme">
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">6dp</item>
-        <item name="android:paddingTop">7.5dp</item>
-        <item name="android:paddingBottom">7.5dp</item>
+        <item name="android:paddingLeft">@dimen/ListItemTheme.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/ListItemTheme.paddingRight</item>
+        <item name="android:paddingTop">@dimen/ListItemTheme.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/ListItemTheme.paddingBottom</item>
         <item name="android:background">@drawable/list_selector</item>
         <item name="android:minHeight">@dimen/item_min_height</item>
+        <item name="android:layout_marginLeft">0dp</item>
     </style>
 
     <style name="ListItemThemePendingRemove" parent="ListItemTheme">
         <item name="android:background">@color/list_item_background_delete</item>
-        <item name="android:padding">0dp</item>
+        <item name="android:padding">@dimen/ListItemThemePendingRemove.padding</item>
     </style>
 
     <style name="ListItemThemePendingComplete" parent="ListItemTheme">
         <item name="android:background">@color/list_item_background_complete</item>
-        <item name="android:padding">0dp</item>
+        <item name="android:padding">@dimen/ListItemThemePendingComplete.padding</item>
     </style>
 
     <style name="ListItemThemePending.Title" parent="AppTheme.ListTextView.Large">
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_gravity">center_vertical|right</item>
         <item name="android:gravity">center_vertical|right</item>
-        <item name="android:textSize">16dp</item>
-        <item name="android:paddingRight">15dp</item>
+        <item name="android:textSize">@dimen/ListItemThemePending.Title.textSize</item>
+        <item name="android:paddingRight">@dimen/ListItemThemePending.Title.paddingRight</item>
     </style>
 
     <!-- Settings activity theme. -->
@@ -125,66 +141,66 @@
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:layout_marginTop">@dimen/fab_margin</item>
         <item name="android:layout_marginLeft">@dimen/fab_margin</item>
-        <item name="android:layout_marginRight">25dp</item>
-        <item name="android:layout_marginBottom">25dp</item>
+        <item name="android:layout_marginRight">@dimen/fab_margin</item>
+        <item name="android:layout_marginBottom">@dimen/fab_margin</item>
         <item name="android:tint">@color/white</item>
     </style>
 
     <style name="ListItemCategoryContainer">
-        <item name="android:layout_width">45dp</item>
-        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_width">@dimen/ListItemCategoryContainer.layout_width</item>
+        <item name="android:layout_height">@dimen/ListItemCategoryContainer.layout_height</item>
     </style>
 
     <style name="EditThemeContainer" parent="AppTheme">
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:layout_marginTop">56dp</item>
+        <item name="android:layout_marginTop">@dimen/EditThemeContainer.layout_marginTop</item>
     </style>
 
     <style name="EditThemeContainer.Logo" parent="ListThemeLogo">
         <item name="android:background">@color/grey_f5f5f5_100</item>
-        <item name="android:textSize">28dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">3dp</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.Logo.textSize</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.Logo.paddingLeft</item>
+        <item name="android:paddingRight">@dimen/EditThemeContainer.Logo.paddingRight</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.Logo.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.Logo.paddingBottom</item>
     </style>
 
     <style name="EditThemeContainer.Label" parent="@android:style/TextAppearance">
-        <item name="android:textSize">16.5dp</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.Label.textSize</item>
         <item name="android:textColor">@color/grey_333333_100</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.Label.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.Label.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.Label.paddingLeft</item>
     </style>
 
     <style name="EditThemeContainer.Label.Small" parent="@android:style/TextAppearance">
-        <item name="android:textSize">14.5dp</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.Label.Small.textSize</item>
         <item name="android:textColor">@color/grey_333333_100</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.Label.Small.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.Label.Small.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.Label.Small.paddingLeft</item>
     </style>
 
     <style name="EditThemeContainer.Switch" parent="@android:style/TextAppearance">
-        <item name="android:textSize">16.5dp</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.Switch.textSize</item>
         <item name="android:textColor">@color/grey_333333_100</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:thumbTextPadding">10dp</item>
-        <item name="android:switchMinWidth">100dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:paddingTop">@dimen/EditThemeContainer.Switch.paddingTop</item>
+        <item name="android:paddingBottom">@dimen/EditThemeContainer.Switch.paddingBottom</item>
+        <item name="android:paddingLeft">@dimen/EditThemeContainer.Switch.paddingLeft</item>
+        <item name="android:thumbTextPadding">@dimen/EditThemeContainer.Switch.thumbTextPadding</item>
+        <item name="android:switchMinWidth">@dimen/EditThemeContainer.Switch.switchMinWidth</item>
+        <item name="android:layout_marginLeft">@dimen/EditThemeContainer.Switch.layout_marginLeft</item>
     </style>
 
     <style name="EditThemeContainer.Input" parent="@android:style/TextAppearance">
         <item name="android:gravity">top|left</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginLeft">12dp</item>
-        <item name="android:layout_marginRight">12dp</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:layout_marginTop">@dimen/EditThemeContainer.Input.layout_marginTop</item>
+        <item name="android:layout_marginBottom">@dimen/EditThemeContainer.Input.layout_marginBottom</item>
+        <item name="android:layout_marginLeft">@dimen/EditThemeContainer.Input.layout_marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/EditThemeContainer.Input.layout_marginRight</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.Input.textSize</item>
         <item name="android:textColor">@color/grey_555555_100</item>
     </style>
 

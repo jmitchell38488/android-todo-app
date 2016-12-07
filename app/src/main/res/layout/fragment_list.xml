@@ -20,7 +20,7 @@
             android:src="@mipmap/background_relax"
             android:alpha="0.125"/>
 
-        <com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="175dp"
@@ -30,7 +30,7 @@
             android:text="@string/empty_list_top"
             android:textSize="32dp"/>
 
-        <com.github.jmitchell38488.todo.app.ui.view.SignPainterRegularTextView
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
