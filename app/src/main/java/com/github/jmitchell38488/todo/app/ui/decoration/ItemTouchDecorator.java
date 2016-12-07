@@ -1,6 +1,7 @@
 package com.github.jmitchell38488.todo.app.ui.decoration;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.github.jmitchell38488.todo.app.R;
@@ -55,13 +57,16 @@ public abstract class ItemTouchDecorator extends ItemTouchHelper.Callback {
             return;
         }
 
+        Resources r = mContext.getApplicationContext().getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, r.getDisplayMetrics());
+
         // draw background
         View mView = holder.mView;
         int pLeft = mView.getLeft() + mView.getPaddingLeft();
         int pTop = mView.getTop() - mView.getPaddingTop();
         int pRight = mView.getRight() - mView.getPaddingRight();
-        int pBottom = mView.getBottom() + mView.getPaddingBottom() - 2;
-        int height = pBottom - pTop - 2;
+        int pBottom = mView.getBottom() + mView.getPaddingBottom() - (int) px;
+        int height = pBottom - pTop - (int) px;
 
         // Only render on X axis movement
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {

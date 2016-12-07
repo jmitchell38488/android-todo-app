@@ -116,11 +116,13 @@
     <style name="ListItemThemePendingRemove" parent="ListItemTheme">
         <item name="android:background">@color/list_item_background_delete</item>
         <item name="android:padding">@dimen/ListItemThemePendingRemove.padding</item>
+        <item name="android:layout_marginBottom">@dimen/ListItemThemePendingRemove.layout_marginBottom</item>
     </style>
 
     <style name="ListItemThemePendingComplete" parent="ListItemTheme">
         <item name="android:background">@color/list_item_background_complete</item>
         <item name="android:padding">@dimen/ListItemThemePendingComplete.padding</item>
+        <item name="android:layout_marginBottom">@dimen/ListItemThemePendingComplete.layout_marginBottom</item>
     </style>
 
     <style name="ListItemThemePending.Title" parent="AppTheme.ListTextView.Large">

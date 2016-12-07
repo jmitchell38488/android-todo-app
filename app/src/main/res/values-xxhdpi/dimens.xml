@@ -3,6 +3,7 @@
     <dimen name="list_item_notification_panel">30dp</dimen>
     <dimen name="list_item_icon_spacing">4.5dp</dimen>
     <dimen name="list_item_font_size">12dp</dimen>
+    <dimen name="list_divider">1.5dp</dimen>
 
     <dimen name="item_min_height">40dp</dimen>
     <dimen name="item_text_container_min_height">45dp</dimen>

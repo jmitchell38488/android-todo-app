@@ -45,7 +45,9 @@
     <dimen name="ListItemTheme.paddingTop">7.5dp</dimen>
     <dimen name="ListItemTheme.paddingBottom">7.5dp</dimen>
     <dimen name="ListItemThemePendingRemove.padding">0dp</dimen>
+    <dimen name="ListItemThemePendingRemove.layout_marginBottom">2dp</dimen>
     <dimen name="ListItemThemePendingComplete.padding">0dp</dimen>
+    <dimen name="ListItemThemePendingComplete.layout_marginBottom">2dp</dimen>
     <dimen name="ListItemThemePending.Title.textSize">16dp</dimen>
     <dimen name="ListItemThemePending.Title.paddingRight">15dp</dimen>
     <dimen name="ListItemCategoryContainer.layout_width">45dp</dimen>
