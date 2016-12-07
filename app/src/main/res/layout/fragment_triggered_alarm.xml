@@ -60,17 +60,60 @@
         android:textSize="16dp"
         android:layout_marginBottom="10dp"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/alarm_button_snooze"
-        android:id="@+id/alarm_button_snooze"
-        android:layout_marginBottom="35dp"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="35dp">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/alarm_button_dismiss"
-        android:id="@+id/alarm_button_dismiss"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/alarm_button_snooze"
+            android:layout_marginRight="50dp">
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:scaleType="center"
+                android:src="@mipmap/icon_alarm_snooze"
+                android:tint="@color/white"/>
+
+            <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:text="@string/alarm_button_snooze"
+                android:textSize="15dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/alarm_button_dismiss">
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:scaleType="center"
+                android:src="@mipmap/icon_alarm_dismiss"
+                android:tint="@color/white"/>
+
+            <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:text="@string/alarm_button_dismiss"
+                android:textSize="15dp"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

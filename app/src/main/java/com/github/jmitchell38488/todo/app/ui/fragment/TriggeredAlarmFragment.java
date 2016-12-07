@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
@@ -21,8 +22,8 @@ public class TriggeredAlarmFragment extends BaseFragment {
     @BindView(R.id.alarm_title) TextView titleView;
     @BindView(R.id.alarm_time) TextView timeView;
     @BindView(R.id.alarm_date) TextView dateView;
-    @BindView(R.id.alarm_button_snooze) Button snoozeButton;
-    @BindView(R.id.alarm_button_dismiss) Button dismissButton;
+    @BindView(R.id.alarm_button_snooze) LinearLayout snoozeButton;
+    @BindView(R.id.alarm_button_dismiss) LinearLayout dismissButton;
 
     protected TodoItem mTodoItem;
     protected TodoReminder mTodoReminder;
