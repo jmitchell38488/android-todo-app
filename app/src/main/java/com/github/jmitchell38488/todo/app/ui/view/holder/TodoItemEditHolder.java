@@ -45,6 +45,8 @@ public class TodoItemEditHolder {
 
     @BindView(R.id.edit_item_time_selector) RelativeLayout timeSelector;
     @BindView(R.id.edit_item_sound_selector) RelativeLayout soundSelector;
+    @BindView(R.id.item_edit_pinned_container) RelativeLayout pinnedSelector;
+    @BindView(R.id.item_edit_locked_container) RelativeLayout lockedSelector;
     @BindView(R.id.item_edit_completed_container) RelativeLayout completedSelector;
 
     @BindView(R.id.item_edit_date_field) TextView dateField;
@@ -92,6 +94,13 @@ public class TodoItemEditHolder {
         completedSwitch.setChecked(mItem.isCompleted());
         completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mItem.setCompleted(isChecked);
+            if (mItem.isCompleted()) {
+                lockedSelector.setVisibility(View.GONE);
+                pinnedSelector.setVisibility(View.GONE);
+            } else {
+                lockedSelector.setVisibility(View.VISIBLE);
+                pinnedSelector.setVisibility(View.VISIBLE);
+            }
         });
 
         lockedSwitch.setChecked(mItem.isLocked());
@@ -110,6 +119,11 @@ public class TodoItemEditHolder {
         dateDelete.setVisibility(View.GONE);
         timeDelete.setVisibility(View.GONE);
         soundDelete.setVisibility(View.GONE);
+
+        if (mItem.isCompleted()) {
+            lockedSelector.setVisibility(View.GONE);
+            pinnedSelector.setVisibility(View.GONE);
+        }
 
         reminderDate = Calendar.getInstance();
         if (mReminder.isActive()) {
