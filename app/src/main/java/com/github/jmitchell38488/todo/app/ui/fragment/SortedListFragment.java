@@ -107,7 +107,7 @@ public class SortedListFragment extends ListFragment {
         super.initRecyclerView();
     }
 
-    protected void doCompleteAction(int position) {
+    public void doCompleteAction(int position) {
         TodoItem item = mAdapter.getItem(position);
 
         if (mPendingCompleteList.contains(item)) {
@@ -116,7 +116,8 @@ public class SortedListFragment extends ListFragment {
 
         int nPosition = getFirstCompletedPosition();
 
-        if (!item.isCompleted()) {
+        // Only decrement if the item isn't completed and there _are_ completed items
+        if (!item.isCompleted() && nPosition != mAdapter.getItemCount() - 1) {
             nPosition--;
         }
 
@@ -131,7 +132,13 @@ public class SortedListFragment extends ListFragment {
             nPosition = mAdapter.getItemCount() - 1;
         }
 
+        // Remove from the adapter - triggers a delete in the repository
         mAdapter.remove(position);
+
+        // Make sure that we reset the id so that it can be inserted again
+        item.setId(0l);
+
+        // Save it as a new item
         mAdapter.addItem(nPosition, item);
     }
 

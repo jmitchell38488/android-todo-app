@@ -144,9 +144,6 @@ public class EditItemActivity extends BaseActivity {
 
         // If the user has changed settings, don't automatically handle the back press
         if (mFragment.hasChanged()) {
-            //DialogFragment mDialog = BackPressedConfirmationDialog.newInstance();
-            //mDialog.show(getSupportFragmentManager(), "dialog");
-
             mDialog = getConfirmationAlertDialog();
             mDialog.show();
         } else {

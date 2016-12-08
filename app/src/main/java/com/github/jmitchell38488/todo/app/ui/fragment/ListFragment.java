@@ -252,7 +252,8 @@ public abstract class ListFragment extends BaseFragment
             }
         }
 
-        return position;
+        // Either where the last active, or at the end of the list item resides
+        return position >= 0 ? position : mAdapter.getItemCount() - 1;
     }
 
     public ListFragment() {

@@ -166,8 +166,11 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                         listItem.setTitle(item.getTitle());
                         listItem.setDescription(item.getDescription());
                         listItem.setPinned(item.isPinned());
-                        listItem.setCompleted(item.isCompleted());
                         listItem.setLocked(item.isLocked());
+
+                        // We do not set the completed state here because if the user has switched
+                        // the state, we want the fragment to handle it
+                        //listItem.setCompleted(item.isCompleted());
 
                         // Delete if this is set to inactive
                         if (reminder.getId() > 0 && !reminder.isActive()) {
@@ -175,9 +178,6 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                             mTodoReminderRepository.deleteTodoReminder(reminder);
                             listItem.hasReminder = false;
                         }
-
-                        mFragment.onItemChange(position);
-                        Toast.makeText(this, getString(R.string.action_save_saved), Toast.LENGTH_SHORT).show();
 
                         // Who knows, could be new, just set the id anyway for sanity sake
                         if (reminder.isActive()) {
@@ -190,6 +190,14 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                             mTodoReminderRepository.saveTodoReminder(reminder);
                             mRunnableHandler.postDelayed(() -> setAlarm(listItem, reminder), POST_DELAYED_TIME);
                         }
+
+                        // Completed status changed [active <> completed]
+                        if (listItem.isCompleted() != item.isCompleted()) {
+                            mFragment.doCompleteAction(position);
+                        } else {
+                            mFragment.onItemChange(position);
+                            Toast.makeText(this, getString(R.string.action_save_saved), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(this, getString(R.string.action_save_failed), Toast.LENGTH_SHORT).show();
                     }
@@ -199,8 +207,6 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                     int position = -1;
                     if (item.isPinned()) {
                         position = 0;
-                    } else if (item.isCompleted()) {
-                        position = mFragment.getFirstCompletedPosition();
                     } else {
                         position = mFragment.getFirstUnpinnedPosition();
                     }

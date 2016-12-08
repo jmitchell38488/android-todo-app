@@ -56,7 +56,7 @@ public class EditItemFragment extends Fragment {
         }
 
         // new
-        if (item == null) {
+        if (item == null || item.getId() < 1) {
             isNew = true;
             item = new TodoItem();
         }
@@ -71,6 +71,7 @@ public class EditItemFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_edit_item, container, false);
         TodoItemEditHolder viewHolder = new TodoItemEditHolder(mView, getActivity(), mItem, mReminder);
         viewHolder.isNew = isNew;
+        viewHolder.updateView();
         mView.setTag(viewHolder);
 
         viewHolder.setSoundClickListener(view -> {
