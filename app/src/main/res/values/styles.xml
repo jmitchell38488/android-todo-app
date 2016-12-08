@@ -305,4 +305,35 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="AlertDialogTheme.DialogWindowTitle" parent="@android:style/TextAppearance.Holo.DialogWindowTitle">
+        <item name="android:textColor">@color/grey_555555_100</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="AlertDialogTheme.Logo" parent="AlertDialogTheme">
+        <item name="android:background">@color/grey_f5f5f5_100</item>
+        <item name="android:textSize">28dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">3dp</item>
+    </style>
+
+    <style name="AlertDialogTheme.Label" parent="@android:style/TextAppearance">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/grey_333333_100</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">15dp</item>
+    </style>
+
+    <style name="AlertDialogTheme.Label.Small" parent="@android:style/TextAppearance">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/grey_333333_100</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">15dp</item>
+    </style>
+
 </resources>

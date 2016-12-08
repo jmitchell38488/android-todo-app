@@ -87,6 +87,8 @@ public class EditItemFragment extends Fragment {
             mReminder.setSound(null);
         });
 
+        mItemHash = getFragmentEditHash();
+
         return mView;
     }
 
@@ -134,8 +136,56 @@ public class EditItemFragment extends Fragment {
         ((TodoItemEditHolder) mView.getTag()).soundDelete.setVisibility(View.VISIBLE);
     }
 
-    public String getItemHash() {
-        return mItemHash;
+    /**
+     * Helper function to check if the user has changed anything on the screen.
+     * @return true for changes, false otherwise
+     */
+    public boolean hasChanged() {
+        return mItemHash.compareTo(getFragmentEditHash()) != 0;
+    }
+
+    public String getFragmentEditHash() {
+        TodoItemEditHolder holder = (TodoItemEditHolder) mView.getTag();
+        TodoItem item = new TodoItem();
+
+        item.setId(mItem.getId());
+        item.setOrder(mItem.getOrder());
+        item.setTitle(holder.titleView.getText().toString());
+        item.setDescription(holder.descriptionView.getText().toString());
+        item.setPinned(holder.pinnedSwitch.isChecked());
+        item.setCompleted(holder.completedSwitch.isChecked());
+        item.setLocked(holder.lockedSwitch.isChecked());
+
+        Calendar reminderDate = holder.reminderDate;
+        TodoReminder reminder = new TodoReminder();
+        reminder.setId(mReminder.getId());
+        reminder.setItemId(mReminder.getItemId());
+        reminder.setTimesSnoozed(mReminder.getTimesSnoozed());
+        reminder.setActive(mReminder.isActive());
+
+        if (holder.hasReminderDate) {
+            reminder.setYear(reminderDate.get(Calendar.YEAR));
+            reminder.setMonth(reminderDate.get(Calendar.MONTH));
+            reminder.setDay(reminderDate.get(Calendar.DAY_OF_MONTH));
+        }
+
+        // Specific time or all day?
+        if (holder.hasReminderTime) {
+            reminder.setHour(reminderDate.get(Calendar.HOUR_OF_DAY));
+            reminder.setMinute(reminderDate.get(Calendar.MINUTE));
+        } else {
+            reminder.setHour(0);
+            reminder.setMinute(0);
+        }
+
+        reminder.setSound(mReminder.getSound());
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(item.toString())
+                .append("\n")
+                .append(reminder.toString());
+
+        return ItemUtility.md5(builder.toString());
     }
 
 }

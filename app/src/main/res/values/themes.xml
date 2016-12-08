@@ -7,14 +7,14 @@
         <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         <item name="android:displayOptions">disableHome|none</item>
-        <item name="android:color">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
         <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorControlActivated">@color/actionbar_dark</item>
         <item name="colorControlHighlight">@color/actionbar_dark</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:dialogTheme">@style/AlertDialogTheme</item>
     </style>
 
     <style name="AlarmTheme" parent="AppTheme">
@@ -27,6 +27,15 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/grey_555555_100</item>
+        <item name="android:textColor">@color/grey_555555_100</item>
+        <item name="android:tint">@color/grey_555555_100</item>
+        <item name="android:color">@color/grey_555555_100</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowTitleStyle">@style/AlertDialogTheme.DialogWindowTitle</item>
     </style>
 
     <!-- Main activity theme. -->

@@ -1,13 +1,18 @@
 package com.github.jmitchell38488.todo.app.ui.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +36,7 @@ public class EditItemActivity extends BaseActivity {
     public static final int REQUEST_CODE_SOUND = 5;
 
     EditItemFragment mFragment;
+    AlertDialog mDialog;
 
     @Inject ReminderAlarm mReminderAlarm;
 
@@ -89,6 +95,12 @@ public class EditItemActivity extends BaseActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case android.R.id.home:
+                Log.d(LOG_TAG, "Validating user input to progress backwards");
+
+                onBackPressed();
+                return true;
+
             case R.id.action_settings:
                 Log.d(LOG_TAG, "Triggering intent {SettingsActivity}");
                 //Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
@@ -124,6 +136,50 @@ public class EditItemActivity extends BaseActivity {
                 mFragment.setTodoReminderAlarmSound(uri != null ? uri : null);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(LOG_TAG, "Lifecycle: onBackPressed");
+
+        // If the user has changed settings, don't automatically handle the back press
+        if (mFragment.hasChanged()) {
+            //DialogFragment mDialog = BackPressedConfirmationDialog.newInstance();
+            //mDialog.show(getSupportFragmentManager(), "dialog");
+
+            mDialog = getConfirmationAlertDialog();
+            mDialog.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public void onPositiveClick() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
+
+        super.onBackPressed();
+    }
+
+    public void onNegativeClick() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
+    }
+
+    public AlertDialog getConfirmationAlertDialog() {
+        return new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                .setTitle(getString(R.string.action_confirm_exit))
+                .setIcon(R.mipmap.icon_warning)
+                .setMessage(getString(R.string.action_confirm_exit_description))
+                .setPositiveButton(R.string.item_edit_button_ok2,
+                        (DialogInterface dialog, int whichButton) -> onPositiveClick()
+                )
+                .setNegativeButton(R.string.item_edit_button_negative,
+                        (DialogInterface dialog, int whichButton) -> onNegativeClick()
+                )
+                .create();
     }
 
 }
