@@ -6,6 +6,15 @@
         <item name="android:timePickerDialogTheme">@style/TimePickerDialogTheme</item>
     </style>
 
+    <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:tint">@color/white</item>
+        <item name="android:colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBarStyle" parent="@style/AppTheme.ActionBarStyleBase">
+        <item name="android:tint">@color/white</item>
+    </style>
+
     <style name="AlertDialogTheme" parent="AlertDialogThemeBase">
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorAccent">@color/colorPrimary</item>

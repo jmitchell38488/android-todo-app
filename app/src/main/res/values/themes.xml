@@ -4,10 +4,9 @@
     <style name="AppThemeBase" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/actionbar_light</item>
         <item name="colorPrimaryDark">@color/actionbar_dark</item>
-        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBarTheme</item>
         <item name="android:displayOptions">disableHome|none</item>
-        <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -17,7 +16,7 @@
         <item name="android:dialogTheme">@style/AlertDialogTheme</item>
     </style>
 
-    <style name="AppTheme" parent="AppTheme">
+    <style name="AppTheme" parent="@style/AppThemeBase">
     </style>
 
     <style name="AlarmTheme" parent="AppTheme">

@@ -1,11 +1,23 @@
 <resources>
 
-    <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="AppTheme.ActionBarStyleBase" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="android:layout_gravity">left</item>
         <item name="displayOptions">useLogo|showHome</item>
         <item name="android:background">@color/actionbar_light</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:titleTextStyle">@style/AppTheme.ActionBarStyle.TitleText</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBarStyle" parent="@style/AppTheme.ActionBarStyleBase">
+        <item name="android:tint">@color/white</item>
     </style>
 
     <style name="AppTheme.ActionBarStyle.TitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
