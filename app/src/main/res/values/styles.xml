@@ -75,7 +75,7 @@
         <item name="android:textColor">@color/grey_757575_100</item>
     </style>
 
-    <style name="ListThemeListContainer" parent="AppTheme">
+    <style name="ListThemeListContainer" parent="ListTheme">
         <item name="android:background">@color/grey_efefef_100</item>
         <item name="android:paddingTop">@dimen/ListThemeListContainer.paddingTop</item>
         <item name="android:paddingBottom">@dimen/ListThemeListContainer.paddingBottom</item>
@@ -119,14 +119,16 @@
         <item name="android:layout_gravity">center_vertical|center_horizontal</item>
     </style>
 
-    <style name="ListItemTheme" parent="AppTheme">
+    <style name="ListItemThemeBase" parent="AppTheme">
         <item name="android:paddingLeft">@dimen/ListItemTheme.paddingLeft</item>
         <item name="android:paddingRight">@dimen/ListItemTheme.paddingRight</item>
         <item name="android:paddingTop">@dimen/ListItemTheme.paddingTop</item>
         <item name="android:paddingBottom">@dimen/ListItemTheme.paddingBottom</item>
-        <item name="android:background">@drawable/list_selector</item>
         <item name="android:minHeight">@dimen/item_min_height</item>
         <item name="android:layout_marginLeft">0dp</item>
+    </style>
+
+    <style name="ListItemTheme" parent="ListItemThemeBase">
     </style>
 
     <style name="ListItemThemePendingRemove" parent="ListItemTheme">

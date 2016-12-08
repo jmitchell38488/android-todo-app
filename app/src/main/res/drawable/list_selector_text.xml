@@ -6,6 +6,6 @@
     <item android:color="@color/white" android:state_pressed="true"/>
     <item android:color="@color/white" android:state_drag_hovered="true" android:state_pressed="true"/>
     <item android:color="@color/white" android:state_selected="true" android:state_pressed="true"/>
-    <item android:color="@color/grey_555555_100"/>
+    <item android:color="@color/grey_757575_100"/>
 
 </selector>

@@ -11,8 +11,8 @@
     <dimen name="ListItemTheme.paddingLeft">4dp</dimen>
     <dimen name="ListItemTheme.paddingTop">5dp</dimen>
     <dimen name="ListItemTheme.paddingBottom">5dp</dimen>
-    <dimen name="AppTheme.ListTextView.textSize">12.5dp</dimen>
-    <dimen name="AppTheme.ListTextView.Large.textSize">13dp</dimen>
+    <dimen name="AppTheme.ListTextView.textSize">11.5dp</dimen>
+    <dimen name="AppTheme.ListTextView.Large.textSize">12.5dp</dimen>
     <dimen name="AppTheme.ListTextView.DragHandle.layout_width">40dp</dimen>
     <dimen name="AppTheme.ListTextView.Icon.List.paddingRight">5dp</dimen>
     <dimen name="EditThemeContainer.Label.textSize">14.5dp</dimen>
