@@ -172,7 +172,7 @@ public class TodoItemEditHolder {
         };
 
         View.OnClickListener dateClick = (view) ->
-            new DatePickerDialog(mContext, dateCallback,
+                new DatePickerDialog(mContext, R.style.AlertDialogTheme, dateCallback,
                     reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
                     reminderDate.get(Calendar.DAY_OF_MONTH)).show();
 
@@ -182,13 +182,13 @@ public class TodoItemEditHolder {
                 return;
             }
 
-            new DatePickerDialog(mContext, dateCallback,
+            new DatePickerDialog(mContext, R.style.AlertDialogTheme, dateCallback,
                     reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
                     reminderDate.get(Calendar.DAY_OF_MONTH)).show();
         };
 
         View.OnClickListener timeClick = (view) ->
-            new TimePickerDialog(mContext, timeCallback,
+                new TimePickerDialog(mContext, R.style.AlertDialogTheme, timeCallback,
                     reminderDate.get(Calendar.HOUR),
                     reminderDate.get(Calendar.MINUTE), false).show();
 
@@ -198,8 +198,8 @@ public class TodoItemEditHolder {
                 return;
             }
 
-            new TimePickerDialog(mContext, timeCallback,
-                    reminderDate.get(Calendar.HOUR),
+            new TimePickerDialog(mContext, R.style.AlertDialogTheme, timeCallback,
+                    reminderDate.get(Calendar.HOUR_OF_DAY),
                     reminderDate.get(Calendar.MINUTE), false).show();
         };
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppThemeBase" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/actionbar_light</item>
         <item name="colorPrimaryDark">@color/actionbar_dark</item>
         <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
@@ -17,6 +17,9 @@
         <item name="android:dialogTheme">@style/AlertDialogTheme</item>
     </style>
 
+    <style name="AppTheme" parent="AppTheme">
+    </style>
+
     <style name="AlarmTheme" parent="AppTheme">
         <item name="colorPrimary">@color/actionbar_light</item>
         <item name="colorPrimaryDark">@color/actionbar_dark</item>
@@ -29,13 +32,16 @@
         <item name="android:tint">@color/white</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AlertDialogThemeBase" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@color/grey_555555_100</item>
         <item name="android:textColor">@color/grey_555555_100</item>
         <item name="android:tint">@color/grey_555555_100</item>
         <item name="android:color">@color/grey_555555_100</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:windowTitleStyle">@style/AlertDialogTheme.DialogWindowTitle</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="AlertDialogThemeBase">
     </style>
 
     <!-- Main activity theme. -->

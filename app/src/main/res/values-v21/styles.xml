@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/actionbar_light</item>
-        <item name="colorPrimaryDark">@color/actionbar_dark</item>
-        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
-        <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
-        <item name="android:color">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:actionMenuTextAppearance">@style/AppTheme.ActionBarStyle.TitleText</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorControlActivated">@color/actionbar_dark</item>
-        <item name="colorControlHighlight">@color/actionbar_dark</item>
+    <style name="AppTheme" parent="AppThemeBase">
         <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
         <item name="android:timePickerDialogTheme">@style/TimePickerDialogTheme</item>
     </style>
 
+    <style name="AlertDialogTheme" parent="AlertDialogThemeBase">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+        <item name="android:selectableItemBackground">@color/colorPrimary</item>
+        <item name="android:colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+    </style>
+
     <style name="DatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
         <item name="android:headerBackground">@color/actionbar_light</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:dayOfWeekBackground">@color/white</item>
         <item name="colorAccent">@color/actionbar_light</item>
+        <item name="android:colorAccent">@color/actionbar_light</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="android:calendarTextColor">@color/colorPrimaryDark</item>
+        <item name="android:dayOfWeekBackground">@color/colorPrimaryDark</item>
+        <item name="android:yearListSelectorColor">@color/actionbar_light</item>
     </style>
 
     <style name="TimePickerStyle" parent="@android:style/Widget.Material.Light.TimePicker">
+        <item name="android:timePickerDialogTheme">@style/TimePickerDialogTheme</item>
         <item name="android:headerBackground">@color/actionbar_light</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:numbersBackgroundColor">@color/white</item>
         <item name="android:timePickerMode">spinner</item>
         <item name="colorAccent">@color/actionbar_light</item>
+        <item name="android:colorAccent">@color/actionbar_light</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="android:calendarTextColor">@color/colorPrimaryDark</item>
+        <item name="android:dayOfWeekBackground">@color/colorPrimaryDark</item>
+        <item name="android:yearListSelectorColor">@color/actionbar_light</item>
     </style>
 
 </resources>
