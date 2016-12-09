@@ -3,6 +3,7 @@ package com.github.jmitchell38488.todo.app.ui.adapter;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolder> {
+
+    private static final String LOG_TAG = RecyclerListAdapter.class.getSimpleName();
 
     // Listeners
     private ListChangeListener mListChangeListener;
@@ -187,6 +190,10 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
     public void moveItem(int fromPosition, int toPosition) {
         TodoItem from = getItem(fromPosition);
         TodoItem to = getItem(toPosition);
+
+        Log.d(LOG_TAG, String.format("Moving Positions: %d => %d", fromPosition, toPosition));
+        Log.d(LOG_TAG, String.format("Items: %d => %d (%d => %d",
+                from.getId(), to.getId(), from.getOrder(), to.getOrder()));
 
         // Increment/decrement the order values
         from.setOrder(fromPosition < toPosition ? from.getOrder() + 1 : from.getOrder() - 1);

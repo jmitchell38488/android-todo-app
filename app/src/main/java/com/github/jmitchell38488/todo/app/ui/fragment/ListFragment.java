@@ -194,6 +194,7 @@ public abstract class ListFragment extends BaseFragment
     private ItemTouchListener mItemTouchListener = new ItemTouchListener() {
         @Override
         public boolean onItemMove(int fromPosition, int toPosition) {
+            Log.d(LOG_TAG, String.format("Moving item %d => %d", fromPosition, toPosition));
             mAdapter.moveItem(fromPosition, toPosition);
             return true;
         }

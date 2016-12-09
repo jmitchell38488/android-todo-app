@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.ui.adapter.RecyclerListAdapter;
@@ -11,6 +12,8 @@ import com.github.jmitchell38488.todo.app.ui.decoration.ItemTouchDecorator;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemHolder;
 
 public class ItemTouchCallback extends ItemTouchDecorator {
+
+    private static final String LOG_TAG = ItemTouchCallback.class.getSimpleName();
 
     private final ItemTouchListener mItemTouchListener;
 
@@ -57,19 +60,27 @@ public class ItemTouchCallback extends ItemTouchDecorator {
             return false;
         }
 
-        // Order of Precedence: Pinned > Not Pinned > Completed
-        // Do not allow shuffle if out of order
         RecyclerListAdapter adapter = (RecyclerListAdapter) recyclerView.getAdapter();
         TodoItem sItem = adapter.getItem(source.getAdapterPosition());
         TodoItem tItem = adapter.getItem(target.getAdapterPosition());
-
         if (!((TodoItemHolder) source).canMove(sItem, tItem)) {
             return false;
         }
 
-        // Notify the adapter of the move
-        mItemTouchListener.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
         return true;
+    }
+
+    @Override
+    public void onMoved(final RecyclerView recyclerView,
+                        final RecyclerView.ViewHolder source, int fromPos,
+                        final RecyclerView.ViewHolder target, int toPos, int x, int y) {
+
+        super.onMoved(recyclerView, source, fromPos, target, toPos, x, y);
+
+        // Notify the adapter of the move
+        Log.d(LOG_TAG, String.format("Trigger item move: %d => %d",
+                source.getAdapterPosition(), target.getAdapterPosition()));
+        mItemTouchListener.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
     }
 
     @Override
