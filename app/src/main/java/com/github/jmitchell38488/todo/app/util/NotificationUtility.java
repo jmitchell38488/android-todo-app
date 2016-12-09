@@ -100,8 +100,18 @@ public class NotificationUtility {
         SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_alarm_notification_12));
 
         String date = format.format(timeInMillis > 0 ? timeInMillis : DateUtility.getTimeInMillisFromTodoReminder(reminder));
-        String title = context.getString(R.string.notification_current_title);
-        String description = context.getString(R.string.notification_current_description, date);
+
+        // Set the notification title
+        String title = context.getString(R.string.notification_current_title2);
+        if (item.getTitle() != null && item.getTitle().length() > 0) {
+            title = context.getString(R.string.notification_current_title, item.getTitle());
+        }
+
+        // Set the notification description
+        String description = context.getString(R.string.notification_current_description2, date);
+        if (item.getDescription() != null && item.getDescription().length() > 0) {
+            description = context.getString(R.string.notification_current_description, item.getDescription(), date);
+        }
 
         int iconId = R.mipmap.icon_alarm;
         int iconIdDismiss = R.mipmap.icon_alarm_dismiss;
@@ -134,8 +144,18 @@ public class NotificationUtility {
         SimpleDateFormat format = new SimpleDateFormat(context.getString(R.string.date_format_alarm_notification_12));
 
         String date = format.format(DateUtility.getTimeInMillisFromTodoReminder(reminder));
-        String title = context.getString(R.string.notification_current_title);
-        String description = context.getString(R.string.notification_current_description, date);
+
+        // Set the notification title
+        String title = context.getString(R.string.notification_current_title2);
+        if (item.getTitle() != null && item.getTitle().length() > 0) {
+            title = context.getString(R.string.notification_current_title, item.getTitle());
+        }
+
+        // Set the notification description
+        String description = context.getString(R.string.notification_current_description2, date);
+        if (item.getDescription() != null && item.getDescription().length() > 0) {
+            description = context.getString(R.string.notification_current_description, item.getDescription(), date);
+        }
 
         int iconId = R.mipmap.icon_alarm;
         int iconIdSnooze = R.mipmap.icon_alarm_snooze;

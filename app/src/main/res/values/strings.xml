@@ -104,8 +104,10 @@
     <string name="notification_periodic_i2" translatable="false">You have <xliff:g id="pending">%d</xliff:g> pending items left in your to do list, <xliff:g id="important">%d</xliff:g> of them are important</string>
     <string name="notification_periodic_extra">You can change or disable this reminder in the app settings.</string>
     <string name="notification_periodic_title">To Do Daily Report</string>
-    <string name="notification_current_title">Todo reminder</string>
-    <string name="notification_current_description"><xliff:g id="date">%s</xliff:g></string>
+    <string name="notification_current_title">Todo reminder: <xliff:g id="title">%s</xliff:g></string>
+    <string name="notification_current_title2">Todo reminder</string>
+    <string name="notification_current_description"><xliff:g id="desc">%s</xliff:g>\n<xliff:g id="date">%s</xliff:g></string>
+    <string name="notification_current_description2"><xliff:g id="date">%s</xliff:g></string>
     <string name="notification_pending_title">Upcoming todo reminder</string>
     <string name="notification_pending_description">Alarm for <xliff:g id="title">%s</xliff:g></string>
     <string name="notification_snoozed_title">Todo reminder snoozed</string>
