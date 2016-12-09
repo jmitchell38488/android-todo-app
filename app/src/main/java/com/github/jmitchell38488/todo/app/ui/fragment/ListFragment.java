@@ -74,6 +74,7 @@ public abstract class ListFragment extends BaseFragment
     protected boolean mUndoOn;
     protected Handler mRunnableHandler = new Handler();
     protected HashMap<TodoItem, Runnable> mPendingRunnables = new HashMap<>();
+    protected Runnable onReorderRunnable;
 
     public interface ActivityListClickListener {
         public void onItemClick(Bundle arguments);
@@ -196,6 +197,22 @@ public abstract class ListFragment extends BaseFragment
         public boolean onItemMove(int fromPosition, int toPosition) {
             Log.d(LOG_TAG, String.format("Moving item %d => %d", fromPosition, toPosition));
             mAdapter.moveItem(fromPosition, toPosition);
+
+            // Cancel any pending reorder runnable from onMove
+            if (onReorderRunnable != null) {
+                mRunnableHandler.removeCallbacks(onReorderRunnable);
+                onReorderRunnable = null;
+            }
+
+            onReorderRunnable = () -> {
+                Log.d(LOG_TAG, "Triggering mAdapter.recalculateItemOrderValues()");
+                mAdapter.recalculateItemOrderValues();
+            };
+
+            // Run this after a 1 second delay, should be enough for the item insert to complete
+            long delay = 1000;
+            mRunnableHandler.postDelayed(onReorderRunnable, delay);
+
             return true;
         }
 
@@ -413,12 +430,38 @@ public abstract class ListFragment extends BaseFragment
         TodoItem item = mAdapter.getItem(position);
         mItemRepository.saveTodoItem(item);
 
-        // Run this after a 1 second delay, should be enough for the item insert to complete
-        long delay = 1000;
-        mRunnableHandler.postDelayed(() -> {
+        // Cancel any pending reorder runnable from onMove
+        if (onReorderRunnable != null) {
+            mRunnableHandler.removeCallbacks(onReorderRunnable);
+            onReorderRunnable = null;
+        }
+
+        onReorderRunnable = () -> {
             Log.d(LOG_TAG, "Triggering mAdapter.recalculateItemOrderValues()");
             mAdapter.recalculateItemOrderValues();
-        }, delay);
+        };
+
+        // Run this after a 1 second delay, should be enough for the item insert to complete
+        long delay = 1000;
+        mRunnableHandler.postDelayed(onReorderRunnable, delay);
+    }
+
+    @Override
+    public void onItemsMoved() {
+        // Cancel any pending reorder runnable from onMove
+        if (onReorderRunnable != null) {
+            mRunnableHandler.removeCallbacks(onReorderRunnable);
+            onReorderRunnable = null;
+        }
+
+        onReorderRunnable = () -> {
+            Log.d(LOG_TAG, "Triggering mAdapter.recalculateItemOrderValues()");
+            mAdapter.recalculateItemOrderValues();
+        };
+
+        // Run this after a 1 second delay, should be enough for the item insert to complete
+        long delay = 1000;
+        mRunnableHandler.postDelayed(onReorderRunnable, delay);
     }
 
     @Override
