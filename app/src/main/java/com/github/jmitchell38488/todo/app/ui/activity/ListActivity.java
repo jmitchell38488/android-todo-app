@@ -165,12 +165,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                         TodoItem listItem = mFragment.getAdapter().getItem(position);
                         listItem.setTitle(item.getTitle());
                         listItem.setDescription(item.getDescription());
-                        listItem.setPinned(item.isPinned());
                         listItem.setLocked(item.isLocked());
-
-                        // We do not set the completed state here because if the user has switched
-                        // the state, we want the fragment to handle it
-                        //listItem.setCompleted(item.isCompleted());
 
                         // Delete if this is set to inactive
                         if (reminder.getId() > 0 && !reminder.isActive()) {
@@ -191,11 +186,21 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
                             mRunnableHandler.postDelayed(() -> setAlarm(listItem, reminder), POST_DELAYED_TIME);
                         }
 
+                        // Extract pinned status
+                        boolean oldPinned = listItem.isPinned();
+                        boolean newPinned = item.isPinned();
+
                         // Completed status changed [active <> completed]
                         if (listItem.isCompleted() != item.isCompleted()) {
                             mFragment.doCompleteAction(position);
                         } else {
-                            mFragment.onItemChange(position);
+
+                            // Lets handle the state change safely
+                            if (oldPinned != newPinned) {
+                                mFragment.doPinnedChangeAction(position);
+                            } else {
+                                mFragment.onItemChange(position);
+                            }
                             Toast.makeText(this, getString(R.string.action_save_saved), Toast.LENGTH_SHORT).show();
                         }
                     } else {
@@ -204,15 +209,13 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
                 // This is a new item that needs to be inserted
                 } else {
-                    int position = -1;
-                    if (item.isPinned()) {
-                        position = 0;
-                    } else {
-                        position = mFragment.getFirstUnpinnedPosition();
-                    }
+                    int position = item.isPinned() ? 0 : mFragment.getFirstUnpinnedPosition();
 
                     item.hasReminder = reminder.isActive();
                     mFragment.getAdapter().addItem(position, item);
+
+                    // Scroll to position
+                    mFragment.scrollToPosition(position);
 
                     // Insert the reminder as well
                     if (reminder.isActive()) {

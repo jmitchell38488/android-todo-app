@@ -142,8 +142,39 @@ public class SortedListFragment extends ListFragment {
         mAdapter.addItem(nPosition, item);
     }
 
+    /**
+     * Helper function to move the item based on state change. This only happens on the edit screen.
+     * @param position
+     */
+    public void doPinnedChangeAction(int position) {
+        TodoItem item = mAdapter.getItem(position);
+
+        // Swap the pinned state, false = first unpinned, true = bottom of the pinned list
+        int fPosition = getFirstUnpinnedPosition();
+        int nPosition = !item.isPinned() ? fPosition : fPosition - 1;
+
+        // Make sure that we set the state _AFTER_ we calculate the correct position
+        item.setPinned(!item.isPinned());
+
+        // Remove from the adapter - triggers a delete in the repository
+        mAdapter.remove(position);
+
+        // Make sure that we reset the id so that it can be inserted again
+        item.setId(0l);
+
+        // Save it as a new item
+        mAdapter.addItem(nPosition, item);
+
+        // Scroll to position
+        mRecyclerView.scrollToPosition(nPosition);
+    }
+
     public RecyclerListAdapter getAdapter() {
         return mAdapter;
+    }
+
+    public void scrollToPosition(int position) {
+        mRecyclerView.scrollToPosition(position);
     }
 
 }

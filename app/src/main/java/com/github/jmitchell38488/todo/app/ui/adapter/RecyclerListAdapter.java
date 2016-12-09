@@ -203,8 +203,6 @@ public class RecyclerListAdapter extends StandardAdapter<TodoItem, TodoItemHolde
         notifyItemMoved(fromPosition, toPosition);
 
         if (mListChangeListener != null) {
-            //mListChangeListener.onItemChange(fromPosition);
-            //mListChangeListener.onItemChange(toPosition);
             mListChangeListener.onItemsMoved();
             mListChangeListener.onDataChange();
         }
