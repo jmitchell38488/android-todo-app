@@ -3,18 +3,21 @@ package com.github.jmitchell38488.todo.app.ui.view.holder;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
+import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
-import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
+import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
 import com.github.jmitchell38488.todo.app.util.AlarmUtility;
 
 import java.text.SimpleDateFormat;
@@ -37,8 +40,8 @@ public class TodoItemEditHolder {
     public boolean hasReminderTime = false;
     public boolean isNew = false;
 
-    @BindView(R.id.item_edit_title) public RobotoLightEditText titleView;
-    @BindView(R.id.item_edit_description) public RobotoLightEditText descriptionView;
+    @BindView(R.id.item_edit_title) public EditText titleView;
+    @BindView(R.id.item_edit_description) public TextView descriptionView;
     @BindView(R.id.item_edit_pinned) public Switch pinnedSwitch;
     @BindView(R.id.item_edit_completed) public Switch completedSwitch;
     @BindView(R.id.item_edit_locked) public Switch lockedSwitch;
@@ -245,6 +248,14 @@ public class TodoItemEditHolder {
 
     public void setSoundFieldTitle(String title) {
         soundField.setText(title);
+    }
+
+    public void setDescriptionClickListener(View.OnClickListener listener) {
+        descriptionView.setOnClickListener(listener);
+    }
+
+    public void setDescriptionText(String text) {
+        descriptionView.setText(text);
     }
 
 }

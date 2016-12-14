@@ -7,26 +7,35 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.TodoStorage;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
+import com.github.jmitchell38488.todo.app.ui.activity.EditDescriptionActivity;
 import com.github.jmitchell38488.todo.app.ui.activity.EditItemActivity;
 import com.github.jmitchell38488.todo.app.ui.view.holder.TodoItemEditHolder;
 import com.github.jmitchell38488.todo.app.util.ItemUtility;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class EditItemFragment extends Fragment {
+public class EditItemFragment extends BaseFragment {
+
+    private static final String STATE_ITEM = "state_item";
+    private static final String STATE_REMINDER = "state_description";
+    private static final String STATE_ITEM_UPDATED = "state_item_updated";
+    private static final String STATE_REMINDER_UPDATED = "state_description_updated";
 
     private View mView;
-    private TodoItem mItem;
-    private TodoReminder mReminder;
+    private TodoItem mItem, mUpdatedItem;
+    private TodoReminder mReminder, mUpdatedReminder;
     private String mItemHash;
 
     @Override
@@ -42,39 +51,59 @@ public class EditItemFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_edit_item, container, false);
+        return mView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         Bundle arguments = getArguments();
-        TodoItem item = null;
-        TodoReminder reminder = null;
-        boolean isNew = false;
 
-        if (arguments != null && arguments.getParcelable(Parcelable.KEY_TODOITEM) != null) {
-            item = arguments.getParcelable(Parcelable.KEY_TODOITEM);
-        }
 
-        if (arguments != null && arguments.getParcelable(Parcelable.KEY_TODOREMINDER) != null) {
-            reminder = arguments.getParcelable(Parcelable.KEY_TODOREMINDER);
-        }
+        mItem = savedInstanceState != null ?
+                savedInstanceState.getParcelable(STATE_ITEM) :
+                arguments != null ?
+                    arguments.getParcelable(Parcelable.KEY_TODOITEM) :
+                    null;
+
+        mUpdatedItem = savedInstanceState != null ?
+                savedInstanceState.getParcelable(STATE_ITEM_UPDATED) :
+                null;
+
+        mReminder = savedInstanceState != null ?
+                savedInstanceState.getParcelable(STATE_REMINDER) :
+                arguments != null ?
+                        arguments.getParcelable(Parcelable.KEY_TODOREMINDER) :
+                        null;
+
+        mUpdatedReminder = savedInstanceState != null ?
+                savedInstanceState.getParcelable(STATE_REMINDER_UPDATED) :
+                null;
 
         // new
-        if (item == null || item.getId() < 1) {
-            isNew = true;
-            item = new TodoItem();
+        if (mItem == null || mItem.getId() < 1) {
+            mItem = new TodoItem();
         }
 
-        if (reminder == null) {
-            reminder = new TodoReminder();
+        if (mReminder == null) {
+            mReminder = new TodoReminder();
         }
 
-        mItem = item;
-        mReminder = reminder;
-        mItemHash = ItemUtility.md5(item.toString());
-        mView = inflater.inflate(R.layout.fragment_edit_item, container, false);
-        TodoItemEditHolder viewHolder = new TodoItemEditHolder(mView, getActivity(), mItem, mReminder);
+        boolean isNew = mItem == null || mItem.getId() < 1;
+        boolean isSaved = mUpdatedItem != null;
+
+        mItemHash = ItemUtility.md5(mItem.toString());
+
+        TodoItemEditHolder viewHolder = new TodoItemEditHolder(mView, getActivity(),
+                isSaved ? mUpdatedItem : mItem,
+                isSaved ? mUpdatedReminder : mReminder);
+
         viewHolder.isNew = isNew;
         viewHolder.updateView();
-        mView.setTag(viewHolder);
 
-        viewHolder.setSoundClickListener(view -> {
+        viewHolder.setSoundClickListener(v -> {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
@@ -82,15 +111,43 @@ public class EditItemFragment extends Fragment {
             getActivity().startActivityForResult(intent, EditItemActivity.REQUEST_CODE_SOUND);
         });
 
-        viewHolder.setSoundDeleteClickListener(view -> {
+        viewHolder.setSoundDeleteClickListener(v -> {
             ((TodoItemEditHolder) mView.getTag()).soundField.setText("");
             ((TodoItemEditHolder) mView.getTag()).soundDelete.setVisibility(View.GONE);
             mReminder.setSound(null);
         });
 
-        mItemHash = getFragmentEditHash();
+        viewHolder.setDescriptionClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(Parcelable.KEY_DESCRIPTION_TEXT,
+                    ((TodoItemEditHolder) mView.getTag()).descriptionView.getText().toString());
 
-        return mView;
+            Intent intent = new Intent(getActivity(), EditDescriptionActivity.class);
+            intent.putExtras(bundle);
+            getActivity().startActivityForResult(intent, EditItemActivity.REQUEST_EDIT_DESCRIPTION);
+        });
+
+        mView.setTag(viewHolder);
+
+        mItemHash = getFragmentEditHash();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_ITEM, mItem);
+        outState.putParcelable(STATE_REMINDER, mReminder);
+        outState.putParcelable(STATE_ITEM_UPDATED, getUpdatedTodoItem());
+        outState.putParcelable(STATE_REMINDER_UPDATED, getUpdatedTodoReminder());
+
+        super.onSaveInstanceState(outState);
+    }
+
+    public TodoItem getTodoItem() {
+        return mItem;
+    }
+
+    public TodoReminder getTodoReminder() {
+        return mReminder;
     }
 
     public TodoItem getUpdatedTodoItem() {
@@ -187,6 +244,11 @@ public class EditItemFragment extends Fragment {
                 .append(reminder.toString());
 
         return ItemUtility.md5(builder.toString());
+    }
+
+    public void setDescriptionText(String text) {
+        TodoItemEditHolder viewHolder = (TodoItemEditHolder) mView.getTag();
+        viewHolder.setDescriptionText(text);
     }
 
 }

@@ -123,10 +123,10 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
         outState.putString(STATE_MODE, mMode);
         getSupportFragmentManager().putFragment(outState, "mFragment", mFragment);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override

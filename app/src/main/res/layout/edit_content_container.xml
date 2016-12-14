@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/activity_list_container"
+        android:id="@+id/activity_edit_container"
         style="@style/EditThemeContainer"/>
 </ScrollView>
 

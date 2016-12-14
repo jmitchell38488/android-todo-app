@@ -2,17 +2,12 @@ package com.github.jmitchell38488.todo.app.ui.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,17 +18,20 @@ import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
-import com.github.jmitchell38488.todo.app.data.repository.TodoReminderRepository;
 import com.github.jmitchell38488.todo.app.data.service.ReminderAlarm;
 import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
+import com.github.jmitchell38488.todo.app.ui.fragment.SortedListFragment;
 
 import javax.inject.Inject;
 
 public class EditItemActivity extends BaseActivity {
 
     private static final String LOG_TAG = EditItemActivity.class.getSimpleName();
+    private static final String STATE_FRAGMENT = "state_fragment";
 
     public static final int REQUEST_CODE_SOUND = 5;
+    public static final int REQUEST_EDIT_DESCRIPTION = 10;
+    public static final int REQUEST_EDIT_TITLE = 15;
 
     EditItemFragment mFragment;
     AlertDialog mDialog;
@@ -47,26 +45,32 @@ public class EditItemActivity extends BaseActivity {
 
         TodoApp.getComponent(getApplication()).inject(this);
 
+        Bundle args;
+
         TodoItem item;
-        Bundle args = getIntent().getExtras();
+        if (savedInstanceState == null) {
+            args = getIntent().getExtras();
+            item = args.getParcelable(Parcelable.KEY_TODOITEM);
 
-        Bundle arguments = new Bundle();
-        arguments.putAll(args);
+            Bundle arguments = new Bundle();
+            arguments.putAll(args);
 
-        mFragment = new EditItemFragment();
-        mFragment.setArguments(arguments);
+            mFragment = new EditItemFragment();
+            mFragment.setArguments(arguments);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.activity_list_container, mFragment)
-                .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.activity_edit_container, mFragment)
+                    .commit();
+        } else {
+            mFragment = (EditItemFragment) getSupportFragmentManager().getFragment(savedInstanceState, STATE_FRAGMENT);
+            item = mFragment.getTodoItem();
+        }
 
         // Enable buttons
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setElevation(0.1f);
-
-        item = args.getParcelable(Parcelable.KEY_TODOITEM);
 
         // Change text
         int stringId = item == null ? R.string.action_create : R.string.action_edit;
@@ -87,6 +91,9 @@ public class EditItemActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        getSupportFragmentManager().putFragment(outState, STATE_FRAGMENT, mFragment);
+        outState.putString("foo", "bar");
+
         super.onSaveInstanceState(outState);
     }
 
@@ -130,11 +137,26 @@ public class EditItemActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_SOUND) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        switch (requestCode) {
+            case REQUEST_CODE_SOUND:
                 Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                 mFragment.setTodoReminderAlarmSound(uri != null ? uri : null);
-            }
+                break;
+
+            case REQUEST_EDIT_DESCRIPTION:
+                Bundle args = data.getExtras();
+                String description = args.getString(Parcelable.KEY_DESCRIPTION_TEXT);
+                mFragment.setDescriptionText(description);
+                Log.d(LOG_TAG, "Description:\n" + description);
+
+                break;
+
+            case REQUEST_EDIT_TITLE:
+                break;
         }
     }
 
@@ -178,5 +200,4 @@ public class EditItemActivity extends BaseActivity {
                 )
                 .create();
     }
-
 }
