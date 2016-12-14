@@ -19,6 +19,7 @@
     <dimen name="EditThemeContainer.Label.Small.textSize">11dp</dimen>
     <dimen name="EditThemeContainer.Switch.textSize">12dp</dimen>
     <dimen name="EditThemeContainer.Input.textSize">12dp</dimen>
+    <dimen name="EditThemeContainer.Input.textSizeLarge">16dp</dimen>
     <dimen name="EditItemScrollView.paddingBottom">0dp</dimen>
     <dimen name="EditItemScrollView.paddingLeft">0dp</dimen>
     <dimen name="EditItemScrollView.paddingRight">0dp</dimen>

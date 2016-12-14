@@ -4,22 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
-import com.github.jmitchell38488.todo.app.TodoApp;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
-import com.github.jmitchell38488.todo.app.data.model.TodoItem;
-import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
 import com.github.jmitchell38488.todo.app.ui.fragment.EditDescriptionFragment;
-import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
 
 public class EditDescriptionActivity extends BaseActivity {
-
-    private static final String LOG_TAG = EditDescriptionActivity.class.getSimpleName();
 
     private EditDescriptionFragment mFragment;
 
