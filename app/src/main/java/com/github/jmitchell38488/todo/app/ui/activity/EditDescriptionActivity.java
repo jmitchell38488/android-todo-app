@@ -14,30 +14,47 @@ import com.github.jmitchell38488.todo.app.ui.fragment.EditDescriptionFragment;
 
 public class EditDescriptionActivity extends BaseActivity {
 
+    private static final String TAG_FRAGMENT = "editDescriptionActivityFragment";
+
     private EditDescriptionFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_edit_item);
 
-        Bundle args = getIntent().getExtras();
+        if (savedInstanceState == null) {
+            String desc = getIntent().getExtras().getString(Parcelable.KEY_DESCRIPTION_TEXT);
 
-        mFragment = new EditDescriptionFragment();
-        mFragment.setArguments(args);
+            Bundle args = new Bundle();
+            args.putString(Parcelable.KEY_DESCRIPTION_TEXT, desc);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.activity_edit_container, mFragment)
-                .commit();
+            mFragment = new EditDescriptionFragment();
+            mFragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.activity_edit_container, mFragment, TAG_FRAGMENT)
+                    .commit();
+        } else {
+            mFragment = (EditDescriptionFragment) getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT);
+        }
 
         // Enable buttons
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setElevation(0.1f);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setElevation(0.1f);
 
-        // Change text
-        ((TextView) mToolbar.findViewById(R.id.logo_main)).setText(getString(R.string.action_edit_description));
+            // Change text
+            ((TextView) mToolbar.findViewById(R.id.logo_main)).setText(getString(R.string.action_edit_description));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
