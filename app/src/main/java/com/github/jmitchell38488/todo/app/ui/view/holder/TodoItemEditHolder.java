@@ -41,6 +41,9 @@ public class TodoItemEditHolder {
     public boolean hasReminderTime = false;
     public boolean isNew = false;
 
+    boolean hasTriggeredDateClick = false;
+    boolean hasTriggeredTimeClick = false;
+
     @BindView(R.id.item_edit_title) public EditText titleView;
     @BindView(R.id.item_edit_description) public TextView descriptionView;
     @BindView(R.id.item_edit_pinned) public Switch pinnedSwitch;
@@ -64,6 +67,31 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_sound_icon) public TextView soundIcon;
     @BindView(R.id.item_edit_sound_field) public TextView soundField;
     @BindView(R.id.item_edit_sound_delete) public TextView soundDelete;
+
+    DatePickerDialog.OnDateSetListener dateCallback = (view, year, monthOfYear, dayOfMonth) -> {
+        reminderDate.set(Calendar.YEAR, year);
+        reminderDate.set(Calendar.MONTH, monthOfYear);
+        reminderDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_date_alarm_field));
+        dateField.setText(format.format(reminderDate.getTime()));
+
+        hasReminderDate = true;
+        timeSelector.setVisibility(View.VISIBLE);
+        soundSelector.setVisibility(View.VISIBLE);
+        dateDelete.setVisibility(View.VISIBLE);
+    };
+
+    TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
+        reminderDate.set(Calendar.HOUR, hourOfDay >= 12 && hourOfDay < 25 ? hourOfDay - 12 : hourOfDay);
+        reminderDate.set(Calendar.MINUTE, minute);
+        reminderDate.set(Calendar.AM_PM, hourOfDay >= 12 && hourOfDay < 24 ? Calendar.PM : Calendar.AM);
+
+        SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_time));
+        timeField.setText(format.format(reminderDate.getTime()));
+        hasReminderTime = true;
+        timeDelete.setVisibility(View.VISIBLE);
+    };
 
     public TodoItemEditHolder(View view, Context context,
                               @Nullable TodoItem item,
@@ -152,35 +180,9 @@ public class TodoItemEditHolder {
             }
         }
 
-        DatePickerDialog.OnDateSetListener dateCallback = (view, year, monthOfYear, dayOfMonth) -> {
-            reminderDate.set(Calendar.YEAR, year);
-            reminderDate.set(Calendar.MONTH, monthOfYear);
-            reminderDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-            SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_date_alarm_field));
-            dateField.setText(format.format(reminderDate.getTime()));
-
-            hasReminderDate = true;
-            timeSelector.setVisibility(View.VISIBLE);
-            soundSelector.setVisibility(View.VISIBLE);
-            dateDelete.setVisibility(View.VISIBLE);
+        View.OnClickListener dateClick = (view) -> {
+            handleOnDatePickerClick(view);
         };
-
-        TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
-            reminderDate.set(Calendar.HOUR, hourOfDay >= 12 && hourOfDay < 25 ? hourOfDay - 12 : hourOfDay);
-            reminderDate.set(Calendar.MINUTE, minute);
-            reminderDate.set(Calendar.AM_PM, hourOfDay >= 12 && hourOfDay < 24 ? Calendar.PM : Calendar.AM);
-
-            SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format_time));
-            timeField.setText(format.format(reminderDate.getTime()));
-            hasReminderTime = true;
-            timeDelete.setVisibility(View.VISIBLE);
-        };
-
-        View.OnClickListener dateClick = (view) ->
-                new DatePickerDialog(mContext, R.style.AlertDialogTheme, dateCallback,
-                    reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
-                    reminderDate.get(Calendar.DAY_OF_MONTH)).show();
 
         View.OnFocusChangeListener dateFocus = (view, focused) -> {
             mInputMethodManager.hideSoftInputFromWindow(dateField.getWindowToken(), 0);
@@ -188,15 +190,13 @@ public class TodoItemEditHolder {
                 return;
             }
 
-            new DatePickerDialog(mContext, R.style.AlertDialogTheme, dateCallback,
-                    reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
-                    reminderDate.get(Calendar.DAY_OF_MONTH)).show();
+            handleOnDatePickerClick(view);
         };
 
-        View.OnClickListener timeClick = (view) ->
-                new TimePickerDialog(mContext, R.style.AlertDialogTheme, timeCallback,
-                    reminderDate.get(Calendar.HOUR),
-                    reminderDate.get(Calendar.MINUTE), false).show();
+        View.OnClickListener timeClick = (view) -> {
+            handleOnTimePickerClick(view);
+        };
+
 
         View.OnFocusChangeListener timeFocus = (view, focused) -> {
             mInputMethodManager.hideSoftInputFromWindow(timeField.getWindowToken(), 0);
@@ -204,9 +204,7 @@ public class TodoItemEditHolder {
                 return;
             }
 
-            new TimePickerDialog(mContext, R.style.AlertDialogTheme, timeCallback,
-                    reminderDate.get(Calendar.HOUR_OF_DAY),
-                    reminderDate.get(Calendar.MINUTE), false).show();
+            handleOnTimePickerClick(view);
         };
 
         dateField.setOnFocusChangeListener(dateFocus);
@@ -238,6 +236,39 @@ public class TodoItemEditHolder {
         if (isNew) {
             completedSelector.setVisibility(View.GONE);
         }
+    }
+
+    private void handleOnDatePickerClick(View view) {
+        if (hasTriggeredDateClick) {
+            return;
+        }
+
+        hasTriggeredDateClick = true;
+
+        DatePickerDialog dialog = new DatePickerDialog(mContext, R.style.AlertDialogTheme, dateCallback,
+                reminderDate.get(Calendar.YEAR), reminderDate.get(Calendar.MONTH),
+                reminderDate.get(Calendar.DAY_OF_MONTH));
+
+        // Reset the triggered value when it is dismissed
+        dialog.setOnCancelListener(d -> hasTriggeredDateClick = false);
+        dialog.setOnDismissListener(d -> hasTriggeredDateClick = false);
+        dialog.show();
+    }
+
+    private void handleOnTimePickerClick(View view) {
+        if (hasTriggeredTimeClick) {
+            return;
+        }
+
+        hasTriggeredTimeClick = true;
+        TimePickerDialog dialog = new TimePickerDialog(mContext, R.style.AlertDialogTheme, timeCallback,
+                reminderDate.get(Calendar.HOUR),
+                reminderDate.get(Calendar.MINUTE), false);
+
+        // Reset the triggered value when it is dismissed
+        dialog.setOnCancelListener(d -> hasTriggeredTimeClick = false);
+        dialog.setOnDismissListener(d -> hasTriggeredTimeClick = false);
+        dialog.show();
     }
 
     public void setSoundClickListener(View.OnClickListener listener) {
