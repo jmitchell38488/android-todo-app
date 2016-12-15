@@ -299,15 +299,13 @@
         <item name="android:layout_marginTop">25dp</item>
     </style>
 
-    <style name="EditThemeContainer.Input.TextArea" parent="EditThemeContainer.Input">
-        <item name="android:minLines">4</item>
-        <item name="android:maxLines">9</item>
+    <style name="EditThemeContainer.Input.TextAreaView" parent="EditThemeContainer.Input">
+        <item name="android:lines">9</item>
+        <item name="android:scrollbars">vertical</item>
     </style>
 
     <style name="EditThemeContainer.Input.TextArea.Activity" parent="EditThemeContainer.Input">
-        <item name="android:minLines">10</item>
-        <item name="android:lines">10</item>
-        <item name="android:maxLines">100</item>
+        <item name="android:lines">22</item>
         <item name="android:textSize">@dimen/EditThemeContainer.Input.textSizeLarge</item>
     </style>
 
