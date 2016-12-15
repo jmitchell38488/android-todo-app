@@ -170,6 +170,7 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:hint="@string/item_edit_pin_label"
+                android:id="@+id/item_edit_pinned_text"
                 android:layout_toRightOf="@+id/item_edit_pinned_icon"
                 style="@style/EditThemeContainer.Input"/>
 
@@ -202,6 +203,7 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:hint="@string/item_edit_locked_label"
+                android:id="@+id/item_edit_locked_text"
                 android:layout_toRightOf="@+id/item_edit_locked_icon"
                 style="@style/EditThemeContainer.Input"/>
 
@@ -234,6 +236,7 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:hint="@string/item_edit_completed_label"
+                android:id="@+id/item_edit_completed_text"
                 android:layout_toRightOf="@+id/item_edit_completed_icon"
                 style="@style/EditThemeContainer.Input"/>
 
