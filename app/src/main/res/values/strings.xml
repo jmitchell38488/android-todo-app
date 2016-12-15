@@ -12,6 +12,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_create">Add New To Do Item</string>
     <string name="action_edit">Edit To Do Item</string>
+    <string name="action_edit_description">Edit Notes</string>
     <string name="action_confirm_exit">Unsaved changes</string>
     <string name="action_confirm_exit_description">You have unsaved changes. If you continue you will lose those changes.</string>
 

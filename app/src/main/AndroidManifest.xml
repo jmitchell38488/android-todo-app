@@ -41,6 +41,11 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name=".ui.activity.EditDescriptionActivity"
+            android:parentActivityName=".ui.activity.EditItemActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name=".ui.activity.TriggeredAlarmActivity"
             android:theme="@style/AlarmTheme"
             android:parentActivityName=".ui.activity.ListActivity"

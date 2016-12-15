@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/item_edit_description_container"
+        style="@style/EditThemeContainer.TextContainer">
+
+        <com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText
+            android:id="@+id/item_edit_description"
+            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+            android:hint="@string/item_edit_description_label"
+            style="@style/EditThemeContainer.Input.TextArea.Activity"/>
+
+    </LinearLayout>
+
+</LinearLayout>

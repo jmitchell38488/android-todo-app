@@ -81,6 +81,7 @@
     <dimen name="EditThemeContainer.Input.paddingBottom">10dp</dimen>
     <dimen name="EditThemeContainer.Input.paddingLeft">4dp</dimen>
     <dimen name="EditThemeContainer.Input.textSize">15dp</dimen>
+    <dimen name="EditThemeContainer.Input.textSizeLarge">20dp</dimen>
     <dimen name="EditThemeContainer.Input.Selector.paddingBottom">4dp</dimen>
     <dimen name="EditThemeContainer.Input.Large.textSize">16dp</dimen>
     <dimen name="EditThemeContainer.TextContainer.layout_marginTop">0dp</dimen>
@@ -108,5 +109,8 @@
     <dimen name="AppTheme.ListTextView.TextContainer.paddingLeft">12dp</dimen>
     <dimen name="AppTheme.ListTextView.TextContainer.paddingTop">3dp</dimen>
     <dimen name="AppTheme.ListTextView.TextContainer.paddingBottom">3dp</dimen>
+
+    <item name="EditThemeContainer.Input.textSize.float" format="float" type="dimen">16</item>
+    <item name="EditThemeContainer.Input.textSizeLarge.float" format="float" type="dimen">22</item>
 
 </resources>

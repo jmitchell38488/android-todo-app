@@ -304,6 +304,13 @@
         <item name="android:maxLines">9</item>
     </style>
 
+    <style name="EditThemeContainer.Input.TextArea.Activity" parent="EditThemeContainer.Input">
+        <item name="android:minLines">10</item>
+        <item name="android:lines">10</item>
+        <item name="android:maxLines">100</item>
+        <item name="android:textSize">@dimen/EditThemeContainer.Input.textSizeLarge</item>
+    </style>
+
     <style name="EditThemeContainer.Input.Invert" parent="EditThemeContainer.Input">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@android:color/transparent</item>
