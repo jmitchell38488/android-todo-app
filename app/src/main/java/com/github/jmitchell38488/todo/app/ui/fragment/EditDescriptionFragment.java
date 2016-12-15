@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.github.jmitchell38488.todo.app.R;
 import com.github.jmitchell38488.todo.app.data.Parcelable;
+import com.github.jmitchell38488.todo.app.ui.view.RobotoLightEditText;
 
 import java.util.ArrayList;
 
@@ -29,11 +30,14 @@ public class EditDescriptionFragment extends BaseFragment implements TextWatcher
     private boolean canConvertFontSize = false;
     private String descriptionText;
     private View mView;
+    private int textLength = 0;
+    private boolean mFocused = false;
 
     private float descSmall = 0f;
     private float descLarge = 0f;
 
-    @BindView(R.id.item_edit_description) EditText descriptionView;
+    @BindView(R.id.item_edit_description)
+    RobotoLightEditText descriptionView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,10 +86,10 @@ public class EditDescriptionFragment extends BaseFragment implements TextWatcher
         super.onViewCreated(view, savedInstanceState);
 
         if (descriptionText != null) {
+            textLength = getDescriptionTextLength(descriptionText.toString());
 
             if (canConvertFontSize) {
-                int length = descriptionText.replace(" ", "").replace("\n", "").replace("\r", "").length();
-                descriptionView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, length < 85 ? descLarge : descSmall);
+                descriptionView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textLength < 85 ? descLarge : descSmall);
             }
 
             descriptionView.setText(descriptionText);
@@ -95,6 +99,42 @@ public class EditDescriptionFragment extends BaseFragment implements TextWatcher
         }
 
         descriptionView.addTextChangedListener(this);
+        descriptionView.setOnEditTextImeBackListener((ctrl, text) -> {
+            mFocused = false;
+            descriptionView.setLines(textLength < 85 ? 18 : 20);
+        });
+
+        descriptionView.setOnLongClickListener(v -> {
+            mFocused = true;
+
+            if (mFocused) {
+                descriptionView.setLines(textLength < 85 ? 8 : 10);
+            }
+
+            return true;
+        });
+
+        descriptionView.setOnClickListener(v -> {
+            mFocused = true;
+
+            if (mFocused) {
+                descriptionView.setLines(textLength < 85 ? 8 : 10);
+            }
+        });
+
+        descriptionView.setOnFocusChangeListener((v, focused) -> {
+            if (descriptionView == null) {
+                return;
+            }
+
+            mFocused = focused;
+
+            if (mFocused) {
+                descriptionView.setLines(textLength < 85 ? 8 : 10);
+            } else {
+                descriptionView.setLines(textLength < 85 ? 18 : 20);
+            }
+        });
     }
 
     public String getDescriptionText() {
@@ -111,6 +151,12 @@ public class EditDescriptionFragment extends BaseFragment implements TextWatcher
         // do nothing
     }
 
+    private int getDescriptionTextLength(String s) {
+        String seq = s.replace(" ", "").replace("\n","").replace("\r","");
+
+        return seq.length();
+    }
+
     @Override
     public void afterTextChanged(Editable s) {
         if (!canConvertFontSize) {
@@ -118,10 +164,9 @@ public class EditDescriptionFragment extends BaseFragment implements TextWatcher
         }
 
         // Dynamically resize the font size based on text entry, like Facebook
-        s.toString();
-        String seq = s.toString().replace(" ", "").replace("\n","").replace("\r","");
+        textLength = getDescriptionTextLength(s.toString());
 
-        if (seq.length() >= 85) {
+        if (textLength >= 85) {
             if (descriptionView.getTextSize() != descSmall) {
                 descriptionView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, descSmall);
             }
