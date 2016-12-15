@@ -9,8 +9,8 @@ android {
         applicationId "com.github.jmitchell38488.todo.app"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.4-alpha"
+        versionCode 5
+        versionName "0.5-alpha"
         retrolambda {
             jvmArgs '-noverify'
         }
