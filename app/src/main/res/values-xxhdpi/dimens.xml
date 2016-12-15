@@ -15,6 +15,7 @@
     <dimen name="AppTheme.ListTextView.Large.textSize">12.5dp</dimen>
     <dimen name="AppTheme.ListTextView.DragHandle.layout_width">40dp</dimen>
     <dimen name="AppTheme.ListTextView.Icon.List.paddingRight">5dp</dimen>
+    <!--
     <dimen name="EditThemeContainer.Label.textSize">14.5dp</dimen>
     <dimen name="EditThemeContainer.Label.Small.textSize">11dp</dimen>
     <dimen name="EditThemeContainer.Switch.textSize">12dp</dimen>
@@ -29,4 +30,5 @@
     <dimen name="EditThemeContainer.OptionsContainer.paddingRight">6dp</dimen>
     <dimen name="EditThemeContainer.OptionsContainer.paddingTop">10dp</dimen>
     <dimen name="EditThemeContainer.Input.Large.textSize">14dp</dimen>
+    -->
 </resources>
