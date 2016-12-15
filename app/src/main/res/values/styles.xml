@@ -199,6 +199,9 @@
         <item name="android:layout_gravity">center_horizontal|top</item>
         <item name="android:gravity">center_horizontal|top</item>
         <item name="android:layout_marginTop">@dimen/EditThemeContainer.TextContainer.Icon.layout_marginTop</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <style name="EditThemeContainer.TextContainer.Row" parent="EditThemeContainer.TextContainer">
@@ -270,11 +273,21 @@
         <item name="android:focusableInTouchMode">true</item>
     </style>
 
+    <style name="EditThemeContainer.Input.ReadOnly" parent="EditThemeContainer.Input">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
     <style name="EditThemeContainer.Input.Selector" parent="EditThemeContainer.Input">
         <item name="android:paddingBottom">@dimen/EditThemeContainer.Input.Selector.paddingBottom</item>
     </style>
 
     <style name="EditThemeContainer.Input.Large" parent="EditThemeContainer.Input">
+        <item name="android:textSize">@dimen/EditThemeContainer.Input.Large.textSize</item>
+    </style>
+
+    <style name="EditThemeContainer.Input.ReadOnly.Large" parent="EditThemeContainer.Input.ReadOnly">
         <item name="android:textSize">@dimen/EditThemeContainer.Input.Large.textSize</item>
     </style>
 
@@ -299,7 +312,7 @@
         <item name="android:layout_marginTop">25dp</item>
     </style>
 
-    <style name="EditThemeContainer.Input.TextAreaView" parent="EditThemeContainer.Input">
+    <style name="EditThemeContainer.Input.ReadOnly.TextAreaView" parent="EditThemeContainer.Input.ReadOnly">
         <item name="android:lines">9</item>
         <item name="android:scrollbars">vertical</item>
     </style>

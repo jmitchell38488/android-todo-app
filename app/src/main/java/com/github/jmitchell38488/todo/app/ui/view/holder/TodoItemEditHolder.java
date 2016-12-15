@@ -41,7 +41,10 @@ public class TodoItemEditHolder {
     boolean hasTriggeredDateClick = false;
     boolean hasTriggeredTimeClick = false;
 
+    @BindView(R.id.item_edit_title_icon) TextView titleIcon;
     @BindView(R.id.item_edit_title) public EditText titleView;
+
+    @BindView(R.id.item_edit_description_icon) TextView descriptionIcon;
     @BindView(R.id.item_edit_description) public TextView descriptionView;
 
     @BindView(R.id.edit_item_time_selector) RelativeLayout timeSelector;
@@ -125,6 +128,12 @@ public class TodoItemEditHolder {
             soundSelector.setVisibility(View.GONE);
         }
 
+        titleIcon.setOnClickListener(v -> {
+            titleView.setEnabled(true);
+            titleView.requestFocus();
+        });
+
+        descriptionIcon.setOnClickListener(v -> descriptionView.performClick());
         descriptionView.setMovementMethod(new ScrollingMovementMethod());
 
         pinnedIcon.setOnClickListener(v -> pinnedSwitch.setChecked(!mItem.isPinned()));
