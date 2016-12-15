@@ -3,7 +3,6 @@ package com.github.jmitchell38488.todo.app.ui.view.holder;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -15,10 +14,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.github.jmitchell38488.todo.app.R;
-import com.github.jmitchell38488.todo.app.data.Parcelable;
 import com.github.jmitchell38488.todo.app.data.model.TodoItem;
 import com.github.jmitchell38488.todo.app.data.model.TodoReminder;
-import com.github.jmitchell38488.todo.app.ui.fragment.EditItemFragment;
 import com.github.jmitchell38488.todo.app.util.AlarmUtility;
 
 import java.text.SimpleDateFormat;
@@ -44,11 +41,11 @@ public class TodoItemEditHolder {
     boolean hasTriggeredDateClick = false;
     boolean hasTriggeredTimeClick = false;
 
+    @BindView(R.id.item_edit_title_icon) TextView titleIcon;
     @BindView(R.id.item_edit_title) public EditText titleView;
+
+    @BindView(R.id.item_edit_description_icon) TextView descriptionIcon;
     @BindView(R.id.item_edit_description) public TextView descriptionView;
-    @BindView(R.id.item_edit_pinned) public Switch pinnedSwitch;
-    @BindView(R.id.item_edit_completed) public Switch completedSwitch;
-    @BindView(R.id.item_edit_locked) public Switch lockedSwitch;
 
     @BindView(R.id.edit_item_time_selector) RelativeLayout timeSelector;
     @BindView(R.id.edit_item_sound_selector) RelativeLayout soundSelector;
@@ -67,6 +64,19 @@ public class TodoItemEditHolder {
     @BindView(R.id.item_edit_sound_icon) public TextView soundIcon;
     @BindView(R.id.item_edit_sound_field) public TextView soundField;
     @BindView(R.id.item_edit_sound_delete) public TextView soundDelete;
+
+    @BindView(R.id.item_edit_pinned_icon) TextView pinnedIcon;
+    @BindView(R.id.item_edit_pinned_text) TextView pinnedField;
+    @BindView(R.id.item_edit_pinned) public Switch pinnedSwitch;
+
+    @BindView(R.id.item_edit_locked_icon) TextView lockedIcon;
+    @BindView(R.id.item_edit_locked_text) TextView lockedField;
+    @BindView(R.id.item_edit_locked) public Switch lockedSwitch;
+
+    @BindView(R.id.item_edit_completed_icon) TextView completedIcon;
+    @BindView(R.id.item_edit_completed_text) TextView completedField;
+    @BindView(R.id.item_edit_completed) public Switch completedSwitch;
+
 
     DatePickerDialog.OnDateSetListener dateCallback = (view, year, monthOfYear, dayOfMonth) -> {
         reminderDate.set(Calendar.YEAR, year);
@@ -118,13 +128,30 @@ public class TodoItemEditHolder {
             soundSelector.setVisibility(View.GONE);
         }
 
+        titleIcon.setOnClickListener(v -> {
+            titleView.setEnabled(true);
+            titleView.requestFocus();
+        });
+
+        descriptionIcon.setOnClickListener(v -> descriptionView.performClick());
         descriptionView.setMovementMethod(new ScrollingMovementMethod());
 
+        pinnedIcon.setOnClickListener(v -> pinnedSwitch.setChecked(!mItem.isPinned()));
+        pinnedField.setOnClickListener(v -> pinnedSwitch.setChecked(!mItem.isPinned()));
         pinnedSwitch.setChecked(mItem.isPinned());
         pinnedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mItem.setPinned(isChecked);
         });
 
+        lockedIcon.setOnClickListener(v -> lockedSwitch.setChecked(!mItem.isLocked()));
+        lockedField.setOnClickListener(v -> lockedSwitch.setChecked(!mItem.isLocked()));
+        lockedSwitch.setChecked(mItem.isLocked());
+        lockedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mItem.setLocked(isChecked);
+        });
+
+        completedIcon.setOnClickListener(v -> completedSwitch.setChecked(!mItem.isCompleted()));
+        completedField.setOnClickListener(v -> completedSwitch.setChecked(!mItem.isCompleted()));
         completedSwitch.setChecked(mItem.isCompleted());
         completedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mItem.setCompleted(isChecked);
@@ -135,11 +162,6 @@ public class TodoItemEditHolder {
                 lockedSelector.setVisibility(View.VISIBLE);
                 pinnedSelector.setVisibility(View.VISIBLE);
             }
-        });
-
-        lockedSwitch.setChecked(mItem.isLocked());
-        lockedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mItem.setLocked(isChecked);
         });
 
         if (!TextUtils.isEmpty(mItem.getTitle())) {

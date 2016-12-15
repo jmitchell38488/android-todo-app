@@ -59,12 +59,9 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:id="@+id/item_edit_description"
-                android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
                 android:hint="@string/item_edit_description_label"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_toRightOf="@+id/item_edit_description_icon"
-                style="@style/EditThemeContainer.Input.TextAreaView"/>
+                style="@style/EditThemeContainer.Input.ReadOnly.TextAreaView"/>
 
         </RelativeLayout>
 
@@ -85,15 +82,15 @@
                 android:id="@+id/item_edit_date_field"
                 android:hint="@string/item_edit_reminder_label"
                 android:layout_toRightOf="@+id/item_edit_date_icon"
-                style="@style/EditThemeContainer.Input" />
+                style="@style/EditThemeContainer.Input.ReadOnly" />
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_height="wrap_content"
                 android:text="@string/icon_cancel"
                 android:id="@+id/item_edit_date_delete"
-                style="@style/EditThemeContainer.TextContainer.Icon"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                style="@style/EditThemeContainer.TextContainer.Icon" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -113,16 +110,17 @@
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:id="@+id/item_edit_time_field"
                 android:hint="@string/item_edit_reminder_time_hint"
+                android:clickable="true"
                 android:layout_toRightOf="@+id/item_edit_time_icon"
-                style="@style/EditThemeContainer.Input"/>
+                style="@style/EditThemeContainer.Input.ReadOnly"/>
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_height="wrap_content"
                 android:text="@string/icon_cancel"
-                android:id="@+id/item_edit_time_delete"
-                style="@style/EditThemeContainer.TextContainer.Icon"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:id="@+id/item_edit_time_delete"
+                style="@style/EditThemeContainer.TextContainer.Icon" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -143,15 +141,15 @@
                 android:id="@+id/item_edit_sound_field"
                 android:hint="@string/item_edit_reminder_alarm_hint"
                 android:layout_toRightOf="@+id/item_edit_sound_icon"
-                style="@style/EditThemeContainer.Input"/>
+                style="@style/EditThemeContainer.Input.ReadOnly"/>
 
             <com.github.jmitchell38488.todo.app.ui.view.FontAwesomeTextView
                 android:layout_height="wrap_content"
                 android:text="@string/icon_cancel"
                 android:id="@+id/item_edit_sound_delete"
-                style="@style/EditThemeContainer.TextContainer.Icon"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                style="@style/EditThemeContainer.TextContainer.Icon"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -170,15 +168,16 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:hint="@string/item_edit_pin_label"
+                android:id="@+id/item_edit_pinned_text"
                 android:layout_toRightOf="@+id/item_edit_pinned_icon"
-                style="@style/EditThemeContainer.Input"/>
+                style="@style/EditThemeContainer.Input.ReadOnly"/>
 
             <LinearLayout
                 android:layout_width="@dimen/EditThemeContainer.Switch.layout_width"
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" >
+                android:layout_alignParentEnd="true">
                 <Switch
                     android:id="@+id/item_edit_pinned"
                     style="@style/EditThemeContainer.Switch"/>
@@ -202,8 +201,9 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:hint="@string/item_edit_locked_label"
+                android:id="@+id/item_edit_locked_text"
                 android:layout_toRightOf="@+id/item_edit_locked_icon"
-                style="@style/EditThemeContainer.Input"/>
+                style="@style/EditThemeContainer.Input.ReadOnly"/>
 
             <LinearLayout
                 android:layout_width="@dimen/EditThemeContainer.Switch.layout_width"
@@ -234,8 +234,9 @@
 
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:hint="@string/item_edit_completed_label"
+                android:id="@+id/item_edit_completed_text"
                 android:layout_toRightOf="@+id/item_edit_completed_icon"
-                style="@style/EditThemeContainer.Input"/>
+                style="@style/EditThemeContainer.Input.ReadOnly"/>
 
             <LinearLayout
                 android:layout_width="@dimen/EditThemeContainer.Switch.layout_width"
