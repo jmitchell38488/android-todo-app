@@ -123,7 +123,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        actionBar.setHomeAsUpIndicator(R.mipmap.ic_drawer);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolbar(),
                 R.string.drawer_title_open, R.string.drawer_title_closed) {

@@ -12,10 +12,10 @@
     android:contentInsetStart="0dp"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
-    android:contentInsetRight="0dp"
-    android:contentInsetEnd="0dp"
-    app:contentInsetRight="0dp"
-    app:contentInsetEnd="0dp">
+    android:contentInsetRight="60dp"
+    android:contentInsetEnd="60dp"
+    app:contentInsetRight="60dp"
+    app:contentInsetEnd="60dp">
 
     <LinearLayout
         android:layout_width="match_parent"
