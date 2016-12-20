@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    style="@style/ListTheme"
-    tools:context="com.github.jmitchell38488.todo.app.ui.activity.ListActivity">
+    android:layout_height="match_parent">
 
-    <!-- toolbar -->
-    <include layout="@layout/list_toolbar" />
+    <!-- The main content view -->
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        style="@style/ListTheme"
+        tools:context="com.github.jmitchell38488.todo.app.ui.activity.ListActivity">
 
-    <!-- main content -->
+        <!-- toolbar -->
+        <include layout="@layout/list_toolbar" />
 
-    <!-- floating action button -->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:elevation="6dp"
-        app:backgroundTint="@color/actionbar_dark"
-        style="@style/FloatingActionButton"/>
+        <!-- floating action button -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            app:srcCompat="@android:drawable/ic_input_add"
+            app:elevation="6dp"
+            app:backgroundTint="@color/actionbar_dark"
+            style="@style/FloatingActionButton"/>
 
-    <include layout="@layout/content_list" />
+        <!-- main content -->
+        <include layout="@layout/content_list" />
 
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <!-- The navigation drawer -->
+    <ListView android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#111"/>
+</android.support.v4.widget.DrawerLayout>

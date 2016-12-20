@@ -4,10 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.jmitchell38488.todo.app.R;
@@ -42,14 +49,18 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
     private static final String STATE_MODE = "state_mode";
     private static final String ITEMS_FRAGMENT_TAG = "fragment_items";
 
-    @BindView(R.id.fab) FloatingActionButton fab;
     private SortedListFragment mFragment;
     private String mMode = null;
     private boolean mTwoPane = false;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Inject ReminderAlarm mReminderAlarm;
     @Inject PeriodicNotificationAlarm mNotificationAlarm;
     @Inject TodoReminderRepository mTodoReminderRepository;
+
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.left_drawer) ListView mDrawerList;
 
     protected Handler mRunnableHandler = new Handler();
 
@@ -98,6 +109,34 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
             intent.putExtras(arguments);
             startActivityForResult(intent, REQUEST_CODE);
         });
+
+        String[] titles = getResources().getStringArray(R.array.drawer_list);
+
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, titles));
+        mDrawerList.setOnItemClickListener((parent, v, position, id) -> {
+            mDrawerList.setItemChecked(position, true);
+            mDrawerLayout.closeDrawer(mDrawerList);
+        });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getToolbar(),
+                R.string.drawer_title_open, R.string.drawer_title_closed) {
+            public void onDrawerClosed(View view) {
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -108,16 +147,6 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDefaultDisplayHomeAsUpEnabled(false);
-            actionBar.setHomeButtonEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            actionBar.setDisplayShowHomeEnabled(false);
-            actionBar.setHomeAsUpIndicator(null);
-        }
-
         return true;
     }
 

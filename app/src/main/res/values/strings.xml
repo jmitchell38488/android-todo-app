@@ -138,4 +138,19 @@
     <string name="pref_alarm_snooze_time_default">1</string>
     <string name="pref_alarm_snooze_timeout_key">alarm_snooze_timeout</string>
     <string name="pref_alarm_snooze_timeout_default">60</string>
+
+    <string-array name="drawer_list">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
+    <string name="drawer_title_open">Open</string>
+    <string name="drawer_title_closed">Closed</string>
+
 </resources>
