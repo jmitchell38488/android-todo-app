@@ -8,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -175,6 +174,15 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
         Intent intent = new Intent(this, EditItemActivity.class);
         intent.putExtras(arguments);
         startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+            mDrawerLayout.closeDrawer(mDrawerList);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
