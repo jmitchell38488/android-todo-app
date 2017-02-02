@@ -257,7 +257,7 @@ public abstract class ListFragment extends BaseFragment
             }
         }
 
-        return position;
+        return position == INVALID_POSITION ? mAdapter.getItemCount() : position;
     }
 
     public int getFirstCompletedPosition() {
