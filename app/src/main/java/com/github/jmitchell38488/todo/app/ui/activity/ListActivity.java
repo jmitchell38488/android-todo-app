@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.left_drawer) ListView mDrawerList;
+    @BindView(R.id.drawer_container) LinearLayout mDrawerContainer;
 
     protected Handler mRunnableHandler = new Handler();
 
@@ -109,6 +111,10 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
             startActivityForResult(intent, REQUEST_CODE);
         });
 
+        initializeDrawer();
+    }
+
+    protected void initializeDrawer() {
         String[] titles = getResources().getStringArray(R.array.drawer_list);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -116,7 +122,7 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
         mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, titles));
         mDrawerList.setOnItemClickListener((parent, v, position, id) -> {
             mDrawerList.setItemChecked(position, true);
-            mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerLayout.closeDrawer(mDrawerContainer);
         });
 
         ActionBar actionBar = getSupportActionBar();
@@ -178,8 +184,8 @@ public class ListActivity extends BaseActivity implements ListFragment.ActivityL
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
+        if (mDrawerLayout.isDrawerOpen(mDrawerContainer)) {
+            mDrawerLayout.closeDrawer(mDrawerContainer);
         } else {
             super.onBackPressed();
         }
