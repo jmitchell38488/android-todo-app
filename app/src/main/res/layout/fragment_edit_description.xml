@@ -16,6 +16,7 @@
             android:id="@+id/item_edit_description"
             android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
             android:hint="@string/item_edit_description_label"
+            android:linksClickable="true"
             style="@style/EditThemeContainer.Input.TextArea.Activity"/>
 
     </LinearLayout>

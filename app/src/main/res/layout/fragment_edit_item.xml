@@ -60,6 +60,8 @@
             <com.github.jmitchell38488.todo.app.ui.view.RobotoLightTextView
                 android:id="@+id/item_edit_description"
                 android:hint="@string/item_edit_description_label"
+                android:linksClickable="true"
+                android:autoLink="all"
                 android:layout_toRightOf="@+id/item_edit_description_icon"
                 style="@style/EditThemeContainer.Input.ReadOnly.TextAreaView"/>
 
