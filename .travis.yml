@@ -1,16 +1,22 @@
 language: android
 jdk: oraclejdk8
 sudo: false
-
+os:
+  - linux
 android:
   components:
     - tools
+    - build-tools-25.0.0
     - platform-tools
-    - tools
-    - build-tools-25.0.2
-    - android-25
     - extra-google-m2repository
     - extra-android-m2repository
+    - extra-google-android-support
+    - android-16
+    - android-23
+    - android-25
+    - sys-img-armeabi-v7a-android-16
+    - sys-img-armeabi-v7a-android-19
+    - sys-img-armeabi-v7a-android-22
   licenses:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
