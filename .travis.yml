@@ -2,12 +2,7 @@ language: android
 jdk: oraclejdk8
 sudo: false
 env:
-  matrix:
-    - ANDROID_SDKS=android-22,sysimg-22
-    - ANDROID_TARGET=android-22
-    - ANDROID_ABI=armeabi-v7a
-    - JAVA8_HOME=/usr/lib/jvm/java-8-oracle
-    - JAVA_HOME=$JAVA8_HOME
+  matrix: ANDROID_SDKS=android-22,sysimg-22 ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a JAVA8_HOME=/usr/lib/jvm/java-8-oracle JAVA_HOME=$JAVA8_HOME
 
 android:
   components:
