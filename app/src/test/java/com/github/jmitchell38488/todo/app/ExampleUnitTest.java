@@ -1,4 +1,4 @@
-package com.github.jmitchell38488.app;
+package com.github.jmitchell38488.todo.app;
 
 import org.junit.Test;
 
